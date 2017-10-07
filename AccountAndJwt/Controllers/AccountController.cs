@@ -1,0 +1,190 @@
+﻿using AccountAndJwt.Contracts.Models;
+using AccountAndJwt.Models.Service;
+using AccountAndJwt.Services.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace AccountAndJwt.Controllers
+{
+    /// <summary>
+    /// Provide authorization activities
+    /// </summary>
+    [Route("api/[controller]/[action]")]
+    public class AccountController : Controller
+    {
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IUrlHelper _urlHelper;
+        private readonly ILogger<AccountController> _logger;
+
+
+        public AccountController(IUserService userService, IUrlHelper urlHelper, ILogger<AccountController> logger, IMapper mapper)
+        {
+            _mapper = mapper;
+            _userService = userService;
+            _urlHelper = urlHelper;
+            _logger = logger;
+        }
+
+
+        // ACTIONS ////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Register new user by provided credentials
+        /// </summary>
+        /// <param name="userDetails"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(typeof(RegisterUserResponseAm), 201)]
+        [ProducesResponseType(typeof(String), 500)]
+        public IActionResult Register([FromBody]RegisterUserAm userDetails)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest($"Please provide valid \"{nameof(userDetails)}\"");
+
+                _userService.Register(_mapper.Map<UserDto>(userDetails));
+                _logger.LogInformation($"New user registered {userDetails.Login}");
+
+                return Ok(new RegisterUserResponseAm()
+                {
+                    GetAccessTokenUrl = _urlHelper.Action("AuthorizeByCredentials", "Token"),
+                    RefreshAccessTokenUrl = _urlHelper.Action("RefreshToken", "Token")
+                });
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Delete existed account by it id.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 500)]
+        public IActionResult DeleteAccount([FromBody]String userId)
+        {
+            try
+            {
+                if (userId == null)
+                    return BadRequest($"Please provide \"{nameof(userId)}\"");
+
+                _logger.LogInformation($"User with id {userId} deleted");
+                _userService.DeleteUser(userId);
+
+                return Ok();
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [Authorize]
+        public IActionResult AddRole([FromBody] String userId)
+        {
+            return Ok();
+        }
+
+        [Authorize]
+        public IActionResult RemoveRole([FromBody] String userId)
+        {
+            return Ok();
+        }
+
+
+        /// <summary>
+        /// Change user Email by provided id
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 500)]
+        public async Task<IActionResult> ChangeEmail([FromBody]ChangeEmailRequestAm request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest($"Please provide valid \"{nameof(request)}\"");
+
+                await _userService.ChangeEmailAsync(request.ClientId, request.NewEmail);
+                _logger.LogInformation($"Email of user {request.ClientId} updated");
+
+                return Ok();
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Change user First and Last name by provided id
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 500)]
+        public IActionResult ChangeName([FromBody]ChangeNameRequestAm request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest($"Please provide valid \"{nameof(request)}\"");
+
+                _userService.ChangeName(request.ClientId, request.FirstName, request.LastName);
+                _logger.LogInformation($"Email of user {request.ClientId} updated");
+
+                return Ok();
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get current user associated data 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [ProducesResponseType(typeof(Dictionary<String, String>), 200)]
+        [ProducesResponseType(typeof(String), 500)]
+        public IActionResult GetUserClaims()
+        {
+            var dict = new Dictionary<String, String>();
+
+            HttpContext.User.Claims.ToList().ForEach(item => dict.Add(item.Type, item.Value));
+
+            return Ok(dict);
+        }
+
+        /// <summary>
+        /// Temporarily, just for quick tests
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete]
+        [HttpGet]
+        public IActionResult Test()
+        {
+            _logger.LogInformation(nameof(Test));
+
+            return Ok();
+        }
+    }
+}

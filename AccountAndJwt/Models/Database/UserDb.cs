@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace AccountAndJwt.Models.Database
+{
+    public class UserDb
+    {
+        public Guid Id { get; set; }
+        public String Login { get; set; }
+        public String Password { get; set; }
+        public String FirstName { get; set; }
+        public String LastName { get; set; }
+        public String Email { get; set; }
+        public ICollection<UserRolesDb> Roles { get; set; }
+    }
+}
