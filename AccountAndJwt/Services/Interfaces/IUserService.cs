@@ -14,5 +14,6 @@ namespace AccountAndJwt.Services.Interfaces
         void AddRole(Int32 userId, String role);
         UserDto GetUser(Int32 id);
         UserDto[] GetAllUsers();
+        void UpdatePassword(Int32 userId, String oldPassword, String newPassword);
     }
 }

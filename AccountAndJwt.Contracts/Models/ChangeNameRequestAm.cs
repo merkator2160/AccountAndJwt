@@ -9,12 +9,6 @@ namespace AccountAndJwt.Contracts.Models
     public class ChangeNameRequestAm
     {
         /// <summary>
-        /// Unique client id
-        /// </summary>
-        [Required]
-        public Int32 UserId { get; set; }
-
-        /// <summary>
         /// First name
         /// </summary>
         [Required]

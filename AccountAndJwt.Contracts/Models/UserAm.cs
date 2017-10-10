@@ -20,7 +20,7 @@ namespace AccountAndJwt.Contracts.Models
         /// <summary>
         /// User password
         /// </summary>
-        public String Password { get; set; }
+        public String PasswordHash { get; set; }
 
         /// <summary>
         /// First user name

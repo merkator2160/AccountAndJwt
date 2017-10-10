@@ -71,8 +71,11 @@ namespace AccountAndJwt.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult DeleteAccount([FromBody]Int32 userId)
         {
@@ -98,17 +101,19 @@ namespace AccountAndJwt.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 500)]
-        [Authorize(Roles = "Admin")]
         public IActionResult AddRole([FromBody]AddRemoveRoleAm request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest($"Please provide valid \"{nameof(request)}\"");
-
             try
             {
+                if (!ModelState.IsValid)
+                    return BadRequest($"Please provide valid \"{nameof(request)}\"");
+
                 _userService.AddRole(request.UserId, request.Role);
                 return Ok();
             }
@@ -124,17 +129,19 @@ namespace AccountAndJwt.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 500)]
-        [Authorize(Roles = "Admin")]
         public IActionResult RemoveRole([FromBody]AddRemoveRoleAm request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest($"Please provide valid \"{nameof(request)}\"");
-
             try
             {
+                if (!ModelState.IsValid)
+                    return BadRequest($"Please provide valid \"{nameof(request)}\"");
+
                 _userService.RemoveRole(request.UserId, request.Role);
                 return Ok();
             }
@@ -145,23 +152,27 @@ namespace AccountAndJwt.Controllers
         }
 
         /// <summary>
-        /// Change user Email by provided id
+        /// Channge E-Mail of current user
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="newEmail"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
-        public async Task<IActionResult> ChangeEmail([FromBody]ChangeEmailRequestAm request)
+        public async Task<IActionResult> ChangeEmail([FromBody]String newEmail)
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return BadRequest($"Please provide valid \"{nameof(request)}\"");
+                if (String.IsNullOrEmpty(newEmail))
+                    return BadRequest($"Please provide valid \"{nameof(newEmail)}\"");
 
-                await _userService.ChangeEmailAsync(request.UserId, request.NewEmail);
-                _logger.LogInformation($"Email of user {request.UserId} updated");
+                var currentUserId = GetCurrentUserId();
+
+                await _userService.ChangeEmailAsync(currentUserId, newEmail);
+                _logger.LogInformation($"Email of user {currentUserId} updated");
 
                 return Ok();
             }
@@ -172,13 +183,15 @@ namespace AccountAndJwt.Controllers
         }
 
         /// <summary>
-        /// Change user First and Last name by provided id
+        /// Change current user First and Last name by provided id
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult ChangeName([FromBody]ChangeNameRequestAm request)
         {
@@ -187,8 +200,10 @@ namespace AccountAndJwt.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-                _userService.ChangeName(request.UserId, request.FirstName, request.LastName);
-                _logger.LogInformation($"Email of user {request.UserId} updated");
+                var currentUserId = GetCurrentUserId();
+
+                _userService.ChangeName(currentUserId, request.FirstName, request.LastName);
+                _logger.LogInformation($"Email of user {currentUserId} updated");
 
                 return Ok();
             }
@@ -205,10 +220,11 @@ namespace AccountAndJwt.Controllers
         [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(GetClaimsResponseAm[]), 200)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult GetCurrentUserClaims()
         {
-            var claims = HttpContext.User.Claims.ToList().Select(x => new GetClaimsResponseAm
+            var claims = HttpContext.User.Claims.ToArray().Select(x => new GetClaimsResponseAm
             {
                 ClaimType = x.Type,
                 Value = x.Value
@@ -225,6 +241,8 @@ namespace AccountAndJwt.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(UserAm), 200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult GetUser(Int32 userId)
         {
@@ -246,6 +264,8 @@ namespace AccountAndJwt.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(UserAm[]), 200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult GetAllUsers()
         {
@@ -257,6 +277,44 @@ namespace AccountAndJwt.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Changing current user password
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(typeof(String), 500)]
+        public IActionResult ResetPassword([FromBody]ResetPasswordAm request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest($"Please provide valid \"{nameof(request)}\"");
+
+                var currentUserId = GetCurrentUserId();
+
+                _userService.UpdatePassword(currentUserId, request.OldPassword, request.NewPassword);
+                _logger.LogInformation($"User with id {currentUserId} change its password");
+
+                return Ok();
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        // SUPPORT FUNCTIONS //////////////////////////////////////////////////////////////////////
+        private Int32 GetCurrentUserId()
+        {
+            return Int32.Parse(User.Claims.ToArray().First(p => p.Type.Contains("nameidentifier")).Value);
         }
     }
 }

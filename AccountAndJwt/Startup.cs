@@ -58,7 +58,7 @@ namespace AccountAndJwt
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
 
-            dataContext.AddInitialData();
+            dataContext.AddInitialData(Configuration["AudienceConfig:PasswordSalt"]);
 
             app.AddNLogWeb();
             app.UseElmPage();

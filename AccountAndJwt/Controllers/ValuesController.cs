@@ -39,6 +39,7 @@ namespace AccountAndJwt.Controllers
         /// <response code="500">Oops! Can't get values right now</response>
         [HttpGet]
         [ProducesResponseType(typeof(ValueAm[]), 200)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult GetAll()
         {
@@ -54,6 +55,7 @@ namespace AccountAndJwt.Controllers
         /// <response code="500">Oops! Can't get your value right now</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ValueAm), 200)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult Get(Int32 id)
         {
@@ -75,6 +77,7 @@ namespace AccountAndJwt.Controllers
         /// <response code="500">Oops! Can't create your value right now</response>
         [HttpPost]
         [ProducesResponseType(typeof(String), 201)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult Post([FromBody]String value)
         {
@@ -97,6 +100,7 @@ namespace AccountAndJwt.Controllers
         [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult Put([FromBody]ValueAm value)
         {
@@ -126,6 +130,7 @@ namespace AccountAndJwt.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult Delete(Int32 id)
         {

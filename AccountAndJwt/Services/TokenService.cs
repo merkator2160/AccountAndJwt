@@ -36,7 +36,7 @@ namespace AccountAndJwt.Services
             if (user == null)
                 throw new UserNotFoundException($"User with login \"{login}\" was not found");
 
-            if (!String.Equals(user.Password, password))
+            if (!String.Equals(user.PasswordHash, JwtAuthMiddleware.CreatePasswordHash(password, _audienceConfig.PasswordSalt)))
                 throw new UserNotFoundException("There is no match Login and Password");
 
 

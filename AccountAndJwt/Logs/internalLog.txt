@@ -747,3 +747,120 @@
 2017-10-10 19:15:03.0475 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
 2017-10-10 19:15:03.0475 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
 2017-10-10 19:15:03.0706 Info Found 76 configuration items
+2017-10-10 21:42:42.5341 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 21:42:43.0142 Info Adding target File Target[allfile]
+2017-10-10 21:42:43.0142 Info Adding target File Target[ownFile-web]
+2017-10-10 21:42:43.0142 Info Adding target File Target[ownFileAll]
+2017-10-10 21:42:43.0142 Info Adding target File Target[ownFileError]
+2017-10-10 21:42:43.0142 Info Adding target Null Target[blackhole]
+2017-10-10 21:42:43.0283 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 21:42:43.0283 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 21:42:43.0283 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 21:42:43.0454 Info Found 76 configuration items
+2017-10-10 21:42:43.0454 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:42:43.0454 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:42:43.0692 Info Found 76 configuration items
+2017-10-10 21:43:37.1192 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 21:43:37.5261 Info Adding target File Target[allfile]
+2017-10-10 21:43:37.5309 Info Adding target File Target[ownFile-web]
+2017-10-10 21:43:37.5309 Info Adding target File Target[ownFileAll]
+2017-10-10 21:43:37.5309 Info Adding target File Target[ownFileError]
+2017-10-10 21:43:37.5309 Info Adding target Null Target[blackhole]
+2017-10-10 21:43:37.5309 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 21:43:37.5543 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 21:43:37.5543 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 21:43:37.5738 Info Found 76 configuration items
+2017-10-10 21:43:37.5771 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:43:37.5771 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:43:37.6064 Info Found 76 configuration items
+2017-10-10 21:47:57.4285 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 21:47:57.6878 Info Adding target File Target[allfile]
+2017-10-10 21:47:57.6878 Info Adding target File Target[ownFile-web]
+2017-10-10 21:47:57.6878 Info Adding target File Target[ownFileAll]
+2017-10-10 21:47:57.6878 Info Adding target File Target[ownFileError]
+2017-10-10 21:47:57.6878 Info Adding target Null Target[blackhole]
+2017-10-10 21:47:57.7004 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 21:47:57.7004 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 21:47:57.7004 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 21:47:57.7227 Info Found 76 configuration items
+2017-10-10 21:47:57.7227 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:47:57.7227 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:47:57.7501 Info Found 76 configuration items
+2017-10-10 21:54:31.4979 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 21:54:31.6754 Info Adding target File Target[allfile]
+2017-10-10 21:54:31.6754 Info Adding target File Target[ownFile-web]
+2017-10-10 21:54:31.6754 Info Adding target File Target[ownFileAll]
+2017-10-10 21:54:31.6754 Info Adding target File Target[ownFileError]
+2017-10-10 21:54:31.6754 Info Adding target Null Target[blackhole]
+2017-10-10 21:54:31.6880 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 21:54:31.6880 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 21:54:31.6880 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 21:54:31.7110 Info Found 76 configuration items
+2017-10-10 21:54:31.7110 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:54:31.7110 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 21:54:31.7339 Info Found 76 configuration items
+2017-10-10 22:00:33.2844 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 22:00:33.5408 Info Adding target File Target[allfile]
+2017-10-10 22:00:33.5453 Info Adding target File Target[ownFile-web]
+2017-10-10 22:00:33.5453 Info Adding target File Target[ownFileAll]
+2017-10-10 22:00:33.5453 Info Adding target File Target[ownFileError]
+2017-10-10 22:00:33.5453 Info Adding target Null Target[blackhole]
+2017-10-10 22:00:33.5589 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 22:00:33.5589 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 22:00:33.5589 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 22:00:33.5828 Info Found 76 configuration items
+2017-10-10 22:00:33.5828 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:00:33.5828 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:00:33.6090 Info Found 76 configuration items
+2017-10-10 22:03:12.4340 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 22:03:12.6673 Info Adding target File Target[allfile]
+2017-10-10 22:03:12.6703 Info Adding target File Target[ownFile-web]
+2017-10-10 22:03:12.6703 Info Adding target File Target[ownFileAll]
+2017-10-10 22:03:12.6703 Info Adding target File Target[ownFileError]
+2017-10-10 22:03:12.6703 Info Adding target Null Target[blackhole]
+2017-10-10 22:03:12.6703 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 22:03:12.6894 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 22:03:12.6894 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 22:03:12.7027 Info Found 76 configuration items
+2017-10-10 22:03:12.7027 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:03:12.7027 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:03:12.7309 Info Found 76 configuration items
+2017-10-10 22:04:39.7351 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 22:04:40.0545 Info Adding target File Target[allfile]
+2017-10-10 22:04:40.0612 Info Adding target File Target[ownFile-web]
+2017-10-10 22:04:40.0612 Info Adding target File Target[ownFileAll]
+2017-10-10 22:04:40.0612 Info Adding target File Target[ownFileError]
+2017-10-10 22:04:40.0612 Info Adding target Null Target[blackhole]
+2017-10-10 22:04:40.0612 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 22:04:40.0802 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 22:04:40.0802 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 22:04:40.0908 Info Found 76 configuration items
+2017-10-10 22:04:40.0908 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:04:40.0908 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:04:40.1150 Info Found 76 configuration items
+2017-10-10 22:23:36.0105 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 22:23:36.1882 Info Adding target File Target[allfile]
+2017-10-10 22:23:36.1882 Info Adding target File Target[ownFile-web]
+2017-10-10 22:23:36.1882 Info Adding target File Target[ownFileAll]
+2017-10-10 22:23:36.1882 Info Adding target File Target[ownFileError]
+2017-10-10 22:23:36.1882 Info Adding target Null Target[blackhole]
+2017-10-10 22:23:36.2010 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 22:23:36.2010 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 22:23:36.2010 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 22:23:36.2197 Info Found 76 configuration items
+2017-10-10 22:23:36.2197 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:23:36.2197 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:23:36.2471 Info Found 76 configuration items
+2017-10-10 22:37:23.9086 Info Loading assembly: NLog.Web.AspNetCore
+2017-10-10 22:37:24.1259 Info Adding target File Target[allfile]
+2017-10-10 22:37:24.1259 Info Adding target File Target[ownFile-web]
+2017-10-10 22:37:24.1259 Info Adding target File Target[ownFileAll]
+2017-10-10 22:37:24.1259 Info Adding target File Target[ownFileError]
+2017-10-10 22:37:24.1259 Info Adding target Null Target[blackhole]
+2017-10-10 22:37:24.1404 Info Configured from an XML element in C:\Users\MERKATOR\Desktop\GitHub\AccountAndJwt\AccountAndJwt\nlog.config...
+2017-10-10 22:37:24.1404 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: allfile
+2017-10-10 22:37:24.1404 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: ownFile-web
+2017-10-10 22:37:24.1615 Info Found 76 configuration items
+2017-10-10 22:37:24.1615 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:37:24.1615 Warn Missing IHttpContextAccessor. Has it been registered before loading NLog Configuration? Consider reloading NLog Configuration after having registered the IHttpContextAccessor.
+2017-10-10 22:37:24.1840 Info Found 76 configuration items

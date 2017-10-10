@@ -51,7 +51,6 @@ namespace AccountAndJwt.Database.Repositorues
                 RoleId = roleId
             };
             Context.UserRoles.Add(userRole);
-            //Context.Entry(userRole).State = EntityState.Modified;
         }
         public void RemoveRole(Int32 userId, Int32 roleId)
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -45,6 +46,15 @@ namespace AccountAndJwt.Middleware
         public static SymmetricSecurityKey CreateSigningKey(String x64Secret)
         {
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(x64Secret));
+        }
+        public static String CreatePasswordHash(String password, String salt)
+        {
+            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: Encoding.UTF8.GetBytes(salt),
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
         }
 
 

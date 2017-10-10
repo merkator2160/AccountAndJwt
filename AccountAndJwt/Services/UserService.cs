@@ -1,9 +1,12 @@
 ﻿using AccountAndJwt.Database.Interfaces;
+using AccountAndJwt.Middleware;
+using AccountAndJwt.Models.Config;
 using AccountAndJwt.Models.Database;
 using AccountAndJwt.Models.Exceptions;
 using AccountAndJwt.Models.Service;
 using AccountAndJwt.Services.Interfaces;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,10 +18,12 @@ namespace AccountAndJwt.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
+        private readonly AudienceConfig _audienceConfig;
 
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, IOptions<AudienceConfig> audienceConfig)
         {
+            _audienceConfig = audienceConfig.Value;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _emailService = emailService;
@@ -57,13 +62,17 @@ namespace AccountAndJwt.Services
         {
             return _mapper.Map<UserDto[]>(_unitOfWork.Users.GetAllEager());
         }
-        public void UpdatePassword(Int32 userId, String newPassword)
+        public void UpdatePassword(Int32 userId, String oldPassword, String newPassword)
         {
-            var requestedUser = _unitOfWork.Users.GetEager(userId);
+            var requestedUser = _unitOfWork.Users.Get(userId);
             if (requestedUser == null)
                 throw new UserNotFoundException("User with provided id was not found");
 
-            requestedUser.Password = newPassword;
+            var providedOldPasswordHash = JwtAuthMiddleware.CreatePasswordHash(oldPassword, _audienceConfig.PasswordSalt);
+            if (!String.Equals(providedOldPasswordHash, requestedUser.PasswordHash))
+                throw new IncorrectPasswordException($"The {nameof(oldPassword)} is wrong");
+
+            requestedUser.PasswordHash = JwtAuthMiddleware.CreatePasswordHash(newPassword, _audienceConfig.PasswordSalt);
             _unitOfWork.Users.Update(requestedUser);
             _unitOfWork.Commit();
         }

@@ -1,14 +1,16 @@
-﻿using AccountAndJwt.Models.Database;
+﻿using AccountAndJwt.Middleware;
+using AccountAndJwt.Models.Database;
+using System;
 
 namespace AccountAndJwt.Database
 {
     internal static class DataSeeder
     {
-        public static void AddInitialData(this DataContext context)
+        public static void AddInitialData(this DataContext context, String passwordSalt)
         {
             var roles = context.AddRoles();
 
-            context.AddUsers(roles);
+            context.AddUsers(roles, passwordSalt);
             context.AddValues();
             context.SaveChanges();
         }
@@ -28,19 +30,19 @@ namespace AccountAndJwt.Database
             context.Roles.AddRange(roles);
             return roles;
         }
-        private static void AddUsers(this DataContext context, RoleDb[] roles)
+        private static void AddUsers(this DataContext context, RoleDb[] roles, String passwordSalt)
         {
             context.Users.AddRange(new UserDb
             {
                 Login = "Member",
-                Password = "123",
+                PasswordHash = JwtAuthMiddleware.CreatePasswordHash("123", passwordSalt),
                 Email = "2160@inbox.ru",
                 FirstName = "Peter",
                 LastName = "Wilson"
             }, new UserDb
             {
                 Login = "SuperUser",
-                Password = "1235",
+                PasswordHash = JwtAuthMiddleware.CreatePasswordHash("1235", passwordSalt),
                 Email = "2160@inbox.ru",
                 FirstName = "Mett",
                 LastName = "Hardy",

@@ -4,20 +4,20 @@ using System.ComponentModel.DataAnnotations;
 namespace AccountAndJwt.Contracts.Models
 {
     /// <summary>
-    /// Changing Email request
+    /// Reset password model
     /// </summary>
-    public class ChangeEmailRequestAm
+    public class ResetPasswordAm
     {
         /// <summary>
-        /// Unique client id
+        /// Old password
         /// </summary>
         [Required]
-        public Int32 UserId { get; set; }
+        public String OldPassword { get; set; }
 
         /// <summary>
-        /// New Email
+        /// New password
         /// </summary>
         [Required]
-        public String NewEmail { get; set; }
+        public String NewPassword { get; set; }
     }
 }
