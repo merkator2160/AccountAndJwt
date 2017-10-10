@@ -13,8 +13,8 @@ namespace AccountAndJwt.Middleware
         {
             services.AddEntityFrameworkInMemoryDatabase().AddDbContext<DataContext>(c => c.UseInMemoryDatabase(configurationService["DatabaseConfig:Name"]));
 
-            services.AddTransient<ITokenRepository, TokenRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IValueRepository, ValueRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }

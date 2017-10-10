@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Contracts.Models;
+﻿using AccountAndJwt.Client.Models;
+using AccountAndJwt.Contracts.Models;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -35,7 +36,7 @@ namespace AccountAndJwt.Client
             Console.WriteLine($"{nameof(_token.AccessToken)}: {_token.AccessToken}");
             Console.WriteLine($"{nameof(_token.RefreshToken)}: {_token.RefreshToken}");
 
-            Int32 valueId = 0;
+            Int32 valueId = 1;
             if (!TryGetValue(out String value, _token.AccessToken, valueId))
             {
                 Console.WriteLine($"Get the {valueId} value failed");
@@ -65,7 +66,7 @@ namespace AccountAndJwt.Client
             Console.WriteLine($"{nameof(_token.AccessToken)}: {_token.AccessToken}");
             Console.WriteLine($"{nameof(_token.RefreshToken)}: {_token.RefreshToken}");
 
-            valueId = 1;
+            valueId = 2;
             if (!TryGetValue(out value, _token.AccessToken, valueId))
             {
                 Console.WriteLine($"Get the {valueId} value failed");
@@ -110,14 +111,15 @@ namespace AccountAndJwt.Client
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
-                var secondResponse = client.GetAsync($"http://localhost:58751/api/values/get/{valueId}").Result;
+                var secondResponse = client.GetAsync($"http://localhost:58751/api/values/{valueId}").Result;
                 if (!secondResponse.IsSuccessStatusCode)
                 {
                     value = String.Empty;
                     return false;
                 }
 
-                value = secondResponse.Content.ReadAsStringAsync().Result;
+                var result = secondResponse.Content.ReadAsStringAsync().Result;
+                value = JsonConvert.DeserializeObject<ValueAm>(result).Value;
                 return true;
             }
         }

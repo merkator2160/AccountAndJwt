@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AccountAndJwt.Client
+namespace AccountAndJwt.Client.Models
 {
     internal class Token
     {

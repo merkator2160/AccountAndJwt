@@ -4,26 +4,20 @@ using System.ComponentModel.DataAnnotations;
 namespace AccountAndJwt.Contracts.Models
 {
     /// <summary>
-    /// Change first and last user name request model
+    /// Model used in changing user roles requests
     /// </summary>
-    public class ChangeNameRequestAm
+    public class AddRemoveRoleAm
     {
         /// <summary>
-        /// Unique client id
+        /// Client unique identifier
         /// </summary>
         [Required]
         public Int32 UserId { get; set; }
 
         /// <summary>
-        /// First name
+        /// Role for adding or removing
         /// </summary>
         [Required]
-        public String FirstName { get; set; }
-
-        /// <summary>
-        /// Last name
-        /// </summary>
-        [Required]
-        public String LastName { get; set; }
+        public String Role { get; set; }
     }
 }

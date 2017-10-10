@@ -4,7 +4,7 @@
     {
         IValueRepository Values { get; }
         IUserRepository Users { get; }
-        ITokenRepository Tokens { get; }
+        IRoleRepository Roles { get; }
 
         void Commit();
     }

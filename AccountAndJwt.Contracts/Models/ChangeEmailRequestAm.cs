@@ -12,7 +12,7 @@ namespace AccountAndJwt.Contracts.Models
         /// Unique client id
         /// </summary>
         [Required]
-        public String ClientId { get; set; }
+        public Int32 UserId { get; set; }
 
         /// <summary>
         /// New Email

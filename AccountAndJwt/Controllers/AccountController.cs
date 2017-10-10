@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,6 +41,7 @@ namespace AccountAndJwt.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(RegisterUserResponseAm), 201)]
+        [ProducesResponseType(typeof(String), 400)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult Register([FromBody]RegisterUserAm userDetails)
         {
@@ -66,18 +66,19 @@ namespace AccountAndJwt.Controllers
         }
 
         /// <summary>
-        /// Delete existed account by it id.
+        /// Delete existed account by it id
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 400)]
         [ProducesResponseType(typeof(String), 500)]
-        public IActionResult DeleteAccount([FromBody]String userId)
+        public IActionResult DeleteAccount([FromBody]Int32 userId)
         {
             try
             {
-                if (userId == null)
+                if (userId == 0)
                     return BadRequest($"Please provide \"{nameof(userId)}\"");
 
                 _logger.LogInformation($"User with id {userId} deleted");
@@ -91,19 +92,57 @@ namespace AccountAndJwt.Controllers
             }
         }
 
-
-        [Authorize]
-        public IActionResult AddRole([FromBody] String userId)
+        /// <summary>
+        /// Add role to user with specified id
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(typeof(String), 500)]
+        [Authorize(Roles = "Admin")]
+        public IActionResult AddRole([FromBody]AddRemoveRoleAm request)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest($"Please provide valid \"{nameof(request)}\"");
+
+            try
+            {
+                _userService.AddRole(request.UserId, request.Role);
+                return Ok();
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [Authorize]
-        public IActionResult RemoveRole([FromBody] String userId)
+        /// <summary>
+        /// Delete role from user with specified id
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(typeof(String), 500)]
+        [Authorize(Roles = "Admin")]
+        public IActionResult RemoveRole([FromBody]AddRemoveRoleAm request)
         {
-            return Ok();
-        }
+            if (!ModelState.IsValid)
+                return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
+            try
+            {
+                _userService.RemoveRole(request.UserId, request.Role);
+                return Ok();
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Change user Email by provided id
@@ -112,6 +151,7 @@ namespace AccountAndJwt.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 400)]
         [ProducesResponseType(typeof(String), 500)]
         public async Task<IActionResult> ChangeEmail([FromBody]ChangeEmailRequestAm request)
         {
@@ -120,8 +160,8 @@ namespace AccountAndJwt.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-                await _userService.ChangeEmailAsync(request.ClientId, request.NewEmail);
-                _logger.LogInformation($"Email of user {request.ClientId} updated");
+                await _userService.ChangeEmailAsync(request.UserId, request.NewEmail);
+                _logger.LogInformation($"Email of user {request.UserId} updated");
 
                 return Ok();
             }
@@ -138,6 +178,7 @@ namespace AccountAndJwt.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(String), 400)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult ChangeName([FromBody]ChangeNameRequestAm request)
         {
@@ -146,8 +187,8 @@ namespace AccountAndJwt.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-                _userService.ChangeName(request.ClientId, request.FirstName, request.LastName);
-                _logger.LogInformation($"Email of user {request.ClientId} updated");
+                _userService.ChangeName(request.UserId, request.FirstName, request.LastName);
+                _logger.LogInformation($"Email of user {request.UserId} updated");
 
                 return Ok();
             }
@@ -163,28 +204,59 @@ namespace AccountAndJwt.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet]
-        [ProducesResponseType(typeof(Dictionary<String, String>), 200)]
+        [ProducesResponseType(typeof(GetClaimsResponseAm[]), 200)]
         [ProducesResponseType(typeof(String), 500)]
-        public IActionResult GetUserClaims()
+        public IActionResult GetCurrentUserClaims()
         {
-            var dict = new Dictionary<String, String>();
-
-            HttpContext.User.Claims.ToList().ForEach(item => dict.Add(item.Type, item.Value));
-
-            return Ok(dict);
+            var claims = HttpContext.User.Claims.ToList().Select(x => new GetClaimsResponseAm
+            {
+                ClaimType = x.Type,
+                Value = x.Value
+            });
+            return Ok(claims);
         }
 
         /// <summary>
-        /// Temporarily, just for quick tests
+        /// Get information about user by provided id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [ProducesResponseType(typeof(UserAm), 200)]
+        [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(typeof(String), 500)]
+        public IActionResult GetUser(Int32 userId)
+        {
+            try
+            {
+                return Ok(_mapper.Map<UserAm>(_userService.GetUser(userId)));
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get information about all users
         /// </summary>
         /// <returns></returns>
-        [Obsolete]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult Test()
+        [ProducesResponseType(typeof(UserAm[]), 200)]
+        [ProducesResponseType(typeof(String), 400)]
+        [ProducesResponseType(typeof(String), 500)]
+        public IActionResult GetAllUsers()
         {
-            _logger.LogInformation(nameof(Test));
-
-            return Ok();
+            try
+            {
+                return Ok(_mapper.Map<UserAm[]>(_userService.GetAllUsers()));
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

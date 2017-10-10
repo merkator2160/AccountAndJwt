@@ -7,8 +7,12 @@ namespace AccountAndJwt.Services.Interfaces
     public interface IUserService
     {
         void Register(UserDto newUser);
-        void DeleteUser(String id);
-        Task ChangeEmailAsync(String userId, String newEmail);
-        void ChangeName(String userId, String firstName, String lastName);
+        void DeleteUser(Int32 id);
+        Task ChangeEmailAsync(Int32 userId, String newEmail);
+        void ChangeName(Int32 userId, String firstName, String lastName);
+        void RemoveRole(Int32 userId, String role);
+        void AddRole(Int32 userId, String role);
+        UserDto GetUser(Int32 id);
+        UserDto[] GetAllUsers();
     }
 }

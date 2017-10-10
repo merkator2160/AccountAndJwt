@@ -11,7 +11,8 @@ namespace AccountAndJwt.Middleware
             services
                 .AddTransient<ITokenService, TokenService>()
                 .AddTransient<IUserService, UserService>()
-                .AddTransient<IEmailService, BasicEmailService>();
+                .AddTransient<IEmailService, BasicEmailService>()
+                .AddTransient<IValueService, ValueService>();
         }
     }
 }

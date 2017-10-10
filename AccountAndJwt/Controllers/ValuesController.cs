@@ -2,6 +2,7 @@
 using AccountAndJwt.Models.Service;
 using AccountAndJwt.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,7 +12,7 @@ namespace AccountAndJwt.Controllers
     /// <summary>
     /// Simple values controller
     /// </summary>
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
@@ -38,7 +39,6 @@ namespace AccountAndJwt.Controllers
         /// <response code="500">Oops! Can't get values right now</response>
         [HttpGet]
         [ProducesResponseType(typeof(ValueAm[]), 200)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult GetAll()
         {
@@ -54,7 +54,6 @@ namespace AccountAndJwt.Controllers
         /// <response code="500">Oops! Can't get your value right now</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ValueAm), 200)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult Get(Int32 id)
         {
@@ -95,7 +94,7 @@ namespace AccountAndJwt.Controllers
         /// <response code="200">Value changed</response>
         /// <response code="400">Value has missing/invalid values</response>
         /// <response code="500">Oops! Can't update your value right now</response>
-        [HttpPut("{id}")]
+        [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(String), 400)]
         [ProducesResponseType(typeof(String), 500)]

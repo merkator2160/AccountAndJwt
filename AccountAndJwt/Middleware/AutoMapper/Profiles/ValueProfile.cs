@@ -9,7 +9,8 @@ namespace AccountAndJwt.Middleware.AutoMapper.Profiles
     {
         public ValueProfile()
         {
-            CreateMap<ValueAm, ValueDto>();
+            CreateMap<ValueAm, ValueDto>()
+                .ReverseMap();
             CreateMap<ValueDto, ValueDb>()
                 .ReverseMap();
         }

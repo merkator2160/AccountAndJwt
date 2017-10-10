@@ -4,7 +4,7 @@ namespace AccountAndJwt.Models.Service
 {
     public class UserDto
     {
-        public Guid Id { get; set; }
+        public Int32 Id { get; set; }
         public String Login { get; set; }
         public String Password { get; set; }
         public String FirstName { get; set; }
