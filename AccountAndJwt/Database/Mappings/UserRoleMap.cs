@@ -1,11 +1,12 @@
-﻿using AccountAndJwt.Models.Database;
+﻿using AccountAndJwt.Database.Interfaces;
+using AccountAndJwt.Models.Database;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AccountAndJwt.Database.Mappings
 {
-    internal class UserRoleMap : DbEntityMapBase<UserRoleDb>
+    internal class UserRoleMap : IEntityMap<UserRoleDb>
     {
-        public override void Configure(EntityTypeBuilder<UserRoleDb> entityBuilder)
+        public void Configure(EntityTypeBuilder<UserRoleDb> entityBuilder)
         {
             entityBuilder
                 .HasKey(p => new { p.RoleId, p.UserId });

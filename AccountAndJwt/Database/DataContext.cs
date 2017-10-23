@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Database.Extensions;
-using AccountAndJwt.Database.Mappings;
+using AccountAndJwt.Database.Interfaces;
 using AccountAndJwt.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -39,7 +39,7 @@ namespace AccountAndJwt.Database
                 .Where(type =>
                 {
                     var info = type.GetTypeInfo();
-                    return info.BaseType != null && info.BaseType.GetTypeInfo().IsGenericType && info.BaseType.GetGenericTypeDefinition() == typeof(DbEntityMapBase<>);
+                    return info.ImplementedInterfaces.Any(e => e.Name == typeof(IEntityMap<>).Name);
                 });
 
             foreach (var x in typesToRegister)
