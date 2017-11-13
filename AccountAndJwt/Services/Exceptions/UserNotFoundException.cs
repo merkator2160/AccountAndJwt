@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace AccountAndJwt.Models.Exceptions
+namespace AccountAndJwt.Services.Exceptions
 {
     public class UserNotFoundException : ApplicationException
     {

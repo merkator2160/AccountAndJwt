@@ -1,8 +1,8 @@
 ﻿using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Models.Database;
-using AccountAndJwt.Models.Exceptions;
-using AccountAndJwt.Models.Service;
+using AccountAndJwt.Database.Models;
+using AccountAndJwt.Services.Exceptions;
 using AccountAndJwt.Services.Interfaces;
+using AccountAndJwt.Services.Models;
 using AutoMapper;
 using System;
 

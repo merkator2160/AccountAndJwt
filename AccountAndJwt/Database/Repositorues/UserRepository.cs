@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Models.Database;
+using AccountAndJwt.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

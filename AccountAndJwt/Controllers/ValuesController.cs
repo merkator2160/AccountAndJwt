@@ -1,6 +1,6 @@
 ﻿using AccountAndJwt.Contracts.Models;
-using AccountAndJwt.Models.Service;
 using AccountAndJwt.Services.Interfaces;
+using AccountAndJwt.Services.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

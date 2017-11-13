@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Models.Config;
+﻿using AccountAndJwt.Middleware.Configs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

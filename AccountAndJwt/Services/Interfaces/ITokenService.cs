@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Models.Service;
+﻿using AccountAndJwt.Services.Models;
 using System;
 
 namespace AccountAndJwt.Services.Interfaces

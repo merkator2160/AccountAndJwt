@@ -1,10 +1,10 @@
 ﻿using AccountAndJwt.Database.Interfaces;
+using AccountAndJwt.Database.Models;
 using AccountAndJwt.Middleware;
-using AccountAndJwt.Models.Config;
-using AccountAndJwt.Models.Database;
-using AccountAndJwt.Models.Exceptions;
-using AccountAndJwt.Models.Service;
+using AccountAndJwt.Middleware.Configs;
+using AccountAndJwt.Services.Exceptions;
 using AccountAndJwt.Services.Interfaces;
+using AccountAndJwt.Services.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;

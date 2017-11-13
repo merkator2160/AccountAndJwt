@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace AccountAndJwt.Models.Database
+namespace AccountAndJwt.Services.Models
 {
-    public class ValueDb
+    public class ValueDto
     {
         public Int32 Id { get; set; }
         public String Value { get; set; }

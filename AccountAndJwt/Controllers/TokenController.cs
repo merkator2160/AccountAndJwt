@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Contracts.Models;
-using AccountAndJwt.Models.Config;
+using AccountAndJwt.Middleware.Configs;
 using AccountAndJwt.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;

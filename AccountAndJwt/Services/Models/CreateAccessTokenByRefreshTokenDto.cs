@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AccountAndJwt.Models.Service
+namespace AccountAndJwt.Services.Models
 {
     public class CreateAccessTokenByRefreshTokenDto
     {

@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Models.Config;
-using AccountAndJwt.Models.Service;
+﻿using AccountAndJwt.Middleware.Configs;
 using AccountAndJwt.Services.Interfaces;
+using AccountAndJwt.Services.Models;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;

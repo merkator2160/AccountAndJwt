@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Models.Database;
+using AccountAndJwt.Database.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AccountAndJwt.Database.Mappings

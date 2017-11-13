@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Middleware;
-using AccountAndJwt.Models.Database;
+﻿using AccountAndJwt.Database.Models;
+using AccountAndJwt.Middleware;
 using System;
 
 namespace AccountAndJwt.Database

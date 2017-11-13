@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Models.Service;
+﻿using AccountAndJwt.Services.Models;
 using System;
 using System.Threading.Tasks;
 
