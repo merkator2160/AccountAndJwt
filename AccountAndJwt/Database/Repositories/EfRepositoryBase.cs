@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AccountAndJwt.Database.Repositorues
+namespace AccountAndJwt.Database.Repositories
 {
-    internal abstract class EfRepositoryBase<TEntity, TContext> : IRepository<TEntity> where TEntity : class where TContext : DataContext
+	internal abstract class EfRepositoryBase<TEntity, TContext> : IRepository<TEntity> where TEntity : class where TContext : DataContext
     {
         private readonly DataContext _context;
 

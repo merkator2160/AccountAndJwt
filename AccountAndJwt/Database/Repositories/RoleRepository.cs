@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace AccountAndJwt.Database.Repositorues
+namespace AccountAndJwt.Database.Repositories
 {
-    internal class RoleRepository : EfRepositoryBase<RoleDb, DataContext>, IRoleRepository
+	internal class RoleRepository : EfRepositoryBase<RoleDb, DataContext>, IRoleRepository
     {
         public RoleRepository(DataContext context) : base(context)
         {

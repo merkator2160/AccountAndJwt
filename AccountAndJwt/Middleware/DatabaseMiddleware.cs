@@ -1,13 +1,13 @@
 ﻿using AccountAndJwt.Database;
 using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Database.Repositorues;
+using AccountAndJwt.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AccountAndJwt.Middleware
 {
-    internal static class DatabaseMiddleware
+	internal static class DatabaseMiddleware
     {
         public static void AddDatabase(this IServiceCollection services, IConfiguration configurationService)
         {

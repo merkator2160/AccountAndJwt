@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace AccountAndJwt.Database.Repositorues
+namespace AccountAndJwt.Database.Repositories
 {
-    internal class UserRepository : EfRepositoryBase<UserDb, DataContext>, IUserRepository
+	internal class UserRepository : EfRepositoryBase<UserDb, DataContext>, IUserRepository
     {
         public UserRepository(DataContext context) : base(context)
         {
