@@ -10,14 +10,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		clean-with-scc.bat = clean-with-scc.bat
-		Task.txt = Task.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndJwt.Client", "AccountAndJwt.Client\AccountAndJwt.Client.csproj", "{411DDCAD-43B8-4BE6-A21D-94D13881192C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Client", "AccountAndJwt.Client\AccountAndJwt.Client.csproj", "{411DDCAD-43B8-4BE6-A21D-94D13881192C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndJwt.Tests", "AccountAndJwt.Tests\AccountAndJwt.Tests.csproj", "{F1C19301-132C-4924-88F9-E729F0FB1E66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Tests", "AccountAndJwt.Tests\AccountAndJwt.Tests.csproj", "{F1C19301-132C-4924-88F9-E729F0FB1E66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndJwt.Contracts", "AccountAndJwt.Contracts\AccountAndJwt.Contracts.csproj", "{17389ED6-9181-4A5B-92F4-65E59A841CE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Contracts", "AccountAndJwt.Contracts\AccountAndJwt.Contracts.csproj", "{17389ED6-9181-4A5B-92F4-65E59A841CE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
