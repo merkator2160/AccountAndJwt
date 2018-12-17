@@ -9,6 +9,10 @@ namespace AccountAndJwt.Api.Middleware
 {
 	internal static class ErrorHandlingMiddleware
 	{
+		/// <summary>
+		/// It don't allow information from unhandled exceptions leave application borders. 
+		/// Also provides these exceptions logging.
+		/// </summary>
 		public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
 		{
 			app.UseExceptionHandler(errorApp =>
@@ -25,7 +29,12 @@ namespace AccountAndJwt.Api.Middleware
 
 						context.Response.StatusCode = 500;
 						context.Response.ContentType = "text/plain";
+
+#if DEBUG
 						await context.Response.WriteAsync(ex.Message, Encoding.UTF8);
+#else
+						await context.Response.WriteAsync("Internal server error!", Encoding.UTF8);
+#endif
 					}
 				});
 			});

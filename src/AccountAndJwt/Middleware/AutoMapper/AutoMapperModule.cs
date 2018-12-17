@@ -1,14 +1,15 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+﻿using AccountAndJwt.Api.Middleware.DependencyInjection;
+using Autofac;
+using AutoMapper;
+using Module = Autofac.Module;
 
 namespace AccountAndJwt.Api.Middleware.AutoMapper
 {
-	internal static class AutoMapperMiddleware
+	internal class AutoMapperModule : Module
 	{
-		public static void AddAutoMapperService(this IServiceCollection services)
+		protected override void Load(ContainerBuilder builder)
 		{
-			services.AddSingleton(GetConfiguredMapper());
+			builder.RegisterInstance(GetConfiguredMapper());
 		}
 		private static IMapper GetConfiguredMapper()
 		{
@@ -18,7 +19,7 @@ namespace AccountAndJwt.Api.Middleware.AutoMapper
 		}
 		private static void RegisterMappings(IMapperConfigurationExpression configure)
 		{
-			configure.AddProfiles(typeof(AutoMapperMiddleware).GetTypeInfo().Assembly);     // Dynamically load all configurations
+			configure.AddProfiles(Collector.LoadAllLocalAssemblies());     // Dynamically load all configurations
 
 			// ...or do it manually below. Example: https://github.com/AutoMapper/AutoMapper/wiki/Configuration
 			// ...or see examples in Profiles directory.

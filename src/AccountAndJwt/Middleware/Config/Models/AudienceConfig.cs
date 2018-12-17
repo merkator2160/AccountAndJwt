@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AccountAndJwt.Api.Middleware.Configs
+namespace AccountAndJwt.Api.Middleware.Config.Models
 {
 	public class AudienceConfig
 	{

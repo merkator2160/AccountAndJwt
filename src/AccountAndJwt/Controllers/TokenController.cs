@@ -1,16 +1,14 @@
-﻿using AccountAndJwt.Api.Middleware.Configs;
-using AccountAndJwt.Api.Services.Interfaces;
-using AccountAndJwt.Contracts.Models;
+﻿using AccountAndJwt.Api.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
+using AccountAndJwt.Api.Contracts.Models;
 
 namespace AccountAndJwt.Api.Controllers
 {
 	/// <summary>
-	/// Provide operationa under JWT access tokens for whole API
+	/// Provide operations under JWT access tokens for whole API
 	/// </summary>
 	[Route("api/[controller]/[action]")]
 	public class TokenController : Controller
@@ -20,7 +18,7 @@ namespace AccountAndJwt.Api.Controllers
 		private readonly IMapper _mapper;
 
 
-		public TokenController(IOptions<AudienceConfig> audienceConfig, ITokenService tokenService, ILogger<AccountController> logger, IMapper mapper)
+		public TokenController(ITokenService tokenService, ILogger<AccountController> logger, IMapper mapper)
 		{
 			_tokenService = tokenService;
 			_logger = logger;

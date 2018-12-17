@@ -1,11 +1,10 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
 using AccountAndJwt.Api.Database.Models;
 using AccountAndJwt.Api.Middleware;
-using AccountAndJwt.Api.Middleware.Configs;
+using AccountAndJwt.Api.Middleware.Config.Models;
 using AccountAndJwt.Api.Services.Exceptions;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -22,10 +21,10 @@ namespace AccountAndJwt.Api.Services
 		private readonly AudienceConfig _audienceConfig;
 
 
-		public TokenService(IOptions<AudienceConfig> audienceConfig, IUnitOfWork unitOfWork)
+		public TokenService(AudienceConfig audienceConfig, IUnitOfWork unitOfWork)
 		{
 			_unitOfWork = unitOfWork;
-			_audienceConfig = audienceConfig.Value;
+			_audienceConfig = audienceConfig;
 		}
 
 

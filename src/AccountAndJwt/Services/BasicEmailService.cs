@@ -1,7 +1,6 @@
-﻿using AccountAndJwt.Api.Middleware.Configs;
+﻿using AccountAndJwt.Api.Middleware.Config.Models;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
-using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -13,9 +12,9 @@ namespace AccountAndJwt.Api.Services
 		private readonly EmailServiceConfig _config;
 
 
-		public BasicEmailService(IOptions<EmailServiceConfig> emailServiceConfig)
+		public BasicEmailService(EmailServiceConfig emailServiceConfig)
 		{
-			_config = emailServiceConfig.Value;
+			_config = emailServiceConfig;
 		}
 
 

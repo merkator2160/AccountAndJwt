@@ -1,12 +1,11 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
 using AccountAndJwt.Api.Database.Models;
 using AccountAndJwt.Api.Middleware;
-using AccountAndJwt.Api.Middleware.Configs;
+using AccountAndJwt.Api.Middleware.Config.Models;
 using AccountAndJwt.Api.Services.Exceptions;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
 using AutoMapper;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,9 +20,9 @@ namespace AccountAndJwt.Api.Services
 		private readonly AudienceConfig _audienceConfig;
 
 
-		public UserService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, IOptions<AudienceConfig> audienceConfig)
+		public UserService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService, AudienceConfig audienceConfig)
 		{
-			_audienceConfig = audienceConfig.Value;
+			_audienceConfig = audienceConfig;
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_emailService = emailService;
