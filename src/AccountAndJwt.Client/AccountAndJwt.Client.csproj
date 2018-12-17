@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AccountAndJwt.Contracts\AccountAndJwt.Contracts.csproj" />
+    <ProjectReference Include="..\AccountAndJwt.Contracts\AccountAndJwt.Api.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
