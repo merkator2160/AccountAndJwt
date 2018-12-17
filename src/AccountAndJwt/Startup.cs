@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Database;
-using AccountAndJwt.Middleware;
-using AccountAndJwt.Middleware.AutoMapper;
+﻿using AccountAndJwt.Api.Database;
+using AccountAndJwt.Api.Middleware;
+using AccountAndJwt.Api.Middleware.AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -13,66 +13,66 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using System;
 
-namespace AccountAndJwt
+namespace AccountAndJwt.Api
 {
-    internal class Startup
-    {
-        public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+	internal class Startup
+	{
+		public Startup(IHostingEnvironment env)
+		{
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
-            IsDevelopment = env.IsDevelopment();
+			builder.AddEnvironmentVariables();
+			Configuration = builder.Build();
+			IsDevelopment = env.IsDevelopment();
 
-            env.ConfigureNLog("nlog.config");
-        }
-
-
-        // PROPERTIES /////////////////////////////////////////////////////////////////////////////
-        public IConfiguration Configuration { get; }
-        public Boolean IsDevelopment { get; }
+			env.ConfigureNLog("nlog.config");
+		}
 
 
-        // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
-                .AddScoped(x => x.GetRequiredService<IUrlHelperFactory>()
-                .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
-            services.AddConfigurations(Configuration);
-            services.AddCustomServices();
-            services.AddAutoMapperService();
-            services.AddConfiguredSwaggerGen();
-            services.AddDatabase(Configuration);
-            services.AddJwtAuthService(Configuration);
-            services.AddConfiguredElm(Configuration);
-            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-        }
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, DataContext dataContext)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-            loggerFactory.AddNLog();
+		// PROPERTIES /////////////////////////////////////////////////////////////////////////////
+		public IConfiguration Configuration { get; }
+		public Boolean IsDevelopment { get; }
 
-            dataContext.AddInitialData(Configuration["AudienceConfig:PasswordSalt"]);
 
-            app.AddNLogWeb();
-            app.UseElmPage();
-            app.UseElmCapture();
+		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+				.AddScoped(x => x.GetRequiredService<IUrlHelperFactory>()
+				.GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
+			services.AddConfigurations(Configuration);
+			services.AddCustomServices();
+			services.AddAutoMapperService();
+			services.AddConfiguredSwaggerGen();
+			services.AddDatabase(Configuration);
+			services.AddJwtAuthService(Configuration);
+			services.AddConfiguredElm(Configuration);
+			services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+		}
+		public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, DataContext dataContext)
+		{
+			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+			loggerFactory.AddDebug();
+			loggerFactory.AddNLog();
 
-            if (IsDevelopment)
-            {
-                app.UseDeveloperExceptionPage();
-            }
+			dataContext.AddInitialData(Configuration["AudienceConfig:PasswordSalt"]);
 
-            app.UseConfiguredSwagger();
-            app.UseGlobalExceptionHandler();
-            app.UseAuthentication();
-            app.UseMvcWithDefaultRoute();
-        }
-    }
+			app.AddNLogWeb();
+			app.UseElmPage();
+			app.UseElmCapture();
+
+			if(IsDevelopment)
+			{
+				app.UseDeveloperExceptionPage();
+			}
+
+			app.UseConfiguredSwagger();
+			app.UseGlobalExceptionHandler();
+			app.UseAuthentication();
+			app.UseMvcWithDefaultRoute();
+		}
+	}
 }

@@ -1,11 +1,11 @@
-﻿using AccountAndJwt.Services.Models;
+﻿using AccountAndJwt.Api.Services.Models;
 using System.Threading.Tasks;
 
-namespace AccountAndJwt.Services.Interfaces
+namespace AccountAndJwt.Api.Services.Interfaces
 {
-    public interface IEmailService
-    {
-        void Send(EmailMessage message);
-        Task SendAsync(EmailMessage message);
-    }
+	public interface IEmailService
+	{
+		void Send(EmailMessage message);
+		Task SendAsync(EmailMessage message);
+	}
 }

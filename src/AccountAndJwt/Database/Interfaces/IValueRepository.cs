@@ -1,9 +1,9 @@
-﻿using AccountAndJwt.Database.Models;
+﻿using AccountAndJwt.Api.Database.Models;
 
-namespace AccountAndJwt.Database.Interfaces
+namespace AccountAndJwt.Api.Database.Interfaces
 {
-    public interface IValueRepository : IRepository<ValueDb>
-    {
+	public interface IValueRepository : IRepository<ValueDb>
+	{
 
-    }
+	}
 }

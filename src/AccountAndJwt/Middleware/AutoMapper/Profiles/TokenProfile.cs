@@ -1,15 +1,15 @@
-﻿using AccountAndJwt.Contracts.Models;
-using AccountAndJwt.Services.Models;
+﻿using AccountAndJwt.Api.Services.Models;
+using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 
-namespace AccountAndJwt.Middleware.AutoMapper.Profiles
+namespace AccountAndJwt.Api.Middleware.AutoMapper.Profiles
 {
-    internal class TokenProfile : Profile
-    {
-        public TokenProfile()
-        {
-            CreateMap<CreateAccessTokenByRefreshTokenDto, RefreshTokenResponseAm>();
-            CreateMap<CreateAccessTokenByCredentialsDto, AuthorizeByCredentialsResponseAm>();
-        }
-    }
+	internal class TokenProfile : Profile
+	{
+		public TokenProfile()
+		{
+			CreateMap<CreateAccessTokenByRefreshTokenDto, RefreshTokenResponseAm>();
+			CreateMap<CreateAccessTokenByCredentialsDto, AuthorizeByCredentialsResponseAm>();
+		}
+	}
 }

@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace AccountAndJwt.Middleware.Configs
+namespace AccountAndJwt.Api.Middleware.Configs
 {
-    public class AudienceConfig
-    {
-        public String Secret { get; set; }
-        public String ValidIssuer { get; set; }
-        public String ValidAudience { get; set; }
-        public Int32 TokenLifetimeSec { get; set; }
-        public String PasswordSalt { get; set; }
-    }
+	public class AudienceConfig
+	{
+		public String Secret { get; set; }
+		public String ValidIssuer { get; set; }
+		public String ValidAudience { get; set; }
+		public Int32 TokenLifetimeSec { get; set; }
+		public String PasswordSalt { get; set; }
+	}
 }

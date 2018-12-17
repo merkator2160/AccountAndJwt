@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace AccountAndJwt.Services.Models
+namespace AccountAndJwt.Api.Services.Models
 {
-    public class CreateAccessTokenByCredentialsDto
-    {
-        public String AccessToken { get; set; }
-        public Double AccessTokenLifeTime { get; set; }
-        public String RefreshToken { get; set; }
-    }
+	public class CreateAccessTokenByCredentialsDto
+	{
+		public String AccessToken { get; set; }
+		public Double AccessTokenLifeTime { get; set; }
+		public String RefreshToken { get; set; }
+	}
 }

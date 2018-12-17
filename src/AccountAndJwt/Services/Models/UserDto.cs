@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace AccountAndJwt.Services.Models
+namespace AccountAndJwt.Api.Services.Models
 {
-    public class UserDto
-    {
-        public Int32 Id { get; set; }
-        public String Login { get; set; }
-        public String PasswordHash { get; set; }
-        public String FirstName { get; set; }
-        public String LastName { get; set; }
-        public String Email { get; set; }
-        public String[] Roles { get; set; }
-    }
+	public class UserDto
+	{
+		public Int32 Id { get; set; }
+		public String Login { get; set; }
+		public String PasswordHash { get; set; }
+		public String FirstName { get; set; }
+		public String LastName { get; set; }
+		public String Email { get; set; }
+		public String[] Roles { get; set; }
+	}
 }

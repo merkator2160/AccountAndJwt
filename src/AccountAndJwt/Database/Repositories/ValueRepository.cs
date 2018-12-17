@@ -1,13 +1,13 @@
-﻿using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Database.Models;
+﻿using AccountAndJwt.Api.Database.Interfaces;
+using AccountAndJwt.Api.Database.Models;
 
-namespace AccountAndJwt.Database.Repositories
+namespace AccountAndJwt.Api.Database.Repositories
 {
 	internal class ValueRepository : EfRepositoryBase<ValueDb, DataContext>, IValueRepository
-    {
-        public ValueRepository(DataContext context) : base(context)
-        {
+	{
+		public ValueRepository(DataContext context) : base(context)
+		{
 
-        }
-    }
+		}
+	}
 }
