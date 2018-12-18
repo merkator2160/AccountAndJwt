@@ -1,8 +1,10 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Database
 {
-	internal class UnitOfWork : IUnitOfWork
+	internal class UnitOfWork : IUnitOfWork, IDisposable
 	{
 		private readonly DataContext _context;
 
@@ -22,9 +24,21 @@ namespace AccountAndJwt.Api.Database
 		public IRoleRepository Roles { get; }
 
 
-		public void Commit()
+		// IDisposable ////////////////////////////////////////////////////////////////////////////
+		public void Dispose()
 		{
-			_context.SaveChanges();
+			_context?.Dispose();
+		}
+
+
+		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
+		public Int32 Commit()
+		{
+			return _context.SaveChanges();
+		}
+		public Task<Int32> CommitAsync()
+		{
+			return _context.SaveChangesAsync();
 		}
 	}
 }

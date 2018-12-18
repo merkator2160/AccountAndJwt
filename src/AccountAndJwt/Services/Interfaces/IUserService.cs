@@ -6,14 +6,14 @@ namespace AccountAndJwt.Api.Services.Interfaces
 {
 	public interface IUserService
 	{
-		void Register(UserDto newUser);
-		void DeleteUser(Int32 id);
+		Task RegisterAsync(UserDto newUser);
+		Task DeleteUserAsync(Int32 id);
 		Task ChangeEmailAsync(Int32 userId, String newEmail);
-		void ChangeName(Int32 userId, String firstName, String lastName);
-		void RemoveRole(Int32 userId, String role);
-		void AddRole(Int32 userId, String role);
-		UserDto GetUser(Int32 id);
-		UserDto[] GetAllUsers();
-		void UpdatePassword(Int32 userId, String oldPassword, String newPassword);
+		Task ChangeNameAsync(Int32 userId, String firstName, String lastName);
+		Task RemoveRoleAsync(Int32 userId, String role);
+		Task AddRoleAsync(Int32 userId, String role);
+		Task<UserDto> GetUserAsync(Int32 id);
+		Task<UserDto[]> GetAllUsersAsync();
+		Task UpdatePasswordAsync(Int32 userId, String oldPassword, String newPassword);
 	}
 }

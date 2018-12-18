@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models;
+using AccountAndJwt.Api.Database.Models.Storage;
 
 namespace AccountAndJwt.Api.Database.Repositories
 {

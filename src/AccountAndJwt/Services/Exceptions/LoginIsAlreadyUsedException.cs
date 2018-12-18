@@ -17,7 +17,7 @@ namespace AccountAndJwt.Api.Services.Exceptions
 		{
 
 		}
-		protected LoginIsAlreadyUsedException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected LoginIsAlreadyUsedException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

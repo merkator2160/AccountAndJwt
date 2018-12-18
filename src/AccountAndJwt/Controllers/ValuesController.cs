@@ -1,11 +1,12 @@
-﻿using AccountAndJwt.Api.Services.Interfaces;
+﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
-using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Controllers
 {
@@ -32,7 +33,7 @@ namespace AccountAndJwt.Api.Controllers
 		// ACTIONS ////////////////////////////////////////////////////////////////////////////////
 
 		/// <summary>
-		/// Retrieves all values
+		/// [Auth] Retrieves all values
 		/// </summary>
 		/// <remarks>Awesomeness!</remarks>
 		/// <response code="200">Values take it</response>
@@ -41,13 +42,13 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(ValueAm[]), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult GetAll()
+		public async Task<IActionResult> GetAll()
 		{
-			return Ok(_mapper.Map<ValueAm[]>(_valueService.GetAll()));
+			return Ok(_mapper.Map<ValueAm[]>(await _valueService.GetAllAsync()));
 		}
 
 		/// <summary>
-		/// Retrieve specific value by unique id
+		/// [Auth] Retrieve specific value by unique id
 		/// </summary>
 		/// <remarks>Awesomeness!</remarks>
 		/// <response code="200">Value founded</response>
@@ -57,11 +58,11 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(ValueAm), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult Get(Int32 id)
+		public async Task<IActionResult> Get(Int32 id)
 		{
 			try
 			{
-				return Ok(_mapper.Map<ValueAm>(_valueService.Get(id)));
+				return Ok(_mapper.Map<ValueAm>(await _valueService.GetAsync(id)));
 			}
 			catch(ApplicationException ex)
 			{
@@ -70,7 +71,7 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Add new value
+		/// [Auth] Add new value
 		/// </summary>
 		/// <remarks>Awesomeness!</remarks>
 		/// <response code="200">Value created</response>
@@ -79,19 +80,19 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 201)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult Post([FromBody]String value)
+		public async Task<IActionResult> Post([FromBody]String value)
 		{
 			if(String.IsNullOrEmpty(value))
 				return BadRequest($"{nameof(value)} is not presented in the request body");
 
-			var valueDto = _valueService.Add(value);
+			var valueDto = await _valueService.AddAsync(value);
 			_logger.LogInformation($"New value created, value id: {valueDto.Id}");
 
 			return CreatedAtAction(nameof(Get), "Values", new { id = valueDto.Id }, value);
 		}
 
 		/// <summary>
-		/// Change value with desired id
+		/// [Auth] Change value with desired id
 		/// </summary>
 		/// <remarks>Awesomeness!</remarks>
 		/// <response code="200">Value changed</response>
@@ -102,14 +103,14 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult Put([FromBody]ValueAm value)
+		public async Task<IActionResult> Put([FromBody]ValueAm value)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 					return BadRequest("Please provide valid data.");
 
-				_valueService.Update(_mapper.Map<ValueDto>(value));
+				await _valueService.UpdateAsync(_mapper.Map<ValueDto>(value));
 				_logger.LogInformation($"Value with id: {value.Id} updated");
 
 				return Ok();
@@ -121,7 +122,7 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Delete value with desired id
+		/// [Auth] Delete value with desired id
 		/// </summary>
 		/// <remarks>Awesomeness!</remarks>
 		/// <response code="200">Value deleted</response>
@@ -132,11 +133,11 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult Delete(Int32 id)
+		public async Task<IActionResult> Delete(Int32 id)
 		{
 			try
 			{
-				_valueService.Delete(id);
+				await _valueService.DeleteAsync(id);
 				_logger.LogInformation($"Value deleted, value id: {id}");
 
 				return Ok();

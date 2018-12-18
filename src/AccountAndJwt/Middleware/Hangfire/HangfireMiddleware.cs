@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Api.Middleware.Hangfire.Jobs;
+﻿using AccountAndJwt.Api.Database.DependencyInjection;
+using AccountAndJwt.Api.Middleware.Hangfire.Jobs;
 using Autofac;
 using Hangfire;
 using Hangfire.SqlServer;
@@ -30,7 +31,7 @@ namespace AccountAndJwt.Api.Middleware.Hangfire
 			var databaseModule = new DatabaseModule(configuration);
 			services.AddHangfire(config =>
 			{
-				config.UseSqlServerStorage(databaseModule.ConnectonString, new SqlServerStorageOptions()
+				config.UseSqlServerStorage(databaseModule.ConnectionString, new SqlServerStorageOptions()
 				{
 					DashboardJobListLimit = 1000,
 					CommandTimeout = TimeSpan.FromSeconds(databaseModule.Config.CommandTimeout),

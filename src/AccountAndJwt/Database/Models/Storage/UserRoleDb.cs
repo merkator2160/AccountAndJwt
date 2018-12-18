@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AccountAndJwt.Api.Database.Models
+namespace AccountAndJwt.Api.Database.Models.Storage
 {
 	public class UserRoleDb
 	{

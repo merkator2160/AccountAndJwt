@@ -1,5 +1,6 @@
-﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models;
+﻿using AccountAndJwt.Api.Core.Helpers;
+using AccountAndJwt.Api.Database.Interfaces;
+using AccountAndJwt.Api.Database.Models.Storage;
 using AccountAndJwt.Api.Middleware;
 using AccountAndJwt.Api.Middleware.Config.Models;
 using AccountAndJwt.Api.Services.Exceptions;
@@ -12,6 +13,7 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Services
 {
@@ -29,21 +31,20 @@ namespace AccountAndJwt.Api.Services
 
 
 		// ITokenService //////////////////////////////////////////////////////////////////////////
-		public CreateAccessTokenByCredentialsDto CreateAccessTokenByCredentials(String login, String password)
+		public async Task<CreateAccessTokenByCredentialsDto> CreateAccessTokenByCredentialsAsync(String login, String password)
 		{
-			var user = _unitOfWork.Users.GetByLoginEager(login);
+			var user = await _unitOfWork.Users.GetByLoginEagerAsync(login);
 			if(user == null)
 				throw new UserNotFoundException($"User with login \"{login}\" was not found");
 
-			if(!String.Equals(user.PasswordHash, JwtAuthMiddleware.CreatePasswordHash(password, _audienceConfig.PasswordSalt)))
+			if(!String.Equals(user.PasswordHash, KeyHelper.CreatePasswordHash(password, _audienceConfig.PasswordSalt)))
 				throw new UserNotFoundException("There is no match Login and Password");
-
 
 			var refreshTokenValue = Guid.NewGuid().ToString().Replace("-", "");
 
 			user.RefreshToken = refreshTokenValue;
 			_unitOfWork.Users.Update(user);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 
 			return new CreateAccessTokenByCredentialsDto()
 			{
@@ -52,9 +53,9 @@ namespace AccountAndJwt.Api.Services
 				RefreshToken = refreshTokenValue
 			};
 		}
-		public CreateAccessTokenByRefreshTokenDto CreateAccessTokenByRefreshToken(String refreshToken)
+		public async Task<CreateAccessTokenByRefreshTokenDto> CreateAccessTokenByRefreshTokenAsync(String refreshToken)
 		{
-			var requestedUser = _unitOfWork.Users.GetByRefreshTokenEager(refreshToken);
+			var requestedUser = await _unitOfWork.Users.GetByRefreshTokenEagerAsync(refreshToken);
 			if(requestedUser == null)
 				throw new RefreshTokenNotFoundException("Refresh token has expired");
 
@@ -64,15 +65,15 @@ namespace AccountAndJwt.Api.Services
 				AccessTokenLifeTime = _audienceConfig.TokenLifetimeSec
 			};
 		}
-		public void RevokeRefreshToken(String refreshToken)
+		public async Task RevokeRefreshToken(String refreshToken)
 		{
-			var requestedUser = _unitOfWork.Users.GetByRefreshTokenEager(refreshToken);
+			var requestedUser = await _unitOfWork.Users.GetByRefreshTokenEagerAsync(refreshToken);
 			if(requestedUser == null)
 				throw new RefreshTokenNotFoundException("Refresh token has already expired");
 
 			requestedUser.RefreshToken = null;
 			_unitOfWork.Users.Update(requestedUser);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 		}
 
 
@@ -90,7 +91,7 @@ namespace AccountAndJwt.Api.Services
 				new Claim(nameof(user.LastName), user.LastName),
 				new Claim("custom", "customValue")
 			};
-			claims.AddRange(user.UserRoles.Select(p => new Claim("roles", p.Role.RoleName)));
+			claims.AddRange(user.UserRoles.Select(p => new Claim("roles", p.Role.Name)));
 
 			return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
 				issuer: _audienceConfig.ValidIssuer,

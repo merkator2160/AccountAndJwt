@@ -1,14 +1,15 @@
 ﻿using AccountAndJwt.Api.Services.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Services.Interfaces
 {
 	public interface IValueService
 	{
-		ValueDto[] GetAll();
-		void Delete(Int32 id);
-		void Update(ValueDto value);
-		ValueDto Add(String value);
-		ValueDto Get(Int32 id);
+		Task<ValueDto[]> GetAllAsync();
+		Task<ValueDto> GetAsync(Int32 id);
+		Task<ValueDto> AddAsync(String value);
+		Task UpdateAsync(ValueDto value);
+		Task DeleteAsync(Int32 id);
 	}
 }

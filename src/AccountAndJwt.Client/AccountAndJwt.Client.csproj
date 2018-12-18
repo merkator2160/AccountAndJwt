@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AccountAndJwt.Contracts\AccountAndJwt.Api.Contracts.csproj" />
+    <ProjectReference Include="..\AccountAndJwt.Api.Contracts\AccountAndJwt.Api.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

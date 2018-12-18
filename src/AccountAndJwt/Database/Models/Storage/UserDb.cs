@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AccountAndJwt.Api.Database.Models
+namespace AccountAndJwt.Api.Database.Models.Storage
 {
 	public class UserDb
 	{

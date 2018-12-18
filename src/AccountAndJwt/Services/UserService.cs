@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models;
-using AccountAndJwt.Api.Middleware;
+﻿using AccountAndJwt.Api.Core.Helpers;
+using AccountAndJwt.Api.Database.Interfaces;
+using AccountAndJwt.Api.Database.Models.Storage;
 using AccountAndJwt.Api.Middleware.Config.Models;
 using AccountAndJwt.Api.Services.Exceptions;
 using AccountAndJwt.Api.Services.Interfaces;
@@ -30,60 +30,60 @@ namespace AccountAndJwt.Api.Services
 
 
 		// IUserService ///////////////////////////////////////////////////////////////////////////
-		public void Register(UserDto user)
+		public async Task RegisterAsync(UserDto user)
 		{
-			var requestedUser = _unitOfWork.Users.GetByLoginEager(user.Login);
+			var requestedUser = await _unitOfWork.Users.GetByLoginEagerAsync(user.Login);
 			if(requestedUser != null)
 				throw new LoginIsAlreadyUsedException("User name is already occupied");
 
 			var userDb = _mapper.Map<UserDb>(user);
 			_unitOfWork.Users.Add(userDb);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 		}
-		public void DeleteUser(Int32 id)
+		public async Task DeleteUserAsync(Int32 id)
 		{
-			var requestedUser = _unitOfWork.Users.GetEager(id);
+			var requestedUser = await _unitOfWork.Users.GetEagerAsync(id);
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
 			_unitOfWork.Users.Remove(requestedUser);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 		}
-		public UserDto GetUser(Int32 id)
+		public async Task<UserDto> GetUserAsync(Int32 id)
 		{
-			var requestedUser = _unitOfWork.Users.GetEager(id);
+			var requestedUser = await _unitOfWork.Users.GetEagerAsync(id);
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
 			return _mapper.Map<UserDto>(requestedUser);
 		}
-		public UserDto[] GetAllUsers()
+		public async Task<UserDto[]> GetAllUsersAsync()
 		{
-			return _mapper.Map<UserDto[]>(_unitOfWork.Users.GetAllEager());
+			return _mapper.Map<UserDto[]>(await _unitOfWork.Users.GetAllEagerAsync());
 		}
-		public void UpdatePassword(Int32 userId, String oldPassword, String newPassword)
+		public async Task UpdatePasswordAsync(Int32 userId, String oldPassword, String newPassword)
 		{
-			var requestedUser = _unitOfWork.Users.Get(userId);
+			var requestedUser = await _unitOfWork.Users.GetAsync(userId);
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
-			var providedOldPasswordHash = JwtAuthMiddleware.CreatePasswordHash(oldPassword, _audienceConfig.PasswordSalt);
+			var providedOldPasswordHash = KeyHelper.CreatePasswordHash(oldPassword, _audienceConfig.PasswordSalt);
 			if(!String.Equals(providedOldPasswordHash, requestedUser.PasswordHash))
 				throw new IncorrectPasswordException($"The {nameof(oldPassword)} is wrong");
 
-			requestedUser.PasswordHash = JwtAuthMiddleware.CreatePasswordHash(newPassword, _audienceConfig.PasswordSalt);
+			requestedUser.PasswordHash = KeyHelper.CreatePasswordHash(newPassword, _audienceConfig.PasswordSalt);
 			_unitOfWork.Users.Update(requestedUser);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 		}
 		public async Task ChangeEmailAsync(Int32 userId, String newEmail)
 		{
-			var requestedUser = _unitOfWork.Users.GetEager(userId);
+			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
 			requestedUser.Email = newEmail;
 			_unitOfWork.Users.Update(requestedUser);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 
 			await _emailService.SendAsync(new EmailMessage()
 			{
@@ -92,43 +92,43 @@ namespace AccountAndJwt.Api.Services
 				Body = $"New Email {requestedUser.Email}"
 			});
 		}
-		public void ChangeName(Int32 userId, String firstName, String lastName)
+		public async Task ChangeNameAsync(Int32 userId, String firstName, String lastName)
 		{
-			var requestedUser = _unitOfWork.Users.GetEager(userId);
+			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
 			requestedUser.FirstName = firstName;
 			requestedUser.LastName = lastName;
 			_unitOfWork.Users.Update(requestedUser);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 		}
-		public void AddRole(Int32 userId, String roleName)
+		public async Task AddRoleAsync(Int32 userId, String roleName)
 		{
-			var requestedUser = _unitOfWork.Users.GetEager(userId);
+			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
-			var requestedRole = _unitOfWork.Roles.GetByNameEager(roleName);
-			if(requestedUser.UserRoles.Any(p => String.Equals(p.Role.RoleName, requestedRole.RoleName)))
+			var requestedRole = await _unitOfWork.Roles.GetByNameEagerAsync(roleName);
+			if(requestedUser.UserRoles.Any(p => String.Equals(p.Role.Name, requestedRole.Name)))
 				throw new UserRoleException($"User with provided id already have the \"{roleName}\" role");
 
-			_unitOfWork.Users.AddRole(requestedUser.Id, requestedRole.Id);
-			_unitOfWork.Commit();
+			await _unitOfWork.Users.AddRoleAsync(requestedUser.Id, requestedRole.Id);
+			await _unitOfWork.CommitAsync();
 		}
-		public void RemoveRole(Int32 userId, String roleName)
+		public async Task RemoveRoleAsync(Int32 userId, String roleName)
 		{
-			var requestedUser = _unitOfWork.Users.GetEager(userId);
+			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
-			var requestedRole = _unitOfWork.Roles.GetByNameEager(roleName);
-			var requestedUserRole = requestedUser.UserRoles.FirstOrDefault(p => String.Equals(p.Role.RoleName, requestedRole.RoleName));
+			var requestedRole = await _unitOfWork.Roles.GetByNameEagerAsync(roleName);
+			var requestedUserRole = requestedUser.UserRoles.FirstOrDefault(p => String.Equals(p.Role.Name, requestedRole.Name));
 			if(requestedUserRole == null)
 				throw new UserRoleException($"User with provided id have no the \"{roleName}\" role");
 
-			_unitOfWork.Users.RemoveRole(requestedUser.Id, requestedRole.Id);
-			_unitOfWork.Commit();
+			await _unitOfWork.Users.DeleteRoleAsync(requestedUser.Id, requestedRole.Id);
+			await _unitOfWork.CommitAsync();
 		}
 	}
 }

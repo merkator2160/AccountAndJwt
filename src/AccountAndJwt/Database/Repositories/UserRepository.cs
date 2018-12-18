@@ -1,8 +1,8 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models;
+using AccountAndJwt.Api.Database.Models.Storage;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Database.Repositories
 {
@@ -15,46 +15,46 @@ namespace AccountAndJwt.Api.Database.Repositories
 
 
 		// IUserRepository ////////////////////////////////////////////////////////////////////////
-		public UserDb GetByLoginEager(String login)
+		public Task<UserDb> GetByLoginEagerAsync(String login)
 		{
 			return Context.Users
 				.Include(p => p.UserRoles)
 				.ThenInclude(p => p.Role)
-				.FirstOrDefault(p => p.Login == login);
+				.FirstOrDefaultAsync(p => p.Login == login);
 		}
-		public UserDb GetByRefreshTokenEager(String refreshToken)
+		public Task<UserDb> GetByRefreshTokenEagerAsync(String refreshToken)
 		{
 			return Context.Users
 				.Include(p => p.UserRoles)
 				.ThenInclude(p => p.Role)
-				.FirstOrDefault(p => p.RefreshToken == refreshToken);
+				.FirstOrDefaultAsync(p => p.RefreshToken == refreshToken);
 		}
-		public UserDb GetEager(Int32 id)
+		public Task<UserDb> GetEagerAsync(Int32 id)
 		{
 			return Context.Users
 				.Include(p => p.UserRoles)
 				.ThenInclude(p => p.Role)
-				.FirstOrDefault(p => p.Id == (Int32)id);
+				.FirstOrDefaultAsync(p => p.Id == id);
 		}
-		public UserDb[] GetAllEager()
+		public Task<UserDb[]> GetAllEagerAsync()
 		{
 			return Context.Users
 				.Include(p => p.UserRoles)
 				.ThenInclude(p => p.Role)
-				.ToArray();
+				.ToArrayAsync();
 		}
-		public void AddRole(Int32 userId, Int32 roleId)
+		public Task AddRoleAsync(Int32 userId, Int32 roleId)
 		{
 			var userRole = new UserRoleDb()
 			{
 				UserId = userId,
 				RoleId = roleId
 			};
-			Context.UserRoles.Add(userRole);
+			return Context.UserRoles.AddAsync(userRole);
 		}
-		public void RemoveRole(Int32 userId, Int32 roleId)
+		public async Task DeleteRoleAsync(Int32 userId, Int32 roleId)
 		{
-			var requestedUserRole = Context.UserRoles.First(p => p.RoleId == roleId && p.UserId == userId);
+			var requestedUserRole = await Context.UserRoles.FirstAsync(p => p.RoleId == roleId && p.UserId == userId);
 			Context.UserRoles.Remove(requestedUserRole);
 		}
 	}

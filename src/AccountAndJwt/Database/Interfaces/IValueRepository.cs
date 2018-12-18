@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Api.Database.Models;
+﻿using AccountAndJwt.Api.Database.Models.Storage;
 
 namespace AccountAndJwt.Api.Database.Interfaces
 {

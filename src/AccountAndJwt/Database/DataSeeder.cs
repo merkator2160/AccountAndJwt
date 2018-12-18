@@ -1,6 +1,8 @@
-﻿using AccountAndJwt.Api.Database.Models;
-using AccountAndJwt.Api.Middleware;
+﻿using AccountAndJwt.Api.Core.Consts;
+using AccountAndJwt.Api.Core.Helpers;
+using AccountAndJwt.Api.Database.Models.Storage;
 using System;
+using System.Linq;
 
 namespace AccountAndJwt.Api.Database
 {
@@ -8,56 +10,68 @@ namespace AccountAndJwt.Api.Database
 	{
 		public static void AddInitialData(this DataContext context, String passwordSalt)
 		{
-			var roles = context.AddRoles();
+			context.AddRoles();
 
+			var roles = context.Roles.ToArray();
 			context.AddUsers(roles, passwordSalt);
 			context.AddValues();
-			context.SaveChanges();
 		}
-		private static RoleDb[] AddRoles(this DataContext context)
+		private static void AddRoles(this DataContext context)
 		{
-			var roles = new[]
+			if(!context.Roles.Any(p => p.Name.Equals(Role.Admin)))
 			{
-				new RoleDb()
+				context.Roles.Add(new RoleDb()
 				{
-					RoleName = "Admin"
-				},
-				new RoleDb()
+					Name = Role.Admin
+				});
+			}
+			if(!context.Roles.Any(p => p.Name.Equals(Role.Moderator)))
+			{
+				context.Roles.Add(new RoleDb()
 				{
-					RoleName = "Moderator"
-				}
-			};
-			context.Roles.AddRange(roles);
-			return roles;
+					Name = Role.Moderator
+				});
+			}
+
+			context.SaveChanges();
 		}
 		private static void AddUsers(this DataContext context, RoleDb[] roles, String passwordSalt)
 		{
-			context.Users.AddRange(new UserDb
+			if(!context.Users.Any(p => p.Login.Equals("guest")))
 			{
-				Login = "Member",
-				PasswordHash = JwtAuthMiddleware.CreatePasswordHash("123", passwordSalt),
-				Email = "2160@inbox.ru",
-				FirstName = "Peter",
-				LastName = "Wilson"
-			}, new UserDb
-			{
-				Login = "SuperUser",
-				PasswordHash = JwtAuthMiddleware.CreatePasswordHash("1235", passwordSalt),
-				Email = "2160@inbox.ru",
-				FirstName = "Mett",
-				LastName = "Hardy",
-				UserRoles = new[]
+				context.Users.Add(new UserDb
 				{
-					new UserRoleDb()
+					Login = "guest",
+					PasswordHash = KeyHelper.CreatePasswordHash("HtR00MtOxKyHUg7359QL", passwordSalt),
+					Email = "2160@inbox.ru",
+					FirstName = "Peter",
+					LastName = "Wilson"
+				});
+			}
+			if(!context.Users.Any(p => p.Login.Equals("superuser")))
+			{
+				context.Users.Add(new UserDb
+				{
+					Login = "superuser",
+					PasswordHash = KeyHelper.CreatePasswordHash("ipANWvuFUA5e2qWk0iTd", passwordSalt),
+					Email = "2160@inbox.ru",
+					FirstName = "Mett",
+					LastName = "Hardy",
+					UserRoles = new[]
 					{
-						Role = roles[0]
-					},
-					new UserRoleDb()
-					{
-						Role = roles[1]
+						new UserRoleDb()
+						{
+							Role = roles[0]
+						},
+						new UserRoleDb()
+						{
+							Role = roles[1]
+						}
 					}
-				}
-			});
+				});
+			}
+
+			context.SaveChanges();
 		}
 		private static void AddValues(this DataContext context)
 		{
@@ -72,6 +86,8 @@ namespace AccountAndJwt.Api.Database
 					Value = "value2"
 				}
 			});
+
+			context.SaveChanges();
 		}
 	}
 }

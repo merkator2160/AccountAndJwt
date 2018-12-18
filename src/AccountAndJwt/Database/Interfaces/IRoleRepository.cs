@@ -1,11 +1,12 @@
-﻿using AccountAndJwt.Api.Database.Models;
+﻿using AccountAndJwt.Api.Database.Models.Storage;
 using System;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Database.Interfaces
 {
 	public interface IRoleRepository : IRepository<RoleDb>
 	{
-		RoleDb GetByNameEager(String roleName);
-		RoleDb GetByName(String roleName);
+		Task<RoleDb> GetByNameEagerAsync(String roleName);
+		Task<RoleDb> GetByNameAsync(String roleName);
 	}
 }

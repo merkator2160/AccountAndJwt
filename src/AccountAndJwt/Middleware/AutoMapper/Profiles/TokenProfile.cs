@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Api.Services.Models;
-using AccountAndJwt.Contracts.Models;
+﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.Api.Services.Models;
 using AutoMapper;
 
 namespace AccountAndJwt.Api.Middleware.AutoMapper.Profiles

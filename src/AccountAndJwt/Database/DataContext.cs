@@ -1,6 +1,6 @@
 ﻿using AccountAndJwt.Api.Database.Extensions;
 using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models;
+using AccountAndJwt.Api.Database.Models.Storage;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -26,9 +26,9 @@ namespace AccountAndJwt.Api.Database
 		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
 		private void Initialize()
 		{
-			ChangeTracker.AutoDetectChangesEnabled = false;     // increasing working speed 4x times
-			ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
-			Database.AutoTransactionsEnabled = true;
+			ChangeTracker.AutoDetectChangesEnabled = false;                             // increasing working speed 4x times
+			ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;     // Equivalent of .AsNoTracking() for each query
+			Database.AutoTransactionsEnabled = true;                                    // Required for "Unit of work pattern"
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

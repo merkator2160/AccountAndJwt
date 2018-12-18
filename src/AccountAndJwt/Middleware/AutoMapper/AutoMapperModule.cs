@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Api.Middleware.DependencyInjection;
+﻿using AccountAndJwt.Api.Core.DependencyInjection;
 using Autofac;
 using AutoMapper;
 using Module = Autofac.Module;

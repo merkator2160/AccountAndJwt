@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Api.Database.Models;
+﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.Api.Database.Models.Storage;
 using AccountAndJwt.Api.Services.Models;
-using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 using System.Linq;
 
@@ -10,13 +10,15 @@ namespace AccountAndJwt.Api.Middleware.AutoMapper.Profiles
 	{
 		public UserProfile()
 		{
+			CreateMap<UserDto, UserAm>()
+				.ReverseMap();
+
 			CreateMap<UserDto, UserDb>()
 				.ForMember(from => from.UserRoles, opt => opt.Ignore())
 				.ForMember(dest => dest.RefreshToken, opt => opt.Ignore())
 				.ReverseMap()
-				.ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role.RoleName)));
-			CreateMap<UserDto, UserAm>()
-				.ReverseMap();
+				.ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role.Name)));
+
 			CreateMap<RegisterUserAm, UserDto>()
 				.ForMember(from => from.Id, opt => opt.Ignore())
 				.ForMember(from => from.Roles, opt => opt.Ignore());

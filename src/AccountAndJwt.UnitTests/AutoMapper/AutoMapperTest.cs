@@ -8,11 +8,11 @@ namespace AccountAndJwt.UnitTests.AutoMapper
 	public class AutoMapperTest
 	{
 		[Fact]
-		public void TheWholeAutomapperConfigurationTest()
+		public void TheWholeAutoMapperConfigurationTest()
 		{
 			var mapperConfiguration = new MapperConfiguration(cfg =>
 			{
-				cfg.AddProfiles(typeof(AutoMapperMiddleware).GetTypeInfo().Assembly);     // Dynamically load all configurations
+				cfg.AddProfiles(typeof(AutoMapperModule).GetTypeInfo().Assembly);     // Dynamically load all configurations
 			});
 
 			mapperConfiguration.CompileMappings();

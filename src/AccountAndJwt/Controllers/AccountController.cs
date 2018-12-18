@@ -1,6 +1,8 @@
-﻿using AccountAndJwt.Api.Services.Interfaces;
+﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.Api.Core.Consts;
+using AccountAndJwt.Api.Middleware;
+using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
-using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,14 +45,14 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(RegisterUserResponseAm), 201)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult Register([FromBody]RegisterUserAm userDetails)
+		public async Task<IActionResult> Register([FromBody]RegisterUserAm userDetails)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 					return BadRequest($"Please provide valid \"{nameof(userDetails)}\"");
 
-				_userService.Register(_mapper.Map<UserDto>(userDetails));
+				await _userService.RegisterAsync(_mapper.Map<UserDto>(userDetails));
 				_logger.LogInformation($"New user registered {userDetails.Login}");
 
 				return Ok(new RegisterUserResponseAm()
@@ -66,26 +68,26 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Delete existed account by it id
+		/// [Auth=(admin)] Delete existed account by it id
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
 		[HttpPost]
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Role.Admin)]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult DeleteAccount([FromBody]Int32 userId)
+		public async Task<IActionResult> DeleteAccount([FromBody]Int32 userId)
 		{
 			try
 			{
 				if(userId == 0)
 					return BadRequest($"Please provide \"{nameof(userId)}\"");
 
+				await _userService.DeleteUserAsync(userId);
 				_logger.LogInformation($"User with id {userId} deleted");
-				_userService.DeleteUser(userId);
 
 				return Ok();
 			}
@@ -96,25 +98,25 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Add role to user with specified id
+		/// [Auth=(admin)] Add role to user with specified id
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
 		[HttpPost]
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Role.Admin)]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult AddRole([FromBody]AddRemoveRoleAm request)
+		public async Task<IActionResult> AddRole([FromBody]AddRemoveRoleAm request)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 					return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				_userService.AddRole(request.UserId, request.Role);
+				await _userService.AddRoleAsync(request.UserId, request.Role);
 				return Ok();
 			}
 			catch(ApplicationException ex)
@@ -124,25 +126,25 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Delete role from user with specified id
+		/// [Auth=(admin)] Delete role from user with specified id
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
 		[HttpPost]
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Role.Admin)]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult RemoveRole([FromBody]AddRemoveRoleAm request)
+		public async Task<IActionResult> RemoveRole([FromBody]AddRemoveRoleAm request)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 					return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				_userService.RemoveRole(request.UserId, request.Role);
+				await _userService.RemoveRoleAsync(request.UserId, request.Role);
 				return Ok();
 			}
 			catch(ApplicationException ex)
@@ -152,7 +154,7 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Channge E-Mail of current user
+		/// [Auth] Change E-Mail of current user
 		/// </summary>
 		/// <param name="newEmail"></param>
 		/// <returns></returns>
@@ -169,7 +171,7 @@ namespace AccountAndJwt.Api.Controllers
 				if(String.IsNullOrEmpty(newEmail))
 					return BadRequest($"Please provide valid \"{nameof(newEmail)}\"");
 
-				var currentUserId = GetCurrentUserId();
+				var currentUserId = User.GetId();
 
 				await _userService.ChangeEmailAsync(currentUserId, newEmail);
 				_logger.LogInformation($"Email of user {currentUserId} updated");
@@ -183,7 +185,7 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Change current user First and Last name by provided id
+		/// [Auth] Change current user First and Last name by provided id
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
@@ -193,16 +195,16 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult ChangeName([FromBody]ChangeNameRequestAm request)
+		public async Task<IActionResult> ChangeName([FromBody]ChangeNameRequestAm request)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 					return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				var currentUserId = GetCurrentUserId();
+				var currentUserId = User.GetId();
 
-				_userService.ChangeName(currentUserId, request.FirstName, request.LastName);
+				await _userService.ChangeNameAsync(currentUserId, request.FirstName, request.LastName);
 				_logger.LogInformation($"Email of user {currentUserId} updated");
 
 				return Ok();
@@ -214,7 +216,7 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Get current user associated data 
+		/// [Auth] Get current user associated data 
 		/// </summary>
 		/// <returns></returns>
 		[Authorize]
@@ -233,22 +235,22 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Get information about user by provided id
+		/// [Auth=(admin)] Get information about user by provided id
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Role.Admin)]
 		[HttpGet]
 		[ProducesResponseType(typeof(UserAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult GetUser(Int32 userId)
+		public async Task<IActionResult> GetUser(Int32 userId)
 		{
 			try
 			{
-				return Ok(_mapper.Map<UserAm>(_userService.GetUser(userId)));
+				return Ok(_mapper.Map<UserAm>(await _userService.GetUserAsync(userId)));
 			}
 			catch(ApplicationException ex)
 			{
@@ -257,21 +259,21 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Get information about all users
+		/// [Auth=(admin)] Get information about all users
 		/// </summary>
 		/// <returns></returns>
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Role.Admin)]
 		[HttpGet]
 		[ProducesResponseType(typeof(UserAm[]), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult GetAllUsers()
+		public async Task<IActionResult> GetAllUsers()
 		{
 			try
 			{
-				return Ok(_mapper.Map<UserAm[]>(_userService.GetAllUsers()));
+				return Ok(_mapper.Map<UserAm[]>(await _userService.GetAllUsersAsync()));
 			}
 			catch(ApplicationException ex)
 			{
@@ -280,7 +282,7 @@ namespace AccountAndJwt.Api.Controllers
 		}
 
 		/// <summary>
-		/// Changing current user password
+		/// [Auth] Changing current user password
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
@@ -290,16 +292,16 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult ResetPassword([FromBody]ResetPasswordAm request)
+		public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordAm request)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 					return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				var currentUserId = GetCurrentUserId();
+				var currentUserId = User.GetId();
 
-				_userService.UpdatePassword(currentUserId, request.OldPassword, request.NewPassword);
+				await _userService.UpdatePasswordAsync(currentUserId, request.OldPassword, request.NewPassword);
 				_logger.LogInformation($"User with id {currentUserId} change its password");
 
 				return Ok();
@@ -308,13 +310,6 @@ namespace AccountAndJwt.Api.Controllers
 			{
 				return BadRequest(ex.Message);
 			}
-		}
-
-
-		// SUPPORT FUNCTIONS //////////////////////////////////////////////////////////////////////
-		private Int32 GetCurrentUserId()
-		{
-			return Int32.Parse(User.Claims.ToArray().First(p => p.Type.Contains("nameidentifier")).Value);
 		}
 	}
 }

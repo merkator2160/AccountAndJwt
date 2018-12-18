@@ -1,8 +1,8 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models;
+using AccountAndJwt.Api.Database.Models.Storage;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Database.Repositories
 {
@@ -15,16 +15,16 @@ namespace AccountAndJwt.Api.Database.Repositories
 
 
 		// IRoleRepository ////////////////////////////////////////////////////////////////////////
-		public RoleDb GetByNameEager(String roleName)
+		public Task<RoleDb> GetByNameEagerAsync(String roleName)
 		{
 			return Context.Roles
 				.Include(p => p.UserRoles)
 				.ThenInclude(p => p.User)
-				.FirstOrDefault(p => p.RoleName == roleName);
+				.FirstOrDefaultAsync(p => p.Name == roleName);
 		}
-		public RoleDb GetByName(String roleName)
+		public Task<RoleDb> GetByNameAsync(String roleName)
 		{
-			return Context.Roles.FirstOrDefault(p => p.RoleName == roleName);
+			return Context.Roles.FirstOrDefaultAsync(p => p.Name == roleName);
 		}
 	}
 }

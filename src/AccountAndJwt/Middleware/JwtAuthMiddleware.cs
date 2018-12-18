@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,14 +48,9 @@ namespace AccountAndJwt.Api.Middleware
 		{
 			return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(x64Secret));
 		}
-		public static String CreatePasswordHash(String password, String salt)
+		public static Int32 GetId(this ClaimsPrincipal user)
 		{
-			return Convert.ToBase64String(KeyDerivation.Pbkdf2(
-				password: password,
-				salt: Encoding.UTF8.GetBytes(salt),
-				prf: KeyDerivationPrf.HMACSHA1,
-				iterationCount: 10000,
-				numBytesRequested: 256 / 8));
+			return Int32.Parse(user.Claims.ToArray().First(p => p.Type.Contains("nameidentifier")).Value);
 		}
 
 

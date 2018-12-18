@@ -1,10 +1,11 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models;
+using AccountAndJwt.Api.Database.Models.Storage;
 using AccountAndJwt.Api.Services.Exceptions;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
 using AutoMapper;
 using System;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Services
 {
@@ -22,47 +23,47 @@ namespace AccountAndJwt.Api.Services
 
 
 		// IValueService //////////////////////////////////////////////////////////////////////////
-		public ValueDto[] GetAll()
+		public async Task<ValueDto[]> GetAllAsync()
 		{
-			return _mapper.Map<ValueDto[]>(_unitOfWork.Values.GetAll());
+			return _mapper.Map<ValueDto[]>(await _unitOfWork.Values.GetAllAsync());
 		}
-		public ValueDto Get(Int32 id)
+		public async Task<ValueDto> GetAsync(Int32 id)
 		{
-			var requestedValue = _unitOfWork.Values.Get(id);
+			var requestedValue = await _unitOfWork.Values.GetAsync(id);
 			if(requestedValue == null)
 				throw new ValueNotFoundException($"Value with desired \"{nameof(id)}\" was not found.");
 
 			return _mapper.Map<ValueDto>(requestedValue);
 		}
-		public ValueDto Add(String value)
+		public async Task<ValueDto> AddAsync(String value)
 		{
 			var valueDb = new ValueDb()
 			{
 				Value = value
 			};
-			_unitOfWork.Values.Add(valueDb);
-			_unitOfWork.Commit();
+			await _unitOfWork.Values.AddAsync(valueDb);
+			await _unitOfWork.CommitAsync();
 
 			return _mapper.Map<ValueDto>(valueDb);
 		}
-		public void Update(ValueDto value)
+		public async Task UpdateAsync(ValueDto value)
 		{
-			var requestedValue = _unitOfWork.Values.Get(value.Id);
+			var requestedValue = await _unitOfWork.Values.GetAsync(value.Id);
 			if(requestedValue == null)
 				throw new ValueNotFoundException($"Value with desired \"{nameof(value.Id)}\" was not found.");
 
 			_mapper.Map(value, requestedValue);
 			_unitOfWork.Values.Update(requestedValue);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 		}
-		public void Delete(Int32 id)
+		public async Task DeleteAsync(Int32 id)
 		{
-			var requestedValue = _unitOfWork.Values.Get(id);
+			var requestedValue = await _unitOfWork.Values.GetAsync(id);
 			if(requestedValue == null)
 				throw new ValueNotFoundException($"Value with desired \"{nameof(id)}\" was not found.");
 
 			_unitOfWork.Values.Remove(requestedValue);
-			_unitOfWork.Commit();
+			await _unitOfWork.CommitAsync();
 		}
 	}
 }

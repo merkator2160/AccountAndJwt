@@ -1,4 +1,7 @@
-﻿namespace AccountAndJwt.Api.Database.Interfaces
+﻿using System;
+using System.Threading.Tasks;
+
+namespace AccountAndJwt.Api.Database.Interfaces
 {
 	public interface IUnitOfWork
 	{
@@ -6,6 +9,7 @@
 		IUserRepository Users { get; }
 		IRoleRepository Roles { get; }
 
-		void Commit();
+		Int32 Commit();
+		Task<Int32> CommitAsync();
 	}
 }

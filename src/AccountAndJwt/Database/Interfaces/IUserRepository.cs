@@ -1,15 +1,16 @@
-﻿using AccountAndJwt.Api.Database.Models;
+﻿using AccountAndJwt.Api.Database.Models.Storage;
 using System;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Database.Interfaces
 {
 	public interface IUserRepository : IRepository<UserDb>
 	{
-		UserDb GetByLoginEager(String login);
-		UserDb GetByRefreshTokenEager(String refreshToken);
-		UserDb GetEager(Int32 id);
-		UserDb[] GetAllEager();
-		void AddRole(Int32 userId, Int32 roleId);
-		void RemoveRole(Int32 userId, Int32 roleId);
+		Task<UserDb> GetByLoginEagerAsync(String login);
+		Task<UserDb> GetByRefreshTokenEagerAsync(String refreshToken);
+		Task<UserDb> GetEagerAsync(Int32 id);
+		Task<UserDb[]> GetAllEagerAsync();
+		Task AddRoleAsync(Int32 userId, Int32 roleId);
+		Task DeleteRoleAsync(Int32 userId, Int32 roleId);
 	}
 }

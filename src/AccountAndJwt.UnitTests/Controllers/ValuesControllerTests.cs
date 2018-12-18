@@ -1,13 +1,14 @@
-﻿using AccountAndJwt.Api.Controllers;
+﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.Api.Controllers;
 using AccountAndJwt.Api.Middleware.AutoMapper;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
-using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AccountAndJwt.UnitTests.Controllers
@@ -22,7 +23,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 		{
 			_mapper = new MapperConfiguration(cfg =>
 			{
-				cfg.AddProfiles(typeof(AutoMapperMiddleware).GetTypeInfo().Assembly);     // Dynamically load all configurations
+				cfg.AddProfiles(typeof(AutoMapperModule).GetTypeInfo().Assembly);     // Dynamically load all configurations
 			}).CreateMapper();
 			_loggerService = Mock.Of<ILogger<ValuesController>>();
 		}
@@ -30,9 +31,9 @@ namespace AccountAndJwt.UnitTests.Controllers
 
 		// TESTS //////////////////////////////////////////////////////////////////////////////////
 		[Fact]
-		public void GetAll_Values_Test()
+		public void GetAllValuesTest()
 		{
-			var valueService = Mock.Of<IValueService>(a => a.GetAll() == new[]
+			var valueService = Mock.Of<IValueService>(a => a.GetAllAsync() == Task.FromResult(new[]
 			{
 				new ValueDto()
 				{
@@ -44,7 +45,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 					Id = 2,
 					Value = "value2"
 				}
-			});
+			}));
 
 			var controller = new ValuesController(_mapper, valueService, _loggerService);
 
@@ -57,9 +58,9 @@ namespace AccountAndJwt.UnitTests.Controllers
 		}
 
 		[Fact]
-		public void GetAll_ReturnNull_Test()
+		public void GetAllReturnNullTest()
 		{
-			var valueService = Mock.Of<IValueService>(a => a.GetAll() == null);
+			var valueService = Mock.Of<IValueService>(a => a.GetAllAsync() == Task.FromResult(default(ValueDto[])));
 			var controller = new ValuesController(_mapper, valueService, _loggerService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.GetAll());
@@ -68,13 +69,13 @@ namespace AccountAndJwt.UnitTests.Controllers
 		}
 
 		[Fact]
-		public void Get_Value_Test()
+		public void GetValueTest()
 		{
-			var valueService = Mock.Of<IValueService>(a => a.Get(3) == new ValueDto()
+			var valueService = Mock.Of<IValueService>(a => a.GetAsync(3) == Task.FromResult(new ValueDto()
 			{
 				Id = 3,
 				Value = "value3"
-			});
+			}));
 			var controller = new ValuesController(_mapper, valueService, _loggerService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.Get(3));
@@ -86,9 +87,9 @@ namespace AccountAndJwt.UnitTests.Controllers
 		}
 
 		[Fact]
-		public void Get_ReturnNull_Test()
+		public void GetReturnNullTest()
 		{
-			var valueService = Mock.Of<IValueService>(a => a.Get(3) == null);
+			var valueService = Mock.Of<IValueService>(a => a.GetAsync(3) == Task.FromResult(default(ValueDto)));
 			var controller = new ValuesController(_mapper, valueService, _loggerService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.Get(3));

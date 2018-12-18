@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace AccountAndJwt.Api.Middleware.DependencyInjection
+namespace AccountAndJwt.Api.Core.DependencyInjection
 {
 	internal static class Collector
 	{

@@ -1,9 +1,10 @@
-﻿using AccountAndJwt.Api.Services.Interfaces;
+﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.Api.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using AccountAndJwt.Api.Contracts.Models;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Controllers
 {
@@ -31,20 +32,18 @@ namespace AccountAndJwt.Api.Controllers
 		/// <summary>
 		/// Get the access-token by username and password
 		/// </summary>
-		/// <param name="credentials"></param>
-		/// <returns></returns>
 		[HttpPost]
 		[ProducesResponseType(typeof(RefreshTokenResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult AuthorizeByCredentials([FromBody]AuthorizeByCredentialsRequestAm credentials)
+		public async Task<IActionResult> AuthorizeByCredentials([FromBody]AuthorizeByCredentialsRequestAm credentials)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 					return BadRequest($"Please provide valid \"{nameof(credentials)}\"");
 
-				var result = _tokenService.CreateAccessTokenByCredentials(credentials.Login, credentials.Password);
+				var result = await _tokenService.CreateAccessTokenByCredentialsAsync(credentials.Login, credentials.Password);
 				_logger.LogInformation($"User authorized {credentials.Login}");
 
 				return Ok(_mapper.Map<AuthorizeByCredentialsResponseAm>(result));
@@ -58,17 +57,15 @@ namespace AccountAndJwt.Api.Controllers
 		/// <summary>
 		/// Get new access token by provided refresh token
 		/// </summary>
-		/// <param name="refreshToken"></param>
-		/// <returns></returns>
 		[HttpGet]
 		[ProducesResponseType(typeof(AuthorizeByCredentialsResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult RefreshToken(String refreshToken)
+		public async Task<IActionResult> RefreshToken(String refreshToken)
 		{
 			try
 			{
-				var result = _tokenService.CreateAccessTokenByRefreshToken(refreshToken);
+				var result = await _tokenService.CreateAccessTokenByRefreshTokenAsync(refreshToken);
 				_logger.LogInformation("Token refreshed");
 
 				return Ok(_mapper.Map<RefreshTokenResponseAm>(result));
@@ -82,17 +79,15 @@ namespace AccountAndJwt.Api.Controllers
 		/// <summary>
 		/// Makes provided refresh token invalid
 		/// </summary>
-		/// <param name="refreshToken"></param>
-		/// <returns></returns>
 		[HttpPost]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult RevokeToken(String refreshToken)
+		public async Task<IActionResult> RevokeToken(String refreshToken)
 		{
 			try
 			{
-				_tokenService.RevokeRefreshToken(refreshToken);
+				await _tokenService.RevokeRefreshToken(refreshToken);
 				_logger.LogInformation("Refresh token revoken");
 
 				return Ok();

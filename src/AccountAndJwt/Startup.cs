@@ -1,9 +1,10 @@
-﻿using AccountAndJwt.Api.Database;
+﻿using AccountAndJwt.Api.Core.DependencyInjection;
+using AccountAndJwt.Api.Database;
+using AccountAndJwt.Api.Database.DependencyInjection;
 using AccountAndJwt.Api.Middleware;
 using AccountAndJwt.Api.Middleware.AutoMapper;
 using AccountAndJwt.Api.Middleware.Config;
 using AccountAndJwt.Api.Middleware.Cors;
-using AccountAndJwt.Api.Middleware.DependencyInjection;
 using AccountAndJwt.Api.Middleware.Hangfire;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -83,16 +84,6 @@ namespace AccountAndJwt.Api
 
 			loggerFactory.AddConsole(_configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
-
-			dataContext.AddInitialData(_configuration["AudienceConfig:PasswordSalt"]);
-
-			app.UseElmPage();
-			app.UseElmCapture();
-
-			if(_env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
 
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();
