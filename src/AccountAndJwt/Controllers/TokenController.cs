@@ -36,7 +36,7 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(RefreshTokenResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> AuthorizeByCredentials([FromBody]AuthorizeByCredentialsRequestAm credentials)
+		public async Task<IActionResult> AuthorizeByCredentials([FromBody]AuthorizeRequestAm credentials)
 		{
 			try
 			{
@@ -46,7 +46,7 @@ namespace AccountAndJwt.Api.Controllers
 				var result = await _tokenService.CreateAccessTokenByCredentialsAsync(credentials.Login, credentials.Password);
 				_logger.LogInformation($"User authorized {credentials.Login}");
 
-				return Ok(_mapper.Map<AuthorizeByCredentialsResponseAm>(result));
+				return Ok(_mapper.Map<AuthorizeResponseAm>(result));
 			}
 			catch(ApplicationException ex)
 			{
@@ -58,7 +58,7 @@ namespace AccountAndJwt.Api.Controllers
 		/// Get new access token by provided refresh token
 		/// </summary>
 		[HttpGet]
-		[ProducesResponseType(typeof(AuthorizeByCredentialsResponseAm), 200)]
+		[ProducesResponseType(typeof(AuthorizeResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> RefreshToken(String refreshToken)

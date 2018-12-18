@@ -82,24 +82,24 @@ namespace AccountAndJwt.Client
 
 
 		// SUPPORT FUNCTIONS //////////////////////////////////////////////////////////////////////
-		private static Boolean TryAuthorize(out AuthorizeByCredentialsResponseAm requestedToken)
+		private static Boolean TryAuthorize(out AuthorizeResponseAm requestedToken)
 		{
 			using(var client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Clear();
-				var firstResponse = client.PostAsync("http://localhost:58751/api/Token/AuthorizeByCredentials", Serialize(new AuthorizeByCredentialsRequestAm()
+				var firstResponse = client.PostAsync("http://localhost:58751/api/Token/AuthorizeByCredentials", Serialize(new AuthorizeRequestAm()
 				{
 					Login = "Member1",
 					Password = "123"
 				}, _serializerSettings)).Result;
 				if(!firstResponse.IsSuccessStatusCode)
 				{
-					requestedToken = new AuthorizeByCredentialsResponseAm();
+					requestedToken = new AuthorizeResponseAm();
 					return false;
 				}
 
 				var firstResult = firstResponse.Content.ReadAsStringAsync().Result;
-				requestedToken = JsonConvert.DeserializeObject<AuthorizeByCredentialsResponseAm>(firstResult);
+				requestedToken = JsonConvert.DeserializeObject<AuthorizeResponseAm>(firstResult);
 
 				return true;
 			}
@@ -134,8 +134,8 @@ namespace AccountAndJwt.Client
 					return false;
 				}
 
-				var refreshresult = refreshResponse.Content.ReadAsStringAsync().Result;
-				newTokenResponse = JsonConvert.DeserializeObject<RefreshTokenResponseAm>(refreshresult);
+				var refreshResult = refreshResponse.Content.ReadAsStringAsync().Result;
+				newTokenResponse = JsonConvert.DeserializeObject<RefreshTokenResponseAm>(refreshResult);
 				return true;
 			}
 		}

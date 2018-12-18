@@ -9,7 +9,7 @@ namespace AccountAndJwt.Api.Middleware.AutoMapper.Profiles
 		public TokenProfile()
 		{
 			CreateMap<CreateAccessTokenByRefreshTokenDto, RefreshTokenResponseAm>();
-			CreateMap<CreateAccessTokenByCredentialsDto, AuthorizeByCredentialsResponseAm>();
+			CreateMap<CreateAccessTokenByCredentialsDto, AuthorizeResponseAm>();
 		}
 	}
 }

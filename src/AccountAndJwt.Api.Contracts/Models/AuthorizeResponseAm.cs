@@ -5,7 +5,7 @@ namespace AccountAndJwt.Api.Contracts.Models
 	/// <summary>
 	/// Result of authentication
 	/// </summary>
-	public class AuthorizeByCredentialsResponseAm
+	public class AuthorizeResponseAm
 	{
 		/// <summary>
 		/// Access token itself

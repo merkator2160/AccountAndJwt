@@ -48,11 +48,11 @@ namespace AccountAndJwt.Api.Database
 					LastName = "Wilson"
 				});
 			}
-			if(!context.Users.Any(p => p.Login.Equals("superuser")))
+			if(!context.Users.Any(p => p.Login.Equals("admin")))
 			{
 				context.Users.Add(new UserDb
 				{
-					Login = "superuser",
+					Login = "admin",
 					PasswordHash = KeyHelper.CreatePasswordHash("ipANWvuFUA5e2qWk0iTd", passwordSalt),
 					Email = "2160@inbox.ru",
 					FirstName = "Mett",

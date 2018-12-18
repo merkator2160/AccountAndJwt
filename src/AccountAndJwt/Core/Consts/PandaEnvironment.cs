@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Panda.Common.Consts
+namespace AccountAndJwt.Api.Core.Consts
 {
 	public static class PandaEnvironment
 	{

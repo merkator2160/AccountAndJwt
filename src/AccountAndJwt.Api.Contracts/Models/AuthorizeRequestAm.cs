@@ -6,7 +6,7 @@ namespace AccountAndJwt.Api.Contracts.Models
 	/// <summary>
 	/// Get JWT token by credentials model
 	/// </summary>
-	public class AuthorizeByCredentialsRequestAm
+	public class AuthorizeRequestAm
 	{
 		/// <summary>
 		/// User name
