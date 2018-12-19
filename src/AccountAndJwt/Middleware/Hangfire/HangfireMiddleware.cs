@@ -23,7 +23,7 @@ namespace AccountAndJwt.Api.Middleware.Hangfire
 			app.UseHangfireDashboard();
 			app.UseHangfireServer(new BackgroundJobServerOptions()
 			{
-				Queues = new[] { Environment.MachineName.ToLower() }
+				Queues = new[] { CreateEnvironmentDependentQueueName() }
 			});
 		}
 		public static void AddHangfire(this IServiceCollection services, IConfiguration configuration)
@@ -57,7 +57,7 @@ namespace AccountAndJwt.Api.Middleware.Hangfire
 		// SUPPORT FUNCTIONS //////////////////////////////////////////////////////////////////////
 		private static String CreateEnvironmentDependentQueueName()
 		{
-			return Environment.MachineName.Replace("-", "").ToLower(CultureInfo.CurrentCulture);
+			return Environment.MachineName.Replace("-", "").ToLower(CultureInfo.InvariantCulture);
 		}
 	}
 }
