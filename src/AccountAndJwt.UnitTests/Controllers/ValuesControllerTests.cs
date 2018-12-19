@@ -1,8 +1,8 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
 using AccountAndJwt.Api.Controllers;
-using AccountAndJwt.Api.Middleware.AutoMapper;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
+using AccountAndJwt.Common.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Api.Core.DependencyInjection;
-using AccountAndJwt.Api.Database.Interfaces;
+﻿using AccountAndJwt.Api.Database.Interfaces;
+using AccountAndJwt.Common.DependencyInjection;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

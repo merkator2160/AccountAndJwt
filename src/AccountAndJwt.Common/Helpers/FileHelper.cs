@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AccountAndJwt.Api.Core.Helpers
+namespace AccountAndJwt.Common.Helpers
 {
 	public static class FileHelper
 	{

@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Api.Core.Consts;
-using AccountAndJwt.Api.Core.Helpers;
-using AccountAndJwt.Api.Database.Models.Storage;
+﻿using AccountAndJwt.Api.Database.Models.Storage;
+using AccountAndJwt.Common.Consts;
+using AccountAndJwt.Common.Helpers;
 using System;
 using System.Linq;
 

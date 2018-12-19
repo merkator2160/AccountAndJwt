@@ -1,7 +1,7 @@
-﻿using AccountAndJwt.Api.Core.Consts;
-using AccountAndJwt.Api.Database;
+﻿using AccountAndJwt.Api.Database;
 using AccountAndJwt.Api.Database.DependencyInjection;
 using AccountAndJwt.Api.Middleware.Config;
+using AccountAndJwt.Common.Consts;
 using Autofac;
 using Microsoft.EntityFrameworkCore.Design;
 using System;

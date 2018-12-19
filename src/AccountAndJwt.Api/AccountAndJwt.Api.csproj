@@ -15,9 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.8.1" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="Hangfire" Version="1.6.21" />
     <PackageReference Include="Hangfire.Autofac" Version="2.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
@@ -54,6 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccountAndJwt.Api.Contracts\AccountAndJwt.Api.Contracts.csproj" />
+    <ProjectReference Include="..\AccountAndJwt.Common\AccountAndJwt.Common.csproj" />
   </ItemGroup>
 
 </Project>

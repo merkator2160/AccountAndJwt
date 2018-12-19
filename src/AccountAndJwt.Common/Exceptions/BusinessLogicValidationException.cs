@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace AccountAndJwt.Api.Core.Exceptions
+namespace AccountAndJwt.Common.Exceptions
 {
 	public class BusinessLogicValidationException : ApplicationException
 	{

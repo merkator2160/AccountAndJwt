@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace AccountAndJwt.Api.Core.Consts
+namespace AccountAndJwt.Common.Consts
 {
-	internal static class HostingEnvironment
+	public static class HostingEnvironment
 	{
 		public const String Development = "Development";
 		public const String Staging = "Staging";

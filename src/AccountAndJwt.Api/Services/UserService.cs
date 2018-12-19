@@ -1,10 +1,10 @@
-﻿using AccountAndJwt.Api.Core.Helpers;
-using AccountAndJwt.Api.Database.Interfaces;
+﻿using AccountAndJwt.Api.Database.Interfaces;
 using AccountAndJwt.Api.Database.Models.Storage;
 using AccountAndJwt.Api.Middleware.Config.Models;
 using AccountAndJwt.Api.Services.Exceptions;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
+using AccountAndJwt.Common.Helpers;
 using AutoMapper;
 using System;
 using System.Linq;

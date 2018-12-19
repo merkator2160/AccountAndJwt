@@ -1,8 +1,8 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
-using AccountAndJwt.Api.Core.Consts;
 using AccountAndJwt.Api.Middleware;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
+using AccountAndJwt.Common.Consts;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

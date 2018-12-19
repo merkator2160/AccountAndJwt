@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AccountAndJwt.Api.Core.Helpers
+namespace AccountAndJwt.Common.Helpers
 {
 	public static class KeyHelper
 	{

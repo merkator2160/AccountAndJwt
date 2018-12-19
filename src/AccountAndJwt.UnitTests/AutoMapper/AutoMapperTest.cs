@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Api.Core.DependencyInjection;
+﻿using AccountAndJwt.Common.DependencyInjection;
 using AutoMapper;
 using Xunit;
 
@@ -11,7 +11,7 @@ namespace AccountAndJwt.UnitTests.AutoMapper
 		{
 			var mapperConfiguration = new MapperConfiguration(cfg =>
 			{
-				cfg.AddProfiles(Collector.LoadAssemblies("AccountAndJwt"));     // Dynamically load all configurations
+				cfg.AddProfiles(Collector.LoadSolutionAssemblies());     // Dynamically load all configurations
 			});
 
 			mapperConfiguration.CompileMappings();

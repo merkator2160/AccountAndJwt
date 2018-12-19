@@ -5,9 +5,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace AccountAndJwt.Api.Core.DependencyInjection
+namespace AccountAndJwt.Common.DependencyInjection
 {
-	internal static class Collector
+	public static class Collector
 	{
 		public static void RegisterLocalServices(this ContainerBuilder builder)
 		{
@@ -37,16 +37,14 @@ namespace AccountAndJwt.Api.Core.DependencyInjection
 				}
 			}
 		}
+		public static Assembly[] LoadSolutionAssemblies()
+		{
+			return LoadAssemblies("AccountAndJwt");
+		}
 		public static Assembly[] LoadAssemblies(String partOfName)
 		{
 			return DependencyContext.Default.CompileLibraries
 				.Where(d => d.Name.Contains(partOfName))
-				.Select(p => Assembly.Load(new AssemblyName(p.Name)))
-				.ToArray();
-		}
-		public static Assembly[] LoadAllLocalAssemblies()
-		{
-			return DependencyContext.Default.CompileLibraries
 				.Select(p => Assembly.Load(new AssemblyName(p.Name)))
 				.ToArray();
 		}

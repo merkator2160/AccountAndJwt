@@ -1,10 +1,9 @@
-﻿using AccountAndJwt.Api.Core.DependencyInjection;
-using AccountAndJwt.Api.Database.DependencyInjection;
+﻿using AccountAndJwt.Api.Database.DependencyInjection;
 using AccountAndJwt.Api.Middleware;
-using AccountAndJwt.Api.Middleware.AutoMapper;
 using AccountAndJwt.Api.Middleware.Config;
 using AccountAndJwt.Api.Middleware.Cors;
 using AccountAndJwt.Api.Middleware.Hangfire;
+using AccountAndJwt.Common.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -49,7 +48,7 @@ namespace AccountAndJwt.Api
 			builder.RegisterLocalConfiguration(_configuration);
 
 			builder.RegisterModule(new DatabaseModule(_configuration));
-			builder.RegisterModule<AutoMapperModule>();
+			builder.RegisterModule(new AutoMapperModule(Collector.LoadSolutionAssemblies()));
 
 			builder.Populate(services);
 

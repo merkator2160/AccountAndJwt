@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
-using AccountAndJwt.Api.Core.Consts;
+using AccountAndJwt.Common.Consts;
 using System.Threading.Tasks;
 using Xunit;
 

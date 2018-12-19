@@ -1,10 +1,10 @@
-﻿using AccountAndJwt.Api.Core.Exceptions;
+﻿using AccountAndJwt.Common.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace AccountAndJwt.Api.Core.Helpers
+namespace AccountAndJwt.Common.Helpers
 {
 	public static class PosixDateTimeHelper
 	{
