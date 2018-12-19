@@ -9,7 +9,7 @@ namespace AccountAndJwt.Api.Database.Mappings
 	{
 		public void Configure(EntityTypeBuilder<RoleDb> entityBuilder)
 		{
-			entityBuilder.ToTable("UserRoles");
+			entityBuilder.ToTable("Roles");
 			entityBuilder.HasKey(p => p.Id);
 		}
 	}

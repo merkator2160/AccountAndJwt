@@ -21,6 +21,7 @@ namespace AccountAndJwt.Api.Middleware.AutoMapper.Profiles
 
 			CreateMap<RegisterUserAm, UserDto>()
 				.ForMember(from => from.Id, opt => opt.Ignore())
+				.ForMember(from => from.PasswordHash, opt => opt.Ignore())
 				.ForMember(from => from.Roles, opt => opt.Ignore());
 		}
 	}

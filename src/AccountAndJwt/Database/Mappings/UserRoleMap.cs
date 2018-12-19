@@ -1,5 +1,6 @@
 ﻿using AccountAndJwt.Api.Database.Interfaces;
 using AccountAndJwt.Api.Database.Models.Storage;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AccountAndJwt.Api.Database.Mappings
@@ -8,8 +9,8 @@ namespace AccountAndJwt.Api.Database.Mappings
 	{
 		public void Configure(EntityTypeBuilder<UserRoleDb> entityBuilder)
 		{
-			entityBuilder
-				.HasKey(p => new { p.RoleId, p.UserId });
+			entityBuilder.ToTable("UserRoles");
+			entityBuilder.HasKey(p => new { p.RoleId, p.UserId });
 
 			entityBuilder
 				.HasOne(p => p.Role)

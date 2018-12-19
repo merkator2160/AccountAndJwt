@@ -48,7 +48,7 @@ namespace AccountAndJwt.Api.Middleware.Hangfire
 		{
 			RecurringJob.AddOrUpdate<SampleJob>(
 				p => p.ExecuteAsync(),
-				Cron.Daily,
+				Cron.Minutely,
 				timeZone: TimeZoneInfo.Utc,
 				queue: CreateEnvironmentDependentQueueName());
 		}

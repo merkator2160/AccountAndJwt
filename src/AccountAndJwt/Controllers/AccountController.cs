@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Controllers
@@ -213,25 +212,6 @@ namespace AccountAndJwt.Api.Controllers
 			{
 				return BadRequest(ex.Message);
 			}
-		}
-
-		/// <summary>
-		/// [Auth] Get current user associated data 
-		/// </summary>
-		/// <returns></returns>
-		[Authorize]
-		[HttpGet]
-		[ProducesResponseType(typeof(GetClaimsResponseAm[]), 200)]
-		[ProducesResponseType(401)]
-		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult GetCurrentUserClaims()
-		{
-			var claims = HttpContext.User.Claims.ToArray().Select(x => new GetClaimsResponseAm
-			{
-				ClaimType = x.Type,
-				Value = x.Value
-			});
-			return Ok(claims);
 		}
 
 		/// <summary>

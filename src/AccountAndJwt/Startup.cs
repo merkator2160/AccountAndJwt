@@ -1,5 +1,4 @@
 ﻿using AccountAndJwt.Api.Core.DependencyInjection;
-using AccountAndJwt.Api.Database;
 using AccountAndJwt.Api.Database.DependencyInjection;
 using AccountAndJwt.Api.Middleware;
 using AccountAndJwt.Api.Middleware.AutoMapper;
@@ -10,8 +9,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -34,16 +31,15 @@ namespace AccountAndJwt.Api
 
 
 		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-		public void ConfigureServices(IServiceCollection services)
+		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
-			services
-				.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
-				.AddScoped(x => x.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
 			services.AddCors(CorsMiddleware.AddPolitics);
 			services.AddConfiguredSwaggerGen();
 			services.AddHangfire(_configuration);
 			services.AddJwtAuthService(_configuration);
 			services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+			return BuildServiceProvider(services);
 		}
 		private IServiceProvider BuildServiceProvider(IServiceCollection services)
 		{
@@ -62,7 +58,7 @@ namespace AccountAndJwt.Api
 
 			return new AutofacServiceProvider(container);
 		}
-		public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, DataContext dataContext)
+		public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
 		{
 			if(_env.IsDevelopment())
 			{

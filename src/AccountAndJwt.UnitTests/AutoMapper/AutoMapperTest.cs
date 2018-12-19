@@ -1,6 +1,5 @@
-﻿using AccountAndJwt.Api.Middleware.AutoMapper;
+﻿using AccountAndJwt.Api.Core.DependencyInjection;
 using AutoMapper;
-using System.Reflection;
 using Xunit;
 
 namespace AccountAndJwt.UnitTests.AutoMapper
@@ -8,11 +7,11 @@ namespace AccountAndJwt.UnitTests.AutoMapper
 	public class AutoMapperTest
 	{
 		[Fact]
-		public void TheWholeAutoMapperConfigurationTest()
+		public void AutoMapperConfigurationTest()
 		{
 			var mapperConfiguration = new MapperConfiguration(cfg =>
 			{
-				cfg.AddProfiles(typeof(AutoMapperModule).GetTypeInfo().Assembly);     // Dynamically load all configurations
+				cfg.AddProfiles(Collector.LoadAllLocalAssemblies());     // Dynamically load all configurations
 			});
 
 			mapperConfiguration.CompileMappings();
