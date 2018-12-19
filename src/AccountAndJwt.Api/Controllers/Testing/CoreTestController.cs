@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Api.Database;
+﻿using AccountAndJwt.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;

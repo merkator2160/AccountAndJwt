@@ -1,9 +1,9 @@
-﻿using AccountAndJwt.Api.Database;
-using AccountAndJwt.Api.Database.DependencyInjection;
-using AccountAndJwt.Api.Middleware;
+﻿using AccountAndJwt.Api.Middleware;
 using AccountAndJwt.Api.Middleware.Config;
 using AccountAndJwt.Api.Middleware.Cors;
 using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Database;
+using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;

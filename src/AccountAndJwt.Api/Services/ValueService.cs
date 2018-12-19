@@ -1,8 +1,8 @@
-﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models.Storage;
-using AccountAndJwt.Api.Services.Exceptions;
+﻿using AccountAndJwt.Api.Services.Exceptions;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
+using AccountAndJwt.Database.Interfaces;
+using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 using System;
 using System.Threading.Tasks;

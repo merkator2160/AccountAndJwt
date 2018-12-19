@@ -1,11 +1,11 @@
-﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Database.Models.Storage;
-using AccountAndJwt.Api.Middleware;
+﻿using AccountAndJwt.Api.Middleware;
 using AccountAndJwt.Api.Middleware.Config.Models;
 using AccountAndJwt.Api.Services.Exceptions;
 using AccountAndJwt.Api.Services.Interfaces;
 using AccountAndJwt.Api.Services.Models;
 using AccountAndJwt.Common.Helpers;
+using AccountAndJwt.Database.Interfaces;
+using AccountAndJwt.Database.Models.Storage;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;

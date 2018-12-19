@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Api.Database.DependencyInjection;
-using AccountAndJwt.Api.Middleware.Hangfire.Jobs;
+﻿using AccountAndJwt.Api.Middleware.Hangfire.Jobs;
+using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Hangfire;
 using Hangfire.SqlServer;

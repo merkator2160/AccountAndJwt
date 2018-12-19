@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Api.Database.Interfaces;
-using AccountAndJwt.Api.Middleware.Hangfire.Interfaces;
+﻿using AccountAndJwt.Api.Middleware.Hangfire.Interfaces;
+using AccountAndJwt.Database.Interfaces;
 using System;
 using System.Threading.Tasks;
 

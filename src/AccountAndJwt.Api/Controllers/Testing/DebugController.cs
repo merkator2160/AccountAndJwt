@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
-using AccountAndJwt.Api.Database.Interfaces;
+using AccountAndJwt.Database.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;

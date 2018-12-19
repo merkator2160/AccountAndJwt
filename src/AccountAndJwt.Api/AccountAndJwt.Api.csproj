@@ -19,7 +19,6 @@
     <PackageReference Include="Hangfire.Autofac" Version="2.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -52,6 +51,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AccountAndJwt.Api.Contracts\AccountAndJwt.Api.Contracts.csproj" />
     <ProjectReference Include="..\AccountAndJwt.Common\AccountAndJwt.Common.csproj" />
+    <ProjectReference Include="..\AccountAndJwt.Database\AccountAndJwt.Database.csproj" />
   </ItemGroup>
 
 </Project>
