@@ -57,11 +57,11 @@ namespace AccountAndJwt.Api.Controllers
 		/// <summary>
 		/// Get new access token by provided refresh token
 		/// </summary>
-		[HttpGet]
+		[HttpPost]
 		[ProducesResponseType(typeof(AuthorizeResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> RefreshToken(String refreshToken)
+		public async Task<IActionResult> RefreshToken([FromBody]String refreshToken)
 		{
 			try
 			{
@@ -83,7 +83,7 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> RevokeToken(String refreshToken)
+		public async Task<IActionResult> RevokeToken([FromBody]String refreshToken)
 		{
 			try
 			{

@@ -46,9 +46,9 @@ namespace AccountAndJwt.IntegrationTests.Api
 				Assert.True(!String.IsNullOrEmpty(authorizedObject.AccessToken));
 				Assert.True(!String.IsNullOrEmpty(authorizedObject.RefreshToken));
 
-				var refreshResponse = await client.GetAsync($"/api/Token/RefreshToken?refreshToken={authorizedObject.RefreshToken}");
-
+				var refreshResponse = await client.PostAsJsonAsync("/api/Token/RefreshToken", authorizedObject.RefreshToken);
 				refreshResponse.EnsureSuccessStatusCode();
+
 				var refreshObject = await authorizedResponse.DeserializeAsync<RefreshTokenResponseAm>();
 
 				Assert.True(!String.IsNullOrEmpty(refreshObject.AccessToken));
@@ -74,7 +74,6 @@ namespace AccountAndJwt.IntegrationTests.Api
 				Assert.True(!String.IsNullOrEmpty(authorizedObject.RefreshToken));
 
 				var revokeResponse = await client.PostAsJsonAsync("/api/Token/RevokeToken", authorizedObject.RefreshToken);
-
 				revokeResponse.EnsureSuccessStatusCode();
 
 				var authorizedResponseSecond = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
