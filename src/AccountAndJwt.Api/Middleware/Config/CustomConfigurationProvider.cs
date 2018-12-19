@@ -28,7 +28,7 @@ namespace AccountAndJwt.Api.Middleware.Config
 				.AddEnvironmentVariables()
 				.SetBasePath(basePath)
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
+				.AddJsonFile($"appsettings.{environment}.json", optional: false, reloadOnChange: true);
 
 			return builder.Build();
 		}

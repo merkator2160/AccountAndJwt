@@ -14,7 +14,6 @@ namespace AccountAndJwt.Api.Database
 
 			var roles = context.Roles.ToArray();
 			context.AddUsers(roles, passwordSalt);
-			context.AddValues();
 		}
 		private static void AddRoles(this DataContext context)
 		{
@@ -70,22 +69,6 @@ namespace AccountAndJwt.Api.Database
 					}
 				});
 			}
-
-			context.SaveChanges();
-		}
-		private static void AddValues(this DataContext context)
-		{
-			context.Values.AddRange(new[]
-			{
-				new ValueDb()
-				{
-					Value = "value1"
-				},
-				new ValueDb()
-				{
-					Value = "value2"
-				}
-			});
 
 			context.SaveChanges();
 		}

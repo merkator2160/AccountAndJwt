@@ -1,4 +1,6 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.Api.Core.Consts;
+using AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace AccountAndJwt.IntegrationTests
 {
-	public class PandaWebApplicationFactory : WebApplicationFactory<TestStartup>
+	public class CustomWebApplicationFactory : WebApplicationFactory<TestStartup>
 	{
 		// OVERRIDE ///////////////////////////////////////////////////////////////////////////////
 		protected override void ConfigureClient(HttpClient client)
@@ -31,7 +33,7 @@ namespace AccountAndJwt.IntegrationTests
 		protected override IWebHostBuilder CreateWebHostBuilder()
 		{
 			return WebHost.CreateDefaultBuilder()
-				.UseEnvironment("Development")
+				.UseEnvironment(HostingEnvironment.Development)
 				.UseWebRoot(Environment.CurrentDirectory)
 				.UseStartup<TestStartup>()
 				.ConfigureLogging(logging =>
@@ -69,7 +71,7 @@ namespace AccountAndJwt.IntegrationTests
 
 			var authorizationTokens = await response.DeserializeAsync<AuthorizeResponseAm>();
 
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpMimeType.Application.Json));
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authorizationTokens.AccessToken);
 		}
 

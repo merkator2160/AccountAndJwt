@@ -4,12 +4,12 @@ using Xunit;
 
 namespace AccountAndJwt.IntegrationTests.Api
 {
-	public class CoreTests : IClassFixture<PandaWebApplicationFactory>
+	public class CoreTests : IClassFixture<CustomWebApplicationFactory>
 	{
-		private readonly PandaWebApplicationFactory _factory;
+		private readonly CustomWebApplicationFactory _factory;
 
 
-		public CoreTests(PandaWebApplicationFactory factory)
+		public CoreTests(CustomWebApplicationFactory factory)
 		{
 			_factory = factory;
 		}
@@ -17,8 +17,8 @@ namespace AccountAndJwt.IntegrationTests.Api
 
 		// TESTS //////////////////////////////////////////////////////////////////////////////////
 		[Theory]
-		[InlineData("/api/Test/BasicTest")]
-		[InlineData("/api/Test/ContextReferenceTest")]
+		[InlineData("/api/CoreTest/BasicTest")]
+		[InlineData("/api/CoreTest/ContextReferenceTest")]
 		public async Task BasicTest(String url)
 		{
 			var client = _factory.CreateClient();

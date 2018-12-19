@@ -11,12 +11,12 @@ namespace AccountAndJwt.Api.Controllers.Testing
 	/// </summary>
 	[ApiExplorerSettings(IgnoreApi = true)]
 	[Route("api/[controller]/[action]")]
-	public class TestController : Controller
+	public class CoreTestController : Controller
 	{
 		private readonly IServiceProvider _serviceProvider;
 
 
-		public TestController(IServiceProvider serviceProvider)
+		public CoreTestController(IServiceProvider serviceProvider)
 		{
 			_serviceProvider = serviceProvider;
 		}

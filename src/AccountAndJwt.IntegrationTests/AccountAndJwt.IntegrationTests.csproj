@@ -6,11 +6,15 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.1\Documentation.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Http.Extensions" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.1.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="System.Net.Http.Formatting.Extension" Version="5.2.3" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -19,7 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AccountAndJwt\AccountAndJwt.Api.csproj" />
+    <ProjectReference Include="..\AccountAndJwt.Api\AccountAndJwt.Api.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(SolutionDir)AccountAndJwt.Api\bin\Debug\netcoreapp2.1\appsettings.json&quot; &quot;$(TargetDir)appsettings.json&quot;&#xD;&#xA;copy &quot;$(SolutionDir)AccountAndJwt.Api\bin\Debug\netcoreapp2.1\appsettings.Development.json&quot; &quot;$(TargetDir)appsettings.Development.json&quot;" />
+  </Target>
 
 </Project>

@@ -5,12 +5,12 @@ using Xunit;
 
 namespace AccountAndJwt.IntegrationTests.Api
 {
-	public class AccountControllerTests : IClassFixture<PandaWebApplicationFactory>
+	public class AccountControllerTests : IClassFixture<CustomWebApplicationFactory>
 	{
-		private readonly PandaWebApplicationFactory _factory;
+		private readonly CustomWebApplicationFactory _factory;
 
 
-		public AccountControllerTests(PandaWebApplicationFactory factory)
+		public AccountControllerTests(CustomWebApplicationFactory factory)
 		{
 			_factory = factory;
 		}
@@ -23,12 +23,12 @@ namespace AccountAndJwt.IntegrationTests.Api
 			var client = _factory.CreateClient();
 			await _factory.AuthorizeAsAdminAsync(client);
 
-			var response = await client.GetAsync("/api/Account/GetAccountInfo");
+			var response = await client.GetAsync("/api/Debug/GetCurrentUserClaims");
 
 			response.EnsureSuccessStatusCode();
-			var authorizedResponse = await response.DeserializeAsync<UserAm>();
+			var claimsResponse = await response.DeserializeAsync<GetClaimsResponseAm[]>();
 
-			Assert.Contains(Role.Admin, authorizedResponse.Roles);
+			Assert.Contains(claimsResponse, p => p.Value.Equals(Role.Admin));
 		}
 	}
 }

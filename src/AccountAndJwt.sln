@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Api", "AccountAndJwt\AccountAndJwt.Api.csproj", "{D30792FB-16DD-4D8A-B6EC-44E706B91FCF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{D566A65C-1586-452F-B1FB-135F47F22681}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
@@ -12,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		clean-with-scc.bat = clean-with-scc.bat
 		readme.md = readme.md
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Client", "AccountAndJwt.Client\AccountAndJwt.Client.csproj", "{411DDCAD-43B8-4BE6-A21D-94D13881192C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BD000423-E590-4670-B250-C60002775AA3}"
 EndProject
@@ -23,20 +19,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.IntegrationTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Api.Contracts", "AccountAndJwt.Api.Contracts\AccountAndJwt.Api.Contracts.csproj", "{D5241B4E-F5AA-41FE-9648-69CE40B0E427}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Api", "AccountAndJwt.Api\AccountAndJwt.Api.csproj", "{61243E3F-2B1C-46BB-8754-60AB756F5F1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D30792FB-16DD-4D8A-B6EC-44E706B91FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D30792FB-16DD-4D8A-B6EC-44E706B91FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D30792FB-16DD-4D8A-B6EC-44E706B91FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D30792FB-16DD-4D8A-B6EC-44E706B91FCF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{411DDCAD-43B8-4BE6-A21D-94D13881192C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{411DDCAD-43B8-4BE6-A21D-94D13881192C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{411DDCAD-43B8-4BE6-A21D-94D13881192C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{411DDCAD-43B8-4BE6-A21D-94D13881192C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{002A6673-C015-4476-A95E-BD8C318952C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{002A6673-C015-4476-A95E-BD8C318952C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{002A6673-C015-4476-A95E-BD8C318952C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,12 +39,15 @@ Global
 		{D5241B4E-F5AA-41FE-9648-69CE40B0E427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5241B4E-F5AA-41FE-9648-69CE40B0E427}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5241B4E-F5AA-41FE-9648-69CE40B0E427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61243E3F-2B1C-46BB-8754-60AB756F5F1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61243E3F-2B1C-46BB-8754-60AB756F5F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61243E3F-2B1C-46BB-8754-60AB756F5F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61243E3F-2B1C-46BB-8754-60AB756F5F1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{411DDCAD-43B8-4BE6-A21D-94D13881192C} = {BD000423-E590-4670-B250-C60002775AA3}
 		{002A6673-C015-4476-A95E-BD8C318952C3} = {BD000423-E590-4670-B250-C60002775AA3}
 		{476F7845-8932-4807-A8D1-6DA2AEE5F245} = {BD000423-E590-4670-B250-C60002775AA3}
 	EndGlobalSection

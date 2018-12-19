@@ -2,7 +2,7 @@
 
 namespace AccountAndJwt.Api.Core.Consts
 {
-	internal static class PandaEnvironment
+	internal static class HostingEnvironment
 	{
 		public const String Development = "Development";
 		public const String Staging = "Staging";
