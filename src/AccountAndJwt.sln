@@ -5,10 +5,10 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{D566A65C-1586-452F-B1FB-135F47F22681}"
 	ProjectSection(SolutionItems) = preProject
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
-		clean-with-scc.bat = clean-with-scc.bat
-		readme.md = readme.md
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
+		..\clean-with-scc.bat = ..\clean-with-scc.bat
+		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BD000423-E590-4670-B250-C60002775AA3}"
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Api", "Accoun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Common", "AccountAndJwt.Common\AccountAndJwt.Common.csproj", "{FA81FB6D-B7C2-410F-BB4E-A894F9B86ADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndJwt.Database", "AccountAndJwt.Database\AccountAndJwt.Database.csproj", "{1783357E-9946-410C-A748-6B09D2EF9170}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Database", "AccountAndJwt.Database\AccountAndJwt.Database.csproj", "{1783357E-9946-410C-A748-6B09D2EF9170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

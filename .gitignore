@@ -240,17 +240,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-/src/Parking.WebSite/.idea
-/src/Parking.WebSite/bundleconfig.json.bindings
-/src/Parking.WebSite/wwwroot/lib/bootstrap-datepicker/grunt/.jshintrc
-/src/Parking.WebSite/wwwroot/lib/bootstrap-datepicker/less/.csslintrc
 
-/src/Parking.WebSite/wwwroot/js/
-/src/Parking.WebSite/wwwroot/css/
-/src/Parking.WebSite/wwwroot/images/
-/src/Parking.WebSite/Typings/
 
-/src/Parking.WebSite/wwwroot/_references.js
-/src/Parking.WebSite/Content/Images/maps
-/src/Parking.WebSite/Logs
-/src/Parking.WebService/Logs
+/src/AccountAndJwt.Api/Logs
+/src/AccountAndJwt.IntegrationTests/Logs
