@@ -1,36 +1,35 @@
-Thanks for applying for this project, which is to write some of the base functionality for a .net core 2 web api.
-What I’m looking for is as below, and should use the best practices of attribute routing, named actions and correspond to the correct HTTP verbs.
+This project demonstrates implementation of base functionality .NET Core 2 WebAPI + JWT Token authorization.
+I’m presenting the best practices of attribute routing, named actions, which corresponds to the correct HTTP verbs.
 
 ApplicationUser Model:
-*	Extend the IdentityUser class so can add additional properties to the user model
+*	Extended the IdentityUser class, which can store additional properties of the user model.
 
-Account Controller (making use of the Identity package):
+Account Controller:
 *	Create a user
 *	Reset a password
 *	Remove a user account
-*	Change email address (which should send out a warning)
+*	Change email address (able to send out a warning)
 *	Update other account details such as name
 *	Add/remove a role from a user
 
-Token Controller (making use of the Identity package):
+Token Controller:
 *	Issue a JWT Token based upon user/password
 *	Issue a JWT Token based upon a refresh token
 *	Revoke a JWT token
 *	JWT Token to include relevant claims
 
-Startup:
-*	Setup the JWT Authentication
-*	Use the IdentityCore rather than Identity so as cookies are not set
-*	Dependency injection correctly used
-*	Configuration and secrets used to setup parameters
+Startup class:
+*	Configuration the JWT Authentication
+*	Used the IdentityCore, rather than Identity, so cookies are not set up
+*	Dependency injection used
+*	Configuration and secrets are used to setup initially parameters
 
-Logging should also be used, with sensitive data not logged.
+Logging also used, but sensitive data are excluded from logs.
 
-This should be structured neatly, with comments and unit tests within a working web api solution using seeded data and the in-memory database. 
-Another controller can be used for testing to show that bearer tokens are working as expected.
-The HTTP response codes should be in line with the actions and results, e.g. user created 203 (with a route to the resource and the json representation).
+Application structured neatly based on classical 3rd layer architecture, with public methods annotation and self documenting API by Swagger. Unit tests samples are provided, but not with full coverage. Integration test engine also implemented, based on in-memory database and data seeding independently for each test. Integration tests scripts shows that that bearer tokens are working as expected and ValueCondroller properly provide all base CRUD operations with Value entity.
+The HTTP response codes are in line with the actions and results, e.g. user created 203 (with a route to the resource and JSON representation).
 
-Reference reading:
+Based on the materials below:
 *	https://stackoverflow.com/questions/46323844/net-core-2-0-web-api-using-jwt-adding-identity-breaks-the-jwt-authentication
 *	https://github.com/shawnwildermuth/DualAuthCore
 *	http://www.c-sharpcorner.com/article/handle-refresh-token-using-asp-net-core-2-0-and-json-web-token/
