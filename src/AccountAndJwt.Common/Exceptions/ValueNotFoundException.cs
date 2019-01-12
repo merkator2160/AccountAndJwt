@@ -17,7 +17,7 @@ namespace AccountAndJwt.Common.Exceptions
 		{
 
 		}
-		protected ValueNotFoundException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected ValueNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

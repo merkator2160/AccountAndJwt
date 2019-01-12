@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Services
 {
-	internal class UserService : IUserService
+	internal sealed class UserService : IUserService
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Services
 {
-	internal class BasicEmailService : IEmailService
+	internal sealed class BasicEmailService : IEmailService
 	{
 		private readonly EmailServiceConfig _config;
 

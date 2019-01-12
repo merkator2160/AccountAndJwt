@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Services
 {
-	internal class TokenService : ITokenService
+	internal sealed class TokenService : ITokenService
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly AudienceConfig _audienceConfig;

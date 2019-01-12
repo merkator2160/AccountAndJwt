@@ -36,8 +36,7 @@ namespace AccountAndJwt.Api
 					logging.ClearProviders();
 					logging.SetMinimumLevel(LogLevel.Trace);
 				})
-				.UseNLog()
-				.UseApplicationInsights();
+				.UseNLog();
 		}
 	}
 }

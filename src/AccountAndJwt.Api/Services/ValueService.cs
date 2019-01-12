@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AccountAndJwt.Api.Services
 {
-	internal class ValueService : IValueService
+	internal sealed class ValueService : IValueService
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;

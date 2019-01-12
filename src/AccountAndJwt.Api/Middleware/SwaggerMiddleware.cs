@@ -12,7 +12,11 @@ namespace AccountAndJwt.Api.Middleware
 		{
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("AccountAndJwt", new Info { Title = "AccountAndJwt API", Version = "v1" });
+				c.SwaggerDoc("AccountAndJwt", new Info
+				{
+					Title = "AccountAndJwt API",
+					Version = "v1"
+				});
 				c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "Documentation.xml"));
 				c.IgnoreObsoleteActions();
 				c.IgnoreObsoleteProperties();
