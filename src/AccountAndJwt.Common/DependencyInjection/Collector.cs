@@ -37,10 +37,6 @@ namespace AccountAndJwt.Common.DependencyInjection
 				}
 			}
 		}
-		public static Assembly[] LoadSolutionAssemblies()
-		{
-			return LoadAssemblies("AccountAndJwt");
-		}
 		public static Assembly[] LoadAssemblies(String partOfName)
 		{
 			return DependencyContext.Default.CompileLibraries

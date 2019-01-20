@@ -53,7 +53,7 @@ namespace AccountAndJwt.IntegrationTests
 			builder.RegisterConfiguration(_configuration, pandaApiAssembly);
 
 			builder.RegisterModule(new InMemoryDatabaseModule(_configuration));
-			builder.RegisterModule(new AutoMapperModule(Collector.LoadSolutionAssemblies()));
+			builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
 
 			builder.Populate(services);
 

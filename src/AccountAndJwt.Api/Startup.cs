@@ -48,7 +48,7 @@ namespace AccountAndJwt.Api
 			builder.RegisterLocalConfiguration(_configuration);
 
 			builder.RegisterModule(new DatabaseModule(_configuration));
-			builder.RegisterModule(new AutoMapperModule(Collector.LoadSolutionAssemblies()));
+			builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
 
 			builder.Populate(services);
 
