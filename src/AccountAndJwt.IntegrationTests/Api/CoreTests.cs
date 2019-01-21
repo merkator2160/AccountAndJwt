@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -36,6 +37,17 @@ namespace AccountAndJwt.IntegrationTests.Api
 
 			client = _factory.CreateClient();
 			await _factory.AuthorizeAsAdminAsync(client);
+		}
+
+		[Fact]
+		public async Task ErrorHandlingMiddlewareTest()
+		{
+			var client = _factory.CreateClient();
+			var response = await client.GetAsync("/api/Debug/CreateUnhandledException");
+			var result = response.Content.ReadAsStringAsync().Result;
+
+			Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+			Assert.Equal("Exception message!", result);
 		}
 	}
 }

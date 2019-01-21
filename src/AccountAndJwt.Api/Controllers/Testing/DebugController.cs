@@ -71,6 +71,9 @@ namespace AccountAndJwt.Api.Controllers.Testing
 			return Ok();
 		}
 
+		/// <summary>
+		/// Return current environment name
+		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 500)]
@@ -80,12 +83,12 @@ namespace AccountAndJwt.Api.Controllers.Testing
 		}
 
 		/// <summary>
-		/// Sample action implementation to test something in the future.
+		/// Returns information about available repositories
 		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(typeof(String), 200)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult TestAction()
+		public IActionResult GetAvailableRepositories()
 		{
 			try
 			{
@@ -95,6 +98,17 @@ namespace AccountAndJwt.Api.Controllers.Testing
 			{
 				return BadRequest(ex.Message);
 			}
+		}
+
+		/// <summary>
+		/// Creates unhandled exception
+		/// </summary>
+		[HttpGet]
+		[ProducesResponseType(typeof(String), 200)]
+		[ProducesResponseType(typeof(String), 500)]
+		public IActionResult CreateUnhandledException()
+		{
+			throw new Exception("Exception message!");
 		}
 	}
 }
