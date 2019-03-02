@@ -26,8 +26,8 @@ namespace AccountAndJwt.Database
 		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
 		private void Initialize()
 		{
-			ChangeTracker.AutoDetectChangesEnabled = false;                             // increasing working speed 4x times
-			ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;     // Equivalent of .AsNoTracking() for each query
+			ChangeTracker.AutoDetectChangesEnabled = false;                             // manual changes tracking, increasing working speed 4x times
+			ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;     // Equivalent of .AsNoTracking() for each select query
 			Database.AutoTransactionsEnabled = true;                                    // Required for "Unit of work pattern"
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
