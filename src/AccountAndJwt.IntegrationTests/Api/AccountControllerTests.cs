@@ -18,7 +18,7 @@ namespace AccountAndJwt.IntegrationTests.Api
 
 		// TESTS //////////////////////////////////////////////////////////////////////////////////
 		[Fact]
-		public async Task GetAccountInfoTest()
+		public async Task GetUserClaimsTest()
 		{
 			var client = _factory.CreateClient();
 			await _factory.AuthorizeAsAdminAsync(client);

@@ -32,8 +32,6 @@ namespace AccountAndJwt.Database
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			// Dynamically load all configurations
-
 			var typesToRegister = typeof(DataContext).GetTypeInfo().Assembly.GetTypes()
 				.Where(type => !String.IsNullOrEmpty(type.Namespace))
 				.Where(type =>
@@ -49,13 +47,13 @@ namespace AccountAndJwt.Database
 			}
 
 			// ...or do it manually below. For example,
-			// modelBuilder.AddConfiguration(new ParkingTerrioryMap());
+			// modelBuilder.AddConfiguration(new ParkingTerritoryMap());
 
 			base.OnModelCreating(modelBuilder);
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			if(!optionsBuilder.IsConfigured) // This prevents multiple configurations
+			if(!optionsBuilder.IsConfigured)
 			{
 				base.OnConfiguring(optionsBuilder);
 			}

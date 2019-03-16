@@ -9,19 +9,17 @@ namespace AccountAndJwt.Database
 		private readonly DataContext _context;
 
 
-		public UnitOfWork(DataContext context, IValueRepository valueRepository, IUserRepository userRepository, IRoleRepository roleRepository)
+		public UnitOfWork(DataContext context, IValueRepository valueRepository, IUserRepository userRepository)
 		{
 			_context = context;
 			Values = valueRepository;
 			Users = userRepository;
-			Roles = roleRepository;
 		}
 
 
 		// IUnitOfWork ////////////////////////////////////////////////////////////////////////////
 		public IValueRepository Values { get; }
 		public IUserRepository Users { get; }
-		public IRoleRepository Roles { get; }
 
 
 		// IDisposable ////////////////////////////////////////////////////////////////////////////

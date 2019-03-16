@@ -12,5 +12,6 @@ namespace AccountAndJwt.Database.Interfaces
 		Task<UserDb[]> GetAllEagerAsync();
 		Task AddRoleAsync(Int32 userId, Int32 roleId);
 		Task DeleteRoleAsync(Int32 userId, Int32 roleId);
+		Task<RoleDb> GetRoleWithUserAsync(String roleName);
 	}
 }

@@ -109,7 +109,7 @@ namespace AccountAndJwt.Api.Services
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
-			var requestedRole = await _unitOfWork.Roles.GetByNameEagerAsync(roleName);
+			var requestedRole = await _unitOfWork.Users.GetRoleWithUserAsync(roleName);
 			if(requestedUser.UserRoles.Any(p => String.Equals(p.Role.Name, requestedRole.Name)))
 				throw new UserRoleException($"User with provided id already have the \"{roleName}\" role");
 
@@ -122,7 +122,7 @@ namespace AccountAndJwt.Api.Services
 			if(requestedUser == null)
 				throw new UserNotFoundException("User with provided id was not found");
 
-			var requestedRole = await _unitOfWork.Roles.GetByNameEagerAsync(roleName);
+			var requestedRole = await _unitOfWork.Users.GetRoleWithUserAsync(roleName);
 			var requestedUserRole = requestedUser.UserRoles.FirstOrDefault(p => String.Equals(p.Role.Name, requestedRole.Name));
 			if(requestedUserRole == null)
 				throw new UserRoleException($"User with provided id have no the \"{roleName}\" role");

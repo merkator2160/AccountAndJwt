@@ -7,7 +7,6 @@ namespace AccountAndJwt.Database.Interfaces
 	{
 		IValueRepository Values { get; }
 		IUserRepository Users { get; }
-		IRoleRepository Roles { get; }
 
 		Int32 Commit();
 		Task<Int32> CommitAsync();

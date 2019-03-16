@@ -57,7 +57,9 @@ namespace AccountAndJwt.Database.DependencyInjection
 			builder
 				.RegisterAssemblyTypes(_currentAssembly)
 				.Where(t => t.Name.EndsWith("Repository"))
-				.AsClosedTypesOf(typeof(IRepository<>));
+				.AsClosedTypesOf(typeof(IRepository<>))
+				.AsSelf()
+				.AsImplementedInterfaces();
 
 			builder
 				.RegisterType<UnitOfWork>()

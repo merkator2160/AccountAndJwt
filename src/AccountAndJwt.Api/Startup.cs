@@ -82,7 +82,6 @@ namespace AccountAndJwt.Api
 
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();
-			app.UseAuthentication();
 			app.UseConfiguredSwagger();
 			app.UseGlobalExceptionHandler();
 			app.UseAuthentication();

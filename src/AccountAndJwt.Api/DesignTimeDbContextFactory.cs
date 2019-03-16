@@ -13,7 +13,7 @@ namespace AccountAndJwt.Api
 	{
 		DataContext IDesignTimeDbContextFactory<DataContext>.CreateDbContext(String[] args)
 		{
-			var configuration = CustomConfigurationProvider.CreateConfiguration(ExecutingEnvironment.Development, Directory.GetCurrentDirectory());
+			var configuration = CustomConfigurationProvider.CreateConfiguration(HostingEnvironment.Development, Directory.GetCurrentDirectory());
 			var builder = new ContainerBuilder();
 			builder.RegisterModule(new DatabaseModule(configuration)
 			{

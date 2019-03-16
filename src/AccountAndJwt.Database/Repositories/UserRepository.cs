@@ -57,5 +57,12 @@ namespace AccountAndJwt.Database.Repositories
 			var requestedUserRole = await Context.UserRoles.FirstAsync(p => p.RoleId == roleId && p.UserId == userId);
 			Context.UserRoles.Remove(requestedUserRole);
 		}
+		public Task<RoleDb> GetRoleWithUserAsync(String roleName)
+		{
+			return Context.Roles
+				.Include(p => p.UserRoles)
+				.ThenInclude(p => p.User)
+				.FirstOrDefaultAsync(p => p.Name == roleName);
+		}
 	}
 }

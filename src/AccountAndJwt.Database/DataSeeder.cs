@@ -60,11 +60,11 @@ namespace AccountAndJwt.Database
 					{
 						new UserRoleDb()
 						{
-							Role = roles[0]
+							Role = roles.First(p => p.Name.Equals(Role.Admin))
 						},
 						new UserRoleDb()
 						{
-							Role = roles[1]
+							Role = roles.First(p => p.Name.Equals(Role.Moderator))
 						}
 					}
 				});
