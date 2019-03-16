@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 
@@ -61,7 +60,7 @@ namespace AccountAndJwt.IntegrationTests
 
 			return new AutofacServiceProvider(container);
 		}
-		public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
+		public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
 		{
 			using(var context = serviceProvider.GetRequiredService<DataContext>())
 			{
@@ -72,9 +71,6 @@ namespace AccountAndJwt.IntegrationTests
 
 			app.UseDeveloperExceptionPage();
 			app.UseCors(CorsPolicies.Development);
-
-			loggerFactory.AddConsole(_configuration.GetSection("Logging"));
-			loggerFactory.AddDebug();
 
 			app.UseAuthentication();
 			app.UseConfiguredSwagger();

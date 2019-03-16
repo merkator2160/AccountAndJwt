@@ -1,6 +1,5 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
 using AccountAndJwt.Common.Consts;
-using AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

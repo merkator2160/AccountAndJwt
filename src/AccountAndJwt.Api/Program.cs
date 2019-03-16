@@ -31,10 +31,12 @@ namespace AccountAndJwt.Api
 		{
 			return WebHost.CreateDefaultBuilder(args)
 				.UseStartup<Startup>()
-				.ConfigureLogging(logging =>
+				.ConfigureLogging((hostingContext, logging) =>
 				{
 					logging.ClearProviders();
 					logging.SetMinimumLevel(LogLevel.Trace);
+					logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+					logging.AddDebug();
 				})
 				.UseNLog();
 		}

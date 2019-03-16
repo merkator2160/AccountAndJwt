@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 
@@ -57,7 +56,7 @@ namespace AccountAndJwt.Api
 
 			return new AutofacServiceProvider(container);
 		}
-		public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+		public void Configure(IApplicationBuilder app)
 		{
 			if(_env.IsDevelopment())
 			{
@@ -76,9 +75,6 @@ namespace AccountAndJwt.Api
 				app.UseCors(CorsPolicies.Production);
 				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
 			}
-
-			loggerFactory.AddConsole(_configuration.GetSection("Logging"));
-			loggerFactory.AddDebug();
 
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();

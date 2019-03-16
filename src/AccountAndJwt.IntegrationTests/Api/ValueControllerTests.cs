@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
-using AspNetCore.Http.Extensions;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
