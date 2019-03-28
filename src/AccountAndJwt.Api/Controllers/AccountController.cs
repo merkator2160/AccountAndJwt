@@ -46,24 +46,17 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Register([FromBody]RegisterUserAm userDetails)
 		{
-			try
-			{
-				if(!ModelState.IsValid)
-					return BadRequest($"Please provide valid \"{nameof(userDetails)}\"");
+			if(!ModelState.IsValid)
+				return BadRequest($"Please provide valid \"{nameof(userDetails)}\"");
 
-				await _userService.RegisterAsync(_mapper.Map<UserDto>(userDetails));
-				_logger.LogInformation($"New user registered {userDetails.Login}");
+			await _userService.RegisterAsync(_mapper.Map<UserDto>(userDetails));
+			_logger.LogInformation($"New user registered {userDetails.Login}");
 
-				return Ok(new RegisterUserResponseAm()
-				{
-					GetAccessTokenUrl = _urlHelper.Action("AuthorizeByCredentials", "Token"),
-					RefreshAccessTokenUrl = _urlHelper.Action("RefreshToken", "Token")
-				});
-			}
-			catch(ApplicationException ex)
+			return Ok(new RegisterUserResponseAm()
 			{
-				return BadRequest(ex.Message);
-			}
+				GetAccessTokenUrl = _urlHelper.Action("AuthorizeByCredentials", "Token"),
+				RefreshAccessTokenUrl = _urlHelper.Action("RefreshToken", "Token")
+			});
 		}
 
 		/// <summary>
@@ -80,20 +73,13 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> DeleteAccount([FromBody]Int32 userId)
 		{
-			try
-			{
-				if(userId == 0)
-					return BadRequest($"Please provide \"{nameof(userId)}\"");
+			if(userId == 0)
+				return BadRequest($"Please provide \"{nameof(userId)}\"");
 
-				await _userService.DeleteUserAsync(userId);
-				_logger.LogInformation($"User with id {userId} deleted");
+			await _userService.DeleteUserAsync(userId);
+			_logger.LogInformation($"User with id {userId} deleted");
 
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok();
 		}
 
 		/// <summary>
@@ -110,18 +96,11 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> AddRole([FromBody]AddRemoveRoleAm request)
 		{
-			try
-			{
-				if(!ModelState.IsValid)
-					return BadRequest($"Please provide valid \"{nameof(request)}\"");
+			if(!ModelState.IsValid)
+				return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				await _userService.AddRoleAsync(request.UserId, request.Role);
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			await _userService.AddRoleAsync(request.UserId, request.Role);
+			return Ok();
 		}
 
 		/// <summary>
@@ -138,18 +117,11 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> RemoveRole([FromBody]AddRemoveRoleAm request)
 		{
-			try
-			{
-				if(!ModelState.IsValid)
-					return BadRequest($"Please provide valid \"{nameof(request)}\"");
+			if(!ModelState.IsValid)
+				return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				await _userService.RemoveRoleAsync(request.UserId, request.Role);
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			await _userService.RemoveRoleAsync(request.UserId, request.Role);
+			return Ok();
 		}
 
 		/// <summary>
@@ -165,22 +137,15 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> ChangeEmail([FromBody]String newEmail)
 		{
-			try
-			{
-				if(String.IsNullOrEmpty(newEmail))
-					return BadRequest($"Please provide valid \"{nameof(newEmail)}\"");
+			if(String.IsNullOrEmpty(newEmail))
+				return BadRequest($"Please provide valid \"{nameof(newEmail)}\"");
 
-				var currentUserId = User.GetId();
+			var currentUserId = User.GetId();
 
-				await _userService.ChangeEmailAsync(currentUserId, newEmail);
-				_logger.LogInformation($"Email of user {currentUserId} updated");
+			await _userService.ChangeEmailAsync(currentUserId, newEmail);
+			_logger.LogInformation($"Email of user {currentUserId} updated");
 
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok();
 		}
 
 		/// <summary>
@@ -196,22 +161,15 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> ChangeName([FromBody]ChangeNameRequestAm request)
 		{
-			try
-			{
-				if(!ModelState.IsValid)
-					return BadRequest($"Please provide valid \"{nameof(request)}\"");
+			if(!ModelState.IsValid)
+				return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				var currentUserId = User.GetId();
+			var currentUserId = User.GetId();
 
-				await _userService.ChangeNameAsync(currentUserId, request.FirstName, request.LastName);
-				_logger.LogInformation($"Email of user {currentUserId} updated");
+			await _userService.ChangeNameAsync(currentUserId, request.FirstName, request.LastName);
+			_logger.LogInformation($"Email of user {currentUserId} updated");
 
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok();
 		}
 
 		/// <summary>
@@ -228,14 +186,7 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> GetUser(Int32 userId)
 		{
-			try
-			{
-				return Ok(_mapper.Map<UserAm>(await _userService.GetUserAsync(userId)));
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok(_mapper.Map<UserAm>(await _userService.GetUserAsync(userId)));
 		}
 
 		/// <summary>
@@ -251,14 +202,7 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> GetAllUsers()
 		{
-			try
-			{
-				return Ok(_mapper.Map<UserAm[]>(await _userService.GetAllUsersAsync()));
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok(_mapper.Map<UserAm[]>(await _userService.GetAllUsersAsync()));
 		}
 
 		/// <summary>
@@ -274,22 +218,15 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordAm request)
 		{
-			try
-			{
-				if(!ModelState.IsValid)
-					return BadRequest($"Please provide valid \"{nameof(request)}\"");
+			if(!ModelState.IsValid)
+				return BadRequest($"Please provide valid \"{nameof(request)}\"");
 
-				var currentUserId = User.GetId();
+			var currentUserId = User.GetId();
 
-				await _userService.UpdatePasswordAsync(currentUserId, request.OldPassword, request.NewPassword);
-				_logger.LogInformation($"User with id {currentUserId} change its password");
+			await _userService.UpdatePasswordAsync(currentUserId, request.OldPassword, request.NewPassword);
+			_logger.LogInformation($"User with id {currentUserId} change its password");
 
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok();
 		}
 	}
 }

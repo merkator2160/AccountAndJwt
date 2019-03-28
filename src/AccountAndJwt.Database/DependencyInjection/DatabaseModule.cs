@@ -1,5 +1,4 @@
 ﻿using AccountAndJwt.Common.DependencyInjection;
-using AccountAndJwt.Database.Interfaces;
 using AccountAndJwt.Database.Models.Config;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 {
 	public class DatabaseModule : Module
 	{
-		public const String ConnectionStringName = "DefaultConnection";
+		public const String _defaultConnectionStringName = "DefaultConnection";
 		private readonly IConfiguration _configuration;
 		private readonly Assembly _currentAssembly;
 
@@ -23,7 +22,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 			_currentAssembly = Assembly.GetExecutingAssembly();
 			_configuration = configuration;
 
-			ConnectionString = configuration.GetConnectionString(ConnectionStringName);
+			ConnectionString = configuration.GetConnectionString(_defaultConnectionStringName);
 			Config = configuration.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 		}
 
@@ -57,7 +56,6 @@ namespace AccountAndJwt.Database.DependencyInjection
 			builder
 				.RegisterAssemblyTypes(_currentAssembly)
 				.Where(t => t.Name.EndsWith("Repository"))
-				.AsClosedTypesOf(typeof(IRepository<>))
 				.AsSelf()
 				.AsImplementedInterfaces();
 
@@ -71,7 +69,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 		// CONTEXT FUNCTIONS //////////////////////////////////////////////////////////////////////
 		public static void CreateDatabase(IConfiguration configurationService, Action<DataContext, String> strategy)
 		{
-			var connectionString = configurationService.GetConnectionString(ConnectionStringName);
+			var connectionString = configurationService.GetConnectionString(_defaultConnectionStringName);
 			var optionsBuilder = new DbContextOptionsBuilder().UseSqlServer(connectionString);
 			using(var context = new DataContext(optionsBuilder.Options))
 			{

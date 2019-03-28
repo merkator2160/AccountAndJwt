@@ -82,6 +82,14 @@ namespace AccountAndJwt.Api.Controllers.Testing
 			return Ok(_env.EnvironmentName);
 		}
 
+		[HttpGet]
+		[ProducesResponseType(typeof(String), 200)]
+		[ProducesResponseType(typeof(String), 500)]
+		public IActionResult GetEnvironmentVariable()
+		{
+			return Ok(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+		}
+
 		/// <summary>
 		/// Returns information about available repositories
 		/// </summary>
@@ -90,14 +98,7 @@ namespace AccountAndJwt.Api.Controllers.Testing
 		[ProducesResponseType(typeof(String), 500)]
 		public IActionResult GetAvailableRepositories()
 		{
-			try
-			{
-				return Ok(_unitOfWork);
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok(_unitOfWork);
 		}
 
 		/// <summary>
@@ -109,6 +110,17 @@ namespace AccountAndJwt.Api.Controllers.Testing
 		public IActionResult CreateUnhandledException()
 		{
 			throw new Exception("Exception message!");
+		}
+
+		/// <summary>
+		/// Creates unhandled application exception
+		/// </summary>
+		[HttpGet]
+		[ProducesResponseType(typeof(String), 200)]
+		[ProducesResponseType(typeof(String), 500)]
+		public IActionResult CreateUnhandledApplicationException()
+		{
+			throw new ApplicationException("ApplicationException message!");
 		}
 	}
 }

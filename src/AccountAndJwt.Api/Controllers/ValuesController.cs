@@ -60,14 +60,7 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Get(Int32 id)
 		{
-			try
-			{
-				return Ok(_mapper.Map<ValueAm>(await _valueService.GetAsync(id)));
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok(_mapper.Map<ValueAm>(await _valueService.GetAsync(id)));
 		}
 
 		/// <summary>
@@ -105,20 +98,13 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Put([FromBody]ValueAm value)
 		{
-			try
-			{
-				if(!ModelState.IsValid)
-					return BadRequest("Please provide valid data.");
+			if(!ModelState.IsValid)
+				return BadRequest("Please provide valid data.");
 
-				await _valueService.UpdateAsync(_mapper.Map<ValueDto>(value));
-				_logger.LogInformation($"Value with id: {value.Id} updated");
+			await _valueService.UpdateAsync(_mapper.Map<ValueDto>(value));
+			_logger.LogInformation($"Value with id: {value.Id} updated");
 
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok();
 		}
 
 		/// <summary>
@@ -135,17 +121,10 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Delete(Int32 id)
 		{
-			try
-			{
-				await _valueService.DeleteAsync(id);
-				_logger.LogInformation($"Value deleted, value id: {id}");
+			await _valueService.DeleteAsync(id);
+			_logger.LogInformation($"Value deleted, value id: {id}");
 
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok();
 		}
 	}
 }

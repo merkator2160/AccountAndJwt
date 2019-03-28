@@ -1,5 +1,4 @@
 ﻿using AccountAndJwt.Common.DependencyInjection;
-using AccountAndJwt.Database.Interfaces;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +43,8 @@ namespace AccountAndJwt.Database.DependencyInjection
 			builder
 				.RegisterAssemblyTypes(_assembly)
 				.Where(t => t.Name.EndsWith("Repository"))
-				.AsClosedTypesOf(typeof(IRepository<>));
+				.AsSelf()
+				.AsImplementedInterfaces();
 
 			builder
 				.RegisterType<UnitOfWork>()

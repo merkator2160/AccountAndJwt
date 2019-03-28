@@ -33,47 +33,33 @@ namespace AccountAndJwt.Api.Controllers
 		/// Get the access-token by username and password
 		/// </summary>
 		[HttpPost]
-		[ProducesResponseType(typeof(RefreshTokenResponseAm), 200)]
+		[ProducesResponseType(typeof(AuthorizeResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> AuthorizeByCredentials([FromBody]AuthorizeRequestAm credentials)
 		{
-			try
-			{
-				if(!ModelState.IsValid)
-					return BadRequest($"Please provide valid \"{nameof(credentials)}\"");
+			if(!ModelState.IsValid)
+				return BadRequest($"Please provide valid \"{nameof(credentials)}\"");
 
-				var result = await _tokenService.CreateAccessTokenByCredentialsAsync(credentials.Login, credentials.Password);
-				_logger.LogInformation($"User authorized {credentials.Login}");
+			var result = await _tokenService.CreateAccessTokenByCredentialsAsync(credentials.Login, credentials.Password);
+			_logger.LogInformation($"User authorized {credentials.Login}");
 
-				return Ok(_mapper.Map<AuthorizeResponseAm>(result));
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok(_mapper.Map<AuthorizeResponseAm>(result));
 		}
 
 		/// <summary>
 		/// Get new access token by provided refresh token
 		/// </summary>
 		[HttpPost]
-		[ProducesResponseType(typeof(AuthorizeResponseAm), 200)]
+		[ProducesResponseType(typeof(RefreshTokenResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> RefreshToken([FromBody]String refreshToken)
 		{
-			try
-			{
-				var result = await _tokenService.CreateAccessTokenByRefreshTokenAsync(refreshToken);
-				_logger.LogInformation("Token refreshed");
+			var result = await _tokenService.CreateAccessTokenByRefreshTokenAsync(refreshToken);
+			_logger.LogInformation("Token refreshed");
 
-				return Ok(_mapper.Map<RefreshTokenResponseAm>(result));
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok(_mapper.Map<RefreshTokenResponseAm>(result));
 		}
 
 		/// <summary>
@@ -85,17 +71,10 @@ namespace AccountAndJwt.Api.Controllers
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> RevokeToken([FromBody]String refreshToken)
 		{
-			try
-			{
-				await _tokenService.RevokeRefreshToken(refreshToken);
-				_logger.LogInformation("Refresh token revoken");
+			await _tokenService.RevokeRefreshToken(refreshToken);
+			_logger.LogInformation("Refresh token revoked");
 
-				return Ok();
-			}
-			catch(ApplicationException ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return Ok();
 		}
 	}
 }
