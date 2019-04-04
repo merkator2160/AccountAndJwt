@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Api.Middleware.Hangfire.Jobs;
+﻿using AccountAndJwt.Api.Middleware.Hangfire.Auth;
+using AccountAndJwt.Api.Middleware.Hangfire.Jobs;
 using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Hangfire;
@@ -20,7 +21,13 @@ namespace AccountAndJwt.Api.Middleware.Hangfire
 	{
 		public static void UseHangfire(this IApplicationBuilder app)
 		{
-			app.UseHangfireDashboard();
+			app.UseHangfireDashboard("/hangfire", new DashboardOptions()
+			{
+				Authorization = new[]
+				{
+					new FreeAuthorizationFilter()
+				}
+			});
 			app.UseHangfireServer(new BackgroundJobServerOptions()
 			{
 				Queues = new[] { CreateEnvironmentDependentQueueName() }
