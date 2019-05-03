@@ -47,7 +47,7 @@ namespace AccountAndJwt.IntegrationTests.Api
 			var result = response.Content.ReadAsStringAsync().Result;
 
 			Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-			Assert.Equal("Exception message!", result);
+			Assert.Contains("Exception message!", result);
 		}
 	}
 }

@@ -35,10 +35,14 @@ namespace AccountAndJwt.Api.Middleware
 		}
 		public static void UseConfiguredSwagger(this IApplicationBuilder app)
 		{
-			app.UseSwagger();
+			app.UseSwagger(c =>
+			{
+				c.RouteTemplate = "api-docs/{documentName}/swagger.json";
+			});
 			app.UseSwaggerUI(c =>
 			{
-				c.SwaggerEndpoint("/swagger.json", "AccountAndJwt API");
+				c.RoutePrefix = "api-docs";
+				c.SwaggerEndpoint("/api-docs/AccountAndJwt/swagger.json", "AccountAndJwt API V1");
 			});
 		}
 	}

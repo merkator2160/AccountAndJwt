@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AccountAndJwt.Api\AccountAndJwt.Api.csproj" />
+    <ProjectReference Include="..\WebApplication1\AccountAndJwt.AuthorizationService.csproj" />
   </ItemGroup>
 
 </Project>

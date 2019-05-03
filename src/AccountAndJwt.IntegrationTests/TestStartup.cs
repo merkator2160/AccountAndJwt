@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Api.Middleware;
-using AccountAndJwt.Api.Middleware.Config;
-using AccountAndJwt.Api.Middleware.Cors;
+﻿using AccountAndJwt.AuthorizationService.Middleware;
+using AccountAndJwt.AuthorizationService.Middleware.Config;
+using AccountAndJwt.AuthorizationService.Middleware.Cors;
 using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database;
 using AccountAndJwt.Database.DependencyInjection;
@@ -8,6 +8,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
@@ -39,17 +40,20 @@ namespace AccountAndJwt.IntegrationTests
 			services.AddCors(CorsMiddleware.AddPolitics);
 			services.AddConfiguredSwaggerGen();
 			services.AddJwtAuthService(_configuration);
-			services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+			services
+				.AddMvc()
+				.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 			return BuildServiceProvider(services);
 		}
 		private IServiceProvider BuildServiceProvider(IServiceCollection services)
 		{
 			var builder = new ContainerBuilder();
-			var pandaApiAssembly = Collector.GetAssembly("AccountAndJwt.Api");
+			var assembly = Collector.GetAssembly("AccountAndJwt.AuthorizationService");
 
-			builder.RegisterServices(pandaApiAssembly);
-			builder.RegisterConfiguration(_configuration, pandaApiAssembly);
+			builder.RegisterConfiguration(_configuration, assembly);
+			builder.RegisterServices(assembly);
 
 			builder.RegisterModule(new InMemoryDatabaseModule(_configuration));
 			builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));

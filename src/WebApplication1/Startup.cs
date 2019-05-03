@@ -1,41 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AccountAndJwt.AuthorizationService.Middleware;
+using AccountAndJwt.AuthorizationService.Middleware.Config;
+using AccountAndJwt.AuthorizationService.Middleware.Cors;
+using AccountAndJwt.AuthorizationService.Middleware.Hangfire;
+using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Database.DependencyInjection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
 
-namespace WebApplication1
+namespace AccountAndJwt.AuthorizationService
 {
-	public class Startup
+	internal class Startup
 	{
-		public Startup(IConfiguration configuration)
+		private readonly IConfiguration _configuration;
+		private readonly IHostingEnvironment _env;
+
+
+		public Startup(IHostingEnvironment env)
 		{
-			Configuration = configuration;
+			_env = env;
+			_configuration = CustomConfigurationProvider.CreateConfiguration(env.EnvironmentName, env.ContentRootPath);
 		}
 
-		public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
+		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
+		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddCors(CorsMiddleware.AddPolitics);
+			services.AddConfiguredSwaggerGen();
+			services.AddHangfire(_configuration);
+			services.AddJwtAuthService(_configuration);
+			services
+				.AddMvc()
+				.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+			return BuildServiceProvider(services);
 		}
-
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		private IServiceProvider BuildServiceProvider(IServiceCollection services)
 		{
-			if(env.IsDevelopment())
+			var builder = new ContainerBuilder();
+
+			builder.RegisterLocalServices();
+			builder.RegisterLocalConfiguration(_configuration);
+
+			builder.RegisterModule(new DatabaseModule(_configuration));
+			builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
+
+			builder.Populate(services);
+
+			var container = builder.Build();
+			container.RegisterJobActivator();
+
+			return new AutofacServiceProvider(container);
+		}
+		public void Configure(IApplicationBuilder app)
+		{
+			if(_env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
+				app.UseCors(CorsPolicies.Development);
+				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
+			}
+			if(_env.IsStaging())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseCors(CorsPolicies.Staging);
+				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
+			}
+			if(_env.IsProduction())
+			{
+				app.UseCors(CorsPolicies.Production);
+				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
 			}
 
-			app.UseMvc();
+			app.UseHangfire();
+			app.ConfigureHangfireJobs();
+			app.UseConfiguredSwagger();
+			app.UseGlobalExceptionHandler();
+			app.UseAuthentication();
+			app.UseMvcWithDefaultRoute();
 		}
 	}
 }

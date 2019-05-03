@@ -1,7 +1,7 @@
 ﻿using AccountAndJwt.Api.Contracts.Models;
-using AccountAndJwt.Api.Controllers;
-using AccountAndJwt.Api.Services.Interfaces;
-using AccountAndJwt.Api.Services.Models;
+using AccountAndJwt.AuthorizationService.Controllers;
+using AccountAndJwt.AuthorizationService.Services.Interfaces;
+using AccountAndJwt.AuthorizationService.Services.Models;
 using AccountAndJwt.Common.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 		{
 			_mapper = new MapperConfiguration(cfg =>
 			{
-				cfg.AddProfiles(typeof(AutoMapperModule).GetTypeInfo().Assembly);     // Dynamically load all configurations
+				cfg.AddMaps(typeof(AutoMapperModule).GetTypeInfo().Assembly);     // Dynamically load all configurations
 			}).CreateMapper();
 			_loggerService = Mock.Of<ILogger<ValuesController>>();
 		}

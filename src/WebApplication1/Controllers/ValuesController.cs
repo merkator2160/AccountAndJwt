@@ -1,45 +1,130 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AccountAndJwt.Api.Contracts.Models;
+using AccountAndJwt.AuthorizationService.Services.Interfaces;
+using AccountAndJwt.AuthorizationService.Services.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
-namespace WebApplication1.Controllers
+namespace AccountAndJwt.AuthorizationService.Controllers
 {
+	/// <summary>
+	/// Simple values controller
+	/// </summary>
+	[Authorize]
 	[Route("api/[controller]")]
-	[ApiController]
-	public class ValuesController : ControllerBase
+	public class ValuesController : Controller
 	{
-		// GET api/values
+		private readonly IMapper _mapper;
+		private readonly IValueService _valueService;
+		private readonly ILogger<ValuesController> _logger;
+
+
+		public ValuesController(IMapper mapper, IValueService valueService, ILogger<ValuesController> logger)
+		{
+			_mapper = mapper;
+			_valueService = valueService;
+			_logger = logger;
+		}
+
+
+		// ACTIONS ////////////////////////////////////////////////////////////////////////////////
+
+		/// <summary>
+		/// [Auth] Retrieves all values
+		/// </summary>
+		/// <remarks>Awesomeness!</remarks>
+		/// <response code="200">Values take it</response>
+		/// <response code="500">Oops! Can't get values right now</response>
 		[HttpGet]
-		public ActionResult<IEnumerable<string>> Get()
+		[ProducesResponseType(typeof(ValueAm[]), 200)]
+		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 500)]
+		public async Task<IActionResult> GetAll()
 		{
-			return new string[] { "value1", "value2" };
+			return Ok(_mapper.Map<ValueAm[]>(await _valueService.GetAllAsync()));
 		}
 
-		// GET api/values/5
+		/// <summary>
+		/// [Auth] Retrieve specific value by unique id
+		/// </summary>
+		/// <remarks>Awesomeness!</remarks>
+		/// <response code="200">Value founded</response>
+		/// <response code="400">Value has missing/invalid values</response>
+		/// <response code="500">Oops! Can't get your value right now</response>
 		[HttpGet("{id}")]
-		public ActionResult<string> Get(int id)
+		[ProducesResponseType(typeof(ValueAm), 200)]
+		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 500)]
+		public async Task<IActionResult> Get(Int32 id)
 		{
-			return "value";
+			return Ok(_mapper.Map<ValueAm>(await _valueService.GetAsync(id)));
 		}
 
-		// POST api/values
+		/// <summary>
+		/// [Auth] Add new value
+		/// </summary>
+		/// <remarks>Awesomeness!</remarks>
+		/// <response code="200">Value created</response>
+		/// <response code="500">Oops! Can't create your value right now</response>
 		[HttpPost]
-		public void Post([FromBody] string value)
+		[ProducesResponseType(typeof(String), 201)]
+		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 500)]
+		public async Task<IActionResult> Post([FromBody]String value)
 		{
+			if(String.IsNullOrEmpty(value))
+				return BadRequest($"{nameof(value)} is not presented in the request body");
+
+			var valueDto = await _valueService.AddAsync(value);
+			_logger.LogInformation($"New value created, value id: {valueDto.Id}");
+
+			return CreatedAtAction(nameof(Get), "Values", new { id = valueDto.Id }, value);
 		}
 
-		// PUT api/values/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
+		/// <summary>
+		/// [Auth] Change value with desired id
+		/// </summary>
+		/// <remarks>Awesomeness!</remarks>
+		/// <response code="200">Value changed</response>
+		/// <response code="400">Value has missing/invalid values</response>
+		/// <response code="500">Oops! Can't update your value right now</response>
+		[HttpPut]
+		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(String), 400)]
+		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 500)]
+		public async Task<IActionResult> Put([FromBody]ValueAm value)
 		{
+			if(!ModelState.IsValid)
+				return BadRequest("Please provide valid data.");
+
+			await _valueService.UpdateAsync(_mapper.Map<ValueDto>(value));
+			_logger.LogInformation($"Value with id: {value.Id} updated");
+
+			return Ok();
 		}
 
-		// DELETE api/values/5
+		/// <summary>
+		/// [Auth] Delete value with desired id
+		/// </summary>
+		/// <remarks>Awesomeness!</remarks>
+		/// <response code="200">Value deleted</response>
+		/// <response code="400">Value has missing/invalid values</response>
+		/// <response code="500">Oops! Can't delete your value right now</response>
 		[HttpDelete("{id}")]
-		public void Delete(int id)
+		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(String), 400)]
+		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 500)]
+		public async Task<IActionResult> Delete(Int32 id)
 		{
+			await _valueService.DeleteAsync(id);
+			_logger.LogInformation($"Value deleted, value id: {id}");
+
+			return Ok();
 		}
 	}
 }
