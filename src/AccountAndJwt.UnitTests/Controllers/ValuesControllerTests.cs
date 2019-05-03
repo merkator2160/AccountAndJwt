@@ -1,8 +1,8 @@
-﻿using AccountAndJwt.Api.Contracts.Models;
-using AccountAndJwt.AuthorizationService.Controllers;
+﻿using AccountAndJwt.AuthorizationService.Controllers;
 using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
 using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

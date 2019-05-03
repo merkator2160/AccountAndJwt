@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Api.Contracts.Models;
+﻿using AccountAndJwt.Contracts.Models;
 using AspNetCore.Http.Extensions;
 using System;
 using System.Threading.Tasks;

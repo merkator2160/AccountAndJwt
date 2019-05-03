@@ -11,7 +11,7 @@ namespace AccountAndJwt.UnitTests.AutoMapper
 		{
 			var mapperConfiguration = new MapperConfiguration(cfg =>
 			{
-				cfg.AddProfiles(Collector.LoadAssemblies("AccountAndJwt"));
+				cfg.AddMaps(Collector.LoadAssemblies("AccountAndJwt"));
 			});
 
 			mapperConfiguration.CompileMappings();

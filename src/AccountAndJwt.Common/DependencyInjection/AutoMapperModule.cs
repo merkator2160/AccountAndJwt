@@ -29,7 +29,7 @@ namespace AccountAndJwt.Common.DependencyInjection
 		}
 		private void RegisterMappings(IMapperConfigurationExpression configure)
 		{
-			configure.AddProfiles(_assembliesToScan);     // Dynamically load all configurations
+			configure.AddMaps(_assembliesToScan);     // Dynamically load all configurations
 
 			// ...or do it manually below. Example: https://github.com/AutoMapper/AutoMapper/wiki/Configuration
 			// ...or see examples in Profiles directory.

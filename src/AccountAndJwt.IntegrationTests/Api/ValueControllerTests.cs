@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Api.Contracts.Models;
+﻿using AccountAndJwt.Contracts.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
