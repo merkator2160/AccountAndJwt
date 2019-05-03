@@ -11,6 +11,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.Development.json" />
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="Moq" Version="4.10.1" />
@@ -24,9 +40,5 @@
   <ItemGroup>
     <ProjectReference Include="..\AccountAndJwt.Api\AccountAndJwt.Api.csproj" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(SolutionDir)AccountAndJwt.Api\bin\Debug\netcoreapp2.1\appsettings.json&quot; &quot;$(TargetDir)appsettings.json&quot;&#xD;&#xA;copy &quot;$(SolutionDir)AccountAndJwt.Api\bin\Debug\netcoreapp2.1\appsettings.Development.json&quot; &quot;$(TargetDir)appsettings.Development.json&quot;" />
-  </Target>
 
 </Project>

@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Database", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.UnitTests", "AccountAndJwt.UnitTests\AccountAndJwt.UnitTests.csproj", "{2A2E4B00-1C08-4419-9BD2-A42FF47B57F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{2EB7C790-6526-420A-B4CD-0400EC9F3E9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{2A2E4B00-1C08-4419-9BD2-A42FF47B57F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A2E4B00-1C08-4419-9BD2-A42FF47B57F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A2E4B00-1C08-4419-9BD2-A42FF47B57F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EB7C790-6526-420A-B4CD-0400EC9F3E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EB7C790-6526-420A-B4CD-0400EC9F3E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EB7C790-6526-420A-B4CD-0400EC9F3E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EB7C790-6526-420A-B4CD-0400EC9F3E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
