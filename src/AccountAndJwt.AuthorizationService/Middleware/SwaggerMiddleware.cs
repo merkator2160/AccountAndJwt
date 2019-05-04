@@ -11,13 +11,13 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 	{
 		public static void AddConfiguredSwaggerGen(this IServiceCollection services)
 		{
-			var test = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+			var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("AccountAndJwt", new Info
 				{
-					Version = "v1",
+					Version = $"v{assemblyVersion}",
 					Title = "AccountAndJwt",
 					Description = "AccountAndJwt API",
 					TermsOfService = "None",
