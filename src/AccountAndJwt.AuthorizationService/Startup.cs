@@ -1,7 +1,7 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware;
-using AccountAndJwt.AuthorizationService.Middleware.Config;
 using AccountAndJwt.AuthorizationService.Middleware.Cors;
 using AccountAndJwt.AuthorizationService.Middleware.Hangfire;
+using AccountAndJwt.Common.Config;
 using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database.DependencyInjection;
 using Autofac;

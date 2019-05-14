@@ -1,9 +1,9 @@
 ﻿using Hangfire.Dashboard;
 using System;
 
-namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Auth
+namespace Wialon.Common.Hangfire.Auth
 {
-	internal class AuthenticatedAuthorizationFilter : IDashboardAuthorizationFilter
+	public class AuthenticatedAuthorizationFilter : IDashboardAuthorizationFilter
 	{
 		public Boolean Authorize(DashboardContext context)
 		{

@@ -1,6 +1,6 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware;
-using AccountAndJwt.AuthorizationService.Middleware.Config;
 using AccountAndJwt.AuthorizationService.Middleware.Cors;
+using AccountAndJwt.Common.Config;
 using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database;
 using AccountAndJwt.Database.DependencyInjection;

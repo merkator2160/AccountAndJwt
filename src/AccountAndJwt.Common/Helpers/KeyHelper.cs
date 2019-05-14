@@ -32,5 +32,20 @@ namespace AccountAndJwt.Common.Helpers
 				iterationCount: 10000,
 				numBytesRequested: 256 / 8));
 		}
+		public static String CalculateMd5(String text)
+		{
+			using(var md5 = MD5.Create())
+			{
+				var inputBytes = Encoding.ASCII.GetBytes(text);
+				var hashBytes = md5.ComputeHash(inputBytes);
+
+				var stringBuilder = new StringBuilder();
+				foreach(var x in hashBytes)
+				{
+					stringBuilder.Append(x.ToString("X2"));
+				}
+				return stringBuilder.ToString();
+			}
+		}
 	}
 }

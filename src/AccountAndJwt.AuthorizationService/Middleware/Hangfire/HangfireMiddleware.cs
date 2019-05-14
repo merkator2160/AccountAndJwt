@@ -1,6 +1,4 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Auth;
-using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs;
-using AccountAndJwt.Database.DependencyInjection;
+﻿using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Hangfire;
 using Hangfire.SqlServer;
@@ -9,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
+using Wialon.Common.Hangfire.Auth;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 {
@@ -30,7 +29,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 			});
 			app.UseHangfireServer(new BackgroundJobServerOptions()
 			{
-				Queues = new[] { CreateEnvironmentDependentQueueName() }
+				Queues = new[] { "default", CreateEnvironmentDependentQueueName() }
 			});
 		}
 		public static void AddHangfire(this IServiceCollection services, IConfiguration configuration)
@@ -45,6 +44,8 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 					TransactionTimeout = TimeSpan.FromSeconds(databaseModule.Config.CommandTimeout),
 					CommandBatchMaxTimeout = TimeSpan.FromSeconds(databaseModule.Config.CommandTimeout)
 				});
+				// or
+				// config.UseMemoryStorage();
 			});
 		}
 		public static void RegisterJobActivator(this IContainer container)
@@ -53,11 +54,12 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		}
 		public static void ConfigureHangfireJobs(this IApplicationBuilder app)
 		{
-			RecurringJob.AddOrUpdate<SampleJob>(
-				p => p.ExecuteAsync(),
-				Cron.Minutely,
-				timeZone: TimeZoneInfo.Utc,
-				queue: CreateEnvironmentDependentQueueName());
+#if DEVELOPMENT
+			//BackgroundJob.Enqueue<DeliveryReportJob>(p => p.ExecuteAsync());
+#else
+			ConfigureOneTimeJobs();
+			ConfigureRecurringJobs();
+#endif
 		}
 
 
@@ -65,6 +67,18 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		private static String CreateEnvironmentDependentQueueName()
 		{
 			return Environment.MachineName.Replace("-", "").ToLower(CultureInfo.InvariantCulture);
+		}
+		private static void ConfigureOneTimeJobs()
+		{
+			//BackgroundJob.Enqueue<DeliveryReportJob>(p => p.ExecuteAsync());
+		}
+		private static void ConfigureRecurringJobs()
+		{
+			//RecurringJob.AddOrUpdate<SampleJob>(
+			// p => p.ExecuteAsync(),
+			// Cron.Minutely,
+			// timeZone: TimeZoneInfo.Utc,
+			// queue: CreateEnvironmentDependentQueueName());
 		}
 	}
 }

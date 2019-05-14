@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 
-namespace AccountAndJwt.AuthorizationService.Middleware.Config
+namespace AccountAndJwt.Common.Config
 {
-	internal static class CustomConfigurationProvider
+	public static class CustomConfigurationProvider
 	{
 		public const String _defaultEnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
 
@@ -28,7 +28,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Config
 				.AddEnvironmentVariables()
 				.SetBasePath(basePath)
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{environment}.json", optional: false, reloadOnChange: true);
+				.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 
 			return builder.Build();
 		}

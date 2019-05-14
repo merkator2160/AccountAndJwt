@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware.Config.Models;
+﻿using AccountAndJwt.AuthorizationService.Middleware.Config;
 using AccountAndJwt.AuthorizationService.Services.Exceptions;
 using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;

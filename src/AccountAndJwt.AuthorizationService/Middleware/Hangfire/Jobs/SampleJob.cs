@@ -1,7 +1,7 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Interfaces;
-using AccountAndJwt.Database.Interfaces;
+﻿using AccountAndJwt.Database.Interfaces;
 using System;
 using System.Threading.Tasks;
+using Wialon.Common.Hangfire.Interfaces;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {

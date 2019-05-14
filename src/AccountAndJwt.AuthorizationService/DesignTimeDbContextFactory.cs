@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware.Config;
+﻿using AccountAndJwt.Common.Config;
 using AccountAndJwt.Common.Consts;
 using AccountAndJwt.Database;
 using AccountAndJwt.Database.DependencyInjection;
