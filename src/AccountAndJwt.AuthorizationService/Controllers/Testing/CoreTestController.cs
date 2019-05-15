@@ -40,6 +40,18 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 
 			return Ok();
 		}
+
+		[HttpGet]
+		public IActionResult UnhandledExceptionTest()
+		{
+			throw new Exception("Exception message!");
+		}
+
+		[HttpGet]
+		public IActionResult UnhandledApplicationExceptionTest()
+		{
+			throw new ApplicationException("ApplicationException message!");
+		}
 	}
 }
 #endif

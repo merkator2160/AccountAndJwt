@@ -100,28 +100,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		{
 			return Ok(_unitOfWork);
 		}
-
-		/// <summary>
-		/// Creates unhandled exception
-		/// </summary>
-		[HttpGet]
-		[ProducesResponseType(typeof(String), 200)]
-		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult CreateUnhandledException()
-		{
-			throw new Exception("Exception message!");
-		}
-
-		/// <summary>
-		/// Creates unhandled application exception
-		/// </summary>
-		[HttpGet]
-		[ProducesResponseType(typeof(String), 200)]
-		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult CreateUnhandledApplicationException()
-		{
-			throw new ApplicationException("ApplicationException message!");
-		}
 	}
 }
 #endif

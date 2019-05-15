@@ -4,12 +4,15 @@ using System.Threading.Tasks;
 
 namespace AccountAndJwt.Database
 {
-	internal class UnitOfWork : IUnitOfWork, IDisposable
+	public class UnitOfWork : IUnitOfWork, IDisposable
 	{
 		private readonly DataContext _context;
 
 
-		public UnitOfWork(DataContext context, IValueRepository valueRepository, IUserRepository userRepository)
+		public UnitOfWork(
+			DataContext context,
+			IValueRepository valueRepository,
+			IUserRepository userRepository)
 		{
 			_context = context;
 			Values = valueRepository;

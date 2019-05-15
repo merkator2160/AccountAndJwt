@@ -40,14 +40,25 @@ namespace AccountAndJwt.IntegrationTests.Api
 		}
 
 		[Fact]
-		public async Task ErrorHandlingMiddlewareTest()
+		public async Task UnhandledExceptionTest()
 		{
 			var client = _factory.CreateClient();
-			var response = await client.GetAsync("/api/Debug/CreateUnhandledException");
+			var response = await client.GetAsync("/api/CoreTest/UnhandledExceptionTest");
 			var result = response.Content.ReadAsStringAsync().Result;
 
 			Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
 			Assert.Contains("Exception message!", result);
+		}
+
+		[Fact]
+		public async Task UnhandledApplicationExceptionTest()
+		{
+			var client = _factory.CreateClient();
+			var response = await client.GetAsync("/api/CoreTest/UnhandledApplicationExceptionTest");
+			var result = response.Content.ReadAsStringAsync().Result;
+
+			Assert.Equal(400, (Int32)response.StatusCode);
+			Assert.Contains("ApplicationException message!", result);
 		}
 	}
 }

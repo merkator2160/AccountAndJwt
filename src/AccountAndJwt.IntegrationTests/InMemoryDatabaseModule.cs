@@ -1,4 +1,5 @@
 ﻿using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Database;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -6,18 +7,18 @@ using System;
 using System.Reflection;
 using Module = Autofac.Module;
 
-namespace AccountAndJwt.Database.DependencyInjection
+namespace AccountAndJwt.IntegrationTests
 {
-	public class InMemoryDatabaseModule : Module
+	internal class InMemoryDatabaseModule : Module
 	{
 		private const String _databaseName = "InMemoryDbForTesting";
 		private readonly IConfiguration _configuration;
 		private readonly Assembly _assembly;
 
 
-		public InMemoryDatabaseModule(IConfiguration configuration)
+		public InMemoryDatabaseModule(IConfiguration configuration, Assembly assembly)
 		{
-			_assembly = Assembly.GetExecutingAssembly();
+			_assembly = assembly;
 			_configuration = configuration;
 		}
 
@@ -36,7 +37,11 @@ namespace AccountAndJwt.Database.DependencyInjection
 				.Options;
 
 			builder.RegisterInstance(contextOptionsBuilder);
-			builder.RegisterType<DataContext>().InstancePerLifetimeScope();
+			builder
+				.RegisterType<DataContext>()
+				.AsSelf()
+				.AsImplementedInterfaces()
+				.InstancePerLifetimeScope();
 		}
 		public void RegisterRepositories(ContainerBuilder builder)
 		{
@@ -44,6 +49,11 @@ namespace AccountAndJwt.Database.DependencyInjection
 				.RegisterAssemblyTypes(_assembly)
 				.Where(t => t.Name.EndsWith("Repository"))
 				.AsSelf()
+				.AsImplementedInterfaces();
+
+			builder
+				.RegisterAssemblyTypes(_assembly)
+				.Where(t => t.Name.EndsWith("Wrapper"))
 				.AsImplementedInterfaces();
 
 			builder

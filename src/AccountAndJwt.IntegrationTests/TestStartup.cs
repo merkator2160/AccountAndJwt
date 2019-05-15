@@ -3,7 +3,6 @@ using AccountAndJwt.AuthorizationService.Middleware.Cors;
 using AccountAndJwt.Common.Config;
 using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database;
-using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -50,12 +49,12 @@ namespace AccountAndJwt.IntegrationTests
 		private IServiceProvider BuildServiceProvider(IServiceCollection services)
 		{
 			var builder = new ContainerBuilder();
-			var assembly = Collector.GetAssembly("AccountAndJwt.AuthorizationService");
 
-			builder.RegisterConfiguration(_configuration, assembly);
-			builder.RegisterServices(assembly);
+			var authorizationServiceAssembly = Collector.GetAssembly("AccountAndJwt.AuthorizationService");
+			builder.RegisterConfiguration(_configuration, authorizationServiceAssembly);
+			builder.RegisterServices(authorizationServiceAssembly);
 
-			builder.RegisterModule(new InMemoryDatabaseModule(_configuration));
+			builder.RegisterModule(new InMemoryDatabaseModule(_configuration, Collector.GetAssembly("AccountAndJwt.Database")));
 			builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
 
 			builder.Populate(services);
