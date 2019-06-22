@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -9,13 +10,16 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 {
 	internal static class SwaggerMiddleware
 	{
+		private const String _documentName = "AccountAndJwt";
+
+
 		public static void AddConfiguredSwaggerGen(this IServiceCollection services)
 		{
 			var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("AccountAndJwt", new Info
+				c.SwaggerDoc(_documentName, new Info
 				{
 					Version = $"v{assemblyVersion}",
 					Title = "AccountAndJwt",
@@ -41,7 +45,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 			});
 			app.UseSwaggerUI(c =>
 			{
-				c.SwaggerEndpoint("/swagger/AccountAndJwt.json", "AccountAndJwt API");
+				c.SwaggerEndpoint($"/swagger/{_documentName}.json", "Account and JWT API");
 			});
 		}
 	}
