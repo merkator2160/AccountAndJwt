@@ -36,6 +36,7 @@ namespace AccountAndJwt.AuthorizationService
 			services.AddConfiguredSwaggerGen();
 			services.AddHangfire(_configuration);
 			services.AddJwtAuthService(_configuration);
+			services.ConfigureResponseHandling();
 			services
 				.AddMvc()
 				.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
@@ -80,6 +81,9 @@ namespace AccountAndJwt.AuthorizationService
 				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
 			}
 
+			app.UseHsts();
+			app.UseHttpsRedirection();
+			app.UseResponseCompression();
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();
 			app.UseConfiguredSwagger();
