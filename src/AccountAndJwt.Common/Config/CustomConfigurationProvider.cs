@@ -27,8 +27,8 @@ namespace AccountAndJwt.Common.Config
 			var builder = new ConfigurationBuilder()
 				.AddEnvironmentVariables()
 				.SetBasePath(basePath)
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+				.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: false);
 
 			return builder.Build();
 		}

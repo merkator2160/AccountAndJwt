@@ -9,9 +9,10 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// <summary>
 	/// This controller only for integration testing purposes (it does not appear in production)
 	/// </summary>
-	[ApiExplorerSettings(IgnoreApi = true)]
+	[ApiController]
 	[Route("api/[controller]/[action]")]
-	public class CoreTestController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class CoreTestController : ControllerBase
 	{
 		private readonly IServiceProvider _serviceProvider;
 
@@ -24,12 +25,16 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 
 		// ACTIONS ////////////////////////////////////////////////////////////////////////////////
 		[HttpGet]
+		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(String), 500)]
 		public IActionResult BasicTest()
 		{
 			return Ok();
 		}
 
 		[HttpGet]
+		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(String), 500)]
 		public IActionResult ContextReferenceTest()
 		{
 			var contextInstance1 = _serviceProvider.GetRequiredService<DataContext>();
@@ -42,12 +47,14 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		}
 
 		[HttpGet]
+		[ProducesResponseType(typeof(String), 500)]
 		public IActionResult UnhandledExceptionTest()
 		{
 			throw new Exception("Exception message!");
 		}
 
 		[HttpGet]
+		[ProducesResponseType(typeof(String), 500)]
 		public IActionResult UnhandledApplicationExceptionTest()
 		{
 			throw new ApplicationException("ApplicationException message!");

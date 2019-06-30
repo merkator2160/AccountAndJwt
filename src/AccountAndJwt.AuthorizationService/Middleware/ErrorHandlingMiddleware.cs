@@ -29,7 +29,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 					var ex = exceptionHandlerFeature.Error;
 					if(ex is ApplicationException)
 					{
-						context.Response.StatusCode = 400;
+						context.Response.StatusCode = 460;
 						context.Response.ContentType = "text/plain";
 
 						await context.Response.WriteAsync(ex.Message, Encoding.UTF8);

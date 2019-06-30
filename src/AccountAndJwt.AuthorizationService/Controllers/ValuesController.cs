@@ -4,7 +4,6 @@ using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -14,19 +13,18 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 	/// Simple values controller
 	/// </summary>
 	[Authorize]
+	[ApiController]
 	[Route("api/[controller]")]
-	public class ValuesController : Controller
+	public class ValuesController : ControllerBase
 	{
 		private readonly IMapper _mapper;
 		private readonly IValueService _valueService;
-		private readonly ILogger<ValuesController> _logger;
 
 
-		public ValuesController(IMapper mapper, IValueService valueService, ILogger<ValuesController> logger)
+		public ValuesController(IMapper mapper, IValueService valueService)
 		{
 			_mapper = mapper;
 			_valueService = valueService;
-			_logger = logger;
 		}
 
 
@@ -41,6 +39,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpGet]
 		[ProducesResponseType(typeof(ValueAm[]), 200)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> GetAll()
 		{
@@ -57,6 +56,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpGet("{id}")]
 		[ProducesResponseType(typeof(ValueAm), 200)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Get(Int32 id)
 		{
@@ -72,6 +72,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPost]
 		[ProducesResponseType(typeof(String), 201)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Post([FromBody]String value)
 		{
@@ -79,7 +80,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 				return BadRequest($"{nameof(value)} is not presented in the request body");
 
 			var valueDto = await _valueService.AddAsync(value);
-			_logger.LogInformation($"New value created, value id: {valueDto.Id}");
 
 			return CreatedAtAction(nameof(Get), "Values", new { id = valueDto.Id }, value);
 		}
@@ -93,8 +93,8 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		/// <response code="500">Oops! Can't update your value right now</response>
 		[HttpPut]
 		[ProducesResponseType(200)]
-		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Put([FromBody]ValueAm value)
 		{
@@ -102,7 +102,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 				return BadRequest("Please provide valid data.");
 
 			await _valueService.UpdateAsync(_mapper.Map<ValueDto>(value));
-			_logger.LogInformation($"Value with id: {value.Id} updated");
 
 			return Ok();
 		}
@@ -116,13 +115,12 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		/// <response code="500">Oops! Can't delete your value right now</response>
 		[HttpDelete("{id}")]
 		[ProducesResponseType(200)]
-		[ProducesResponseType(typeof(String), 400)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Delete(Int32 id)
 		{
 			await _valueService.DeleteAsync(id);
-			_logger.LogInformation($"Value deleted, value id: {id}");
 
 			return Ok();
 		}

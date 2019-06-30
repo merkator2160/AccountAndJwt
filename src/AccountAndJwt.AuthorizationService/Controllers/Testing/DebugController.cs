@@ -14,8 +14,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// <summary>
 	/// This controller only for debugging, playing, testing purposes (it does not appear in production)
 	/// </summary>
+	[ApiController]
 	[Route("api/[controller]/[action]")]
-	public class DebugController : Controller
+	public class DebugController : ControllerBase
 	{
 		private readonly IHostingEnvironment _env;
 		private readonly ILogger<DebugController> _logger;

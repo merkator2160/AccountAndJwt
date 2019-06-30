@@ -51,6 +51,7 @@ namespace AccountAndJwt.AuthorizationService
 			builder.RegisterLocalServices();
 			builder.RegisterLocalConfiguration(_configuration);
 
+			builder.RegisterModule<NLogModule>();
 			builder.RegisterModule(new DatabaseModule(_configuration));
 			builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
 

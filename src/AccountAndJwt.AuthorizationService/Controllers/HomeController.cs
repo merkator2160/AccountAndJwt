@@ -2,8 +2,9 @@
 
 namespace AccountAndJwt.AuthorizationService.Controllers
 {
+	[ApiController]
 	[ApiExplorerSettings(IgnoreApi = true)]
-	public class HomeController : Controller
+	public class HomeController : ControllerBase
 	{
 		[HttpGet("/")]
 		public IActionResult Index()

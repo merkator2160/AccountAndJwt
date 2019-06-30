@@ -5,7 +5,6 @@ using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Contracts.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,16 +15,14 @@ namespace AccountAndJwt.UnitTests.Controllers
 	public class ValuesControllerTests
 	{
 		private readonly IMapper _mapper;
-		private readonly ILogger<ValuesController> _loggerService;
 
 
 		public ValuesControllerTests()
 		{
 			_mapper = new MapperConfiguration(cfg =>
 			{
-				cfg.AddMaps(typeof(AutoMapperModule).GetTypeInfo().Assembly);     // Dynamically load all configurations
+				cfg.AddMaps(typeof(AutoMapperModule).GetTypeInfo().Assembly);
 			}).CreateMapper();
-			_loggerService = Mock.Of<ILogger<ValuesController>>();
 		}
 
 
@@ -47,7 +44,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 				}
 			}));
 
-			var controller = new ValuesController(_mapper, valueService, _loggerService);
+			var controller = new ValuesController(_mapper, valueService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.GetAll());
 			Assert.Equal(200, result.StatusCode);
@@ -61,7 +58,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 		public void GetAllReturnNullTest()
 		{
 			var valueService = Mock.Of<IValueService>(a => a.GetAllAsync() == Task.FromResult(default(ValueDto[])));
-			var controller = new ValuesController(_mapper, valueService, _loggerService);
+			var controller = new ValuesController(_mapper, valueService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.GetAll());
 			Assert.Equal(200, result.StatusCode);
@@ -76,7 +73,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 				Id = 3,
 				Value = "value3"
 			}));
-			var controller = new ValuesController(_mapper, valueService, _loggerService);
+			var controller = new ValuesController(_mapper, valueService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.Get(3));
 			Assert.Equal(200, result.StatusCode);
@@ -90,7 +87,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 		public void GetReturnNullTest()
 		{
 			var valueService = Mock.Of<IValueService>(a => a.GetAsync(3) == Task.FromResult(default(ValueDto)));
-			var controller = new ValuesController(_mapper, valueService, _loggerService);
+			var controller = new ValuesController(_mapper, valueService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.Get(3));
 			Assert.Equal(200, result.StatusCode);
