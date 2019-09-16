@@ -10,10 +10,13 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp2.1\Documentation.xml</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Local|AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp2.1\Documentation.xml</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE;DEVELOPMENT</DefineConstants>
+    <Optimize>false</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

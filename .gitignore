@@ -242,5 +242,5 @@ ModelManifest.xml
 .fake/
 
 
-/src/AccountAndJwt.Api/Logs
-/src/AccountAndJwt.IntegrationTests/Logs
+Logs/
+**/*.DotSettings.user
