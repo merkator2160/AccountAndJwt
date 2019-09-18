@@ -1,5 +1,4 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware;
-using AccountAndJwt.AuthorizationService.Middleware.Cors;
 using AccountAndJwt.Common.Config;
 using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database;
@@ -36,8 +35,6 @@ namespace AccountAndJwt.IntegrationTests
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
 				.AddScoped(x => x.GetRequiredService<IUrlHelperFactory>()
 				.GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
-			services.AddCors(CorsMiddleware.AddPolitics);
-			services.AddConfiguredSwaggerGen();
 			services.AddJwtAuthService(_configuration);
 			services
 				.AddMvc()
@@ -73,10 +70,8 @@ namespace AccountAndJwt.IntegrationTests
 			}
 
 			app.UseDeveloperExceptionPage();
-			app.UseCors(CorsPolicies.Development);
 
 			app.UseAuthentication();
-			app.UseConfiguredSwagger();
 			app.UseGlobalExceptionHandler();
 			app.UseMvcWithDefaultRoute();
 		}

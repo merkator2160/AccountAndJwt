@@ -25,6 +25,11 @@ namespace AccountAndJwt.Database.DependencyInjection
 			ConnectionString = configuration.GetConnectionString(_defaultConnectionStringName);
 			Config = configuration.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 		}
+		public DatabaseModule(String connectionString)
+		{
+			_currentAssembly = Assembly.GetExecutingAssembly();
+			ConnectionString = connectionString;
+		}
 
 
 		// PROPERTIES /////////////////////////////////////////////////////////////////////////////
@@ -49,7 +54,10 @@ namespace AccountAndJwt.Database.DependencyInjection
 				.Options;
 
 			builder.RegisterInstance(contextOptionsBuilder);
-			builder.RegisterType<DataContext>().InstancePerLifetimeScope();
+			builder.RegisterType<DataContext>()
+				.AsSelf()
+				.AsImplementedInterfaces()
+				.InstancePerLifetimeScope();
 		}
 		public void RegisterRepositories(ContainerBuilder builder)
 		{
@@ -57,6 +65,11 @@ namespace AccountAndJwt.Database.DependencyInjection
 				.RegisterAssemblyTypes(_currentAssembly)
 				.Where(t => t.Name.EndsWith("Repository"))
 				.AsSelf()
+				.AsImplementedInterfaces();
+
+			builder
+				.RegisterAssemblyTypes(_currentAssembly)
+				.Where(t => t.Name.EndsWith("Wrapper"))
 				.AsImplementedInterfaces();
 
 			builder
@@ -83,11 +96,6 @@ namespace AccountAndJwt.Database.DependencyInjection
 		{
 			context.Database.EnsureCreated();
 			context.AddInitialData(salt);
-		}
-		public static void CreateInitializeIfNotExistStrategy(DataContext context, String salt)
-		{
-			if(context.Database.EnsureCreated())
-				context.AddInitialData(salt);
 		}
 		public static void DropCreateInitializeStrategy(DataContext context, String salt)
 		{

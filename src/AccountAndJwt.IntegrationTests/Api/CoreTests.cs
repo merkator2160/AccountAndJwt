@@ -57,7 +57,7 @@ namespace AccountAndJwt.IntegrationTests.Api
 			var response = await client.GetAsync("/api/CoreTest/UnhandledApplicationExceptionTest");
 			var result = response.Content.ReadAsStringAsync().Result;
 
-			Assert.Equal(400, (Int32)response.StatusCode);
+			Assert.Equal(460, (Int32)response.StatusCode);
 			Assert.Contains("ApplicationException message!", result);
 		}
 	}

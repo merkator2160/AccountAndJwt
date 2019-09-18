@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Database.Interfaces;
+﻿using AccountAndJwt.Common.Interfaces;
 using AccountAndJwt.Database.Models.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,8 +9,9 @@ namespace AccountAndJwt.Database.Mappings
 	{
 		public void Configure(EntityTypeBuilder<RoleDb> entityBuilder)
 		{
-			entityBuilder.ToTable("Roles");
-			entityBuilder.HasKey(p => p.Id);
+			entityBuilder
+				.ToTable("Roles")
+				.HasKey(p => p.Id);
 		}
 	}
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AccountAndJwt.Database.Interfaces
+namespace AccountAndJwt.Common.Interfaces
 {
-	internal interface IEntityMap<TEntity> where TEntity : class
+	public interface IEntityMap<TEntity> where TEntity : class
 	{
 		void Configure(EntityTypeBuilder<TEntity> entityBuilder);
 	}

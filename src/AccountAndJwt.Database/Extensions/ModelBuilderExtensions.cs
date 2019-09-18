@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Database.Interfaces;
+﻿using AccountAndJwt.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountAndJwt.Database.Extensions
