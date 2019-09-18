@@ -1,7 +1,10 @@
-﻿using AccountAndJwt.Database;
+﻿using AccountAndJwt.Contracts.Models;
+using AccountAndJwt.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 #if DEBUG
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
@@ -58,6 +61,21 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		public IActionResult UnhandledApplicationExceptionTest()
 		{
 			throw new ApplicationException("ApplicationException message!");
+		}
+
+		[Authorize]
+		[HttpGet]
+		[ProducesResponseType(typeof(GetClaimsResponseAm[]), 200)]
+		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(String), 500)]
+		public IActionResult GetCurrentUserClaims()
+		{
+			var claims = HttpContext.User.Claims.ToArray().Select(x => new GetClaimsResponseAm
+			{
+				ClaimType = x.Type,
+				Value = x.Value
+			});
+			return Ok(claims);
 		}
 	}
 }

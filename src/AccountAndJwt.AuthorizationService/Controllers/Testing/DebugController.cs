@@ -1,12 +1,9 @@
-﻿using AccountAndJwt.Contracts.Models;
-using AccountAndJwt.Database.Interfaces;
+﻿using AccountAndJwt.Database.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 
 #if DEBUG
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
@@ -38,24 +35,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 
 
 		// ACTIONS //////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		/// [Auth] Get current user associated data 
-		/// </summary>
-		/// <returns></returns>
-		[Authorize]
-		[HttpGet]
-		[ProducesResponseType(typeof(GetClaimsResponseAm[]), 200)]
-		[ProducesResponseType(401)]
-		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult GetCurrentUserClaims()
-		{
-			var claims = HttpContext.User.Claims.ToArray().Select(x => new GetClaimsResponseAm
-			{
-				ClaimType = x.Type,
-				Value = x.Value
-			});
-			return Ok(claims);
-		}
 
 		/// <summary>
 		/// Creates the log entry

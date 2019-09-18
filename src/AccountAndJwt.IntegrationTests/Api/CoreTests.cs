@@ -1,3 +1,5 @@
+using AccountAndJwt.Common.Consts;
+using AccountAndJwt.Contracts.Models;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -59,6 +61,20 @@ namespace AccountAndJwt.IntegrationTests.Api
 
 			Assert.Equal(460, (Int32)response.StatusCode);
 			Assert.Contains("ApplicationException message!", result);
+		}
+
+		[Fact]
+		public async Task GetUserClaimsTest()
+		{
+			var client = _factory.CreateClient();
+			await _factory.AuthorizeAsAdminAsync(client);
+
+			var response = await client.GetAsync("/api/CoreTest/GetCurrentUserClaims");
+
+			response.EnsureSuccessStatusCode();
+			var claimsResponse = await response.DeserializeAsync<GetClaimsResponseAm[]>();
+
+			Assert.Contains(claimsResponse, p => p.Value.Equals(Role.Admin));
 		}
 	}
 }
