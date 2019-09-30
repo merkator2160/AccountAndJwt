@@ -21,6 +21,18 @@ namespace AccountAndJwt.Common.DependencyInjection
 				.AsSelf()
 				.AsImplementedInterfaces();
 		}
+		public static void RegisterLocalHangfireJobs(this ContainerBuilder builder)
+		{
+			builder.RegisterHangfireJobs(Assembly.GetCallingAssembly());
+		}
+		public static void RegisterHangfireJobs(this ContainerBuilder builder, Assembly assemblyToScan)
+		{
+			builder
+				.RegisterAssemblyTypes(assemblyToScan)
+				.Where(p => p.IsClass && p.Name.EndsWith("Job"))
+				.AsSelf()
+				.AsImplementedInterfaces();
+		}
 		public static void RegisterLocalConfiguration(this ContainerBuilder builder, IConfiguration configuration)
 		{
 			builder.RegisterConfiguration(configuration, Assembly.GetCallingAssembly());

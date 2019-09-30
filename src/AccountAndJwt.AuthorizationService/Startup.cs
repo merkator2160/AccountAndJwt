@@ -49,6 +49,7 @@ namespace AccountAndJwt.AuthorizationService
 			var builder = new ContainerBuilder();
 
 			builder.RegisterLocalServices();
+			builder.RegisterLocalHangfireJobs();
 			builder.RegisterLocalConfiguration(_configuration);
 
 			builder.RegisterModule<NLogModule>();

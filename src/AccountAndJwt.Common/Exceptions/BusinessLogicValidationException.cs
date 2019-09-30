@@ -17,7 +17,7 @@ namespace AccountAndJwt.Common.Exceptions
 		{
 
 		}
-		protected BusinessLogicValidationException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected BusinessLogicValidationException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

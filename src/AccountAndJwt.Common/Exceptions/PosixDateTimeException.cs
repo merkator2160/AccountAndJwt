@@ -17,7 +17,7 @@ namespace AccountAndJwt.Common.Exceptions
 		{
 
 		}
-		protected PosixDateTimeException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected PosixDateTimeException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
