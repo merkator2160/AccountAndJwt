@@ -9,6 +9,8 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -32,6 +34,9 @@ namespace AccountAndJwt.AuthorizationService
 		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
+			services
+				.AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+				.AddScoped(x => x.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
 			services.AddCors(CorsMiddleware.AddPolitics);
 			services.AddConfiguredSwaggerGen();
 			services.AddHangfire(_configuration);
