@@ -1,4 +1,6 @@
-﻿using AccountAndJwt.Database.DependencyInjection;
+﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs;
+using AccountAndJwt.Common.Hangfire.Auth;
+using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Hangfire;
 using Hangfire.SqlServer;
@@ -7,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
-using Wialon.Common.Hangfire.Auth;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 {
@@ -48,14 +49,19 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 				// config.UseMemoryStorage();
 			});
 		}
-		public static void RegisterJobActivator(this IContainer container)
+		public static void RegisterJobActivator(this ILifetimeScope scope)
 		{
-			GlobalConfiguration.Configuration.UseAutofacActivator(container);
+			GlobalConfiguration.Configuration.UseAutofacActivator(scope);
 		}
 		public static void ConfigureHangfireJobs(this IApplicationBuilder app)
 		{
 #if DEVELOPMENT
-			//BackgroundJob.Enqueue<DeliveryReportJob>(p => p.ExecuteAsync());
+			BackgroundJob.Enqueue<SampleJob>(p => p.ExecuteAsync());
+			RecurringJob.AddOrUpdate<SampleJob>(
+			 p => p.ExecuteAsync(),
+			 Cron.Minutely,
+			 timeZone: TimeZoneInfo.Utc,
+			 queue: CreateEnvironmentDependentQueueName());
 #else
 			ConfigureOneTimeJobs();
 			ConfigureRecurringJobs();

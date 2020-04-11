@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
@@ -19,22 +19,21 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc(_documentName, new Info
+				c.SwaggerDoc(_documentName, new OpenApiInfo
 				{
 					Version = $"v{assemblyVersion}",
-					Title = "AccountAndJwt",
-					Description = "AccountAndJwt API",
-					TermsOfService = "None",
-					Contact = new Contact()
+					Title = "Monitor service",
+					Description = "Monitor API",
+					Contact = new OpenApiContact()
 					{
 						Name = "Aleksandrov Evgeniy",
-						Email = "ulthane2160@gmail.com"
+						Email = "ulthane2160@gmail.com",
+						Url = new Uri("https://www.linkedin.com/in/evgeniy-alexandrov-967388100")
 					}
 				});
 				c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "Documentation.xml"));
 				c.IgnoreObsoleteActions();
 				c.IgnoreObsoleteProperties();
-				c.DescribeAllEnumsAsStrings();
 			});
 		}
 		public static void UseConfiguredSwagger(this IApplicationBuilder app)

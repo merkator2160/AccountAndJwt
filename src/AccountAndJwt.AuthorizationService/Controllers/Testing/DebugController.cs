@@ -52,7 +52,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		}
 
 		/// <summary>
-		/// Return current environment name
+		/// Returns current environment name
 		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(200)]
@@ -62,6 +62,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 			return Ok(_env.EnvironmentName);
 		}
 
+		/// <summary>
+		/// Returns a variable associated with current environment
+		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(typeof(String), 200)]
 		[ProducesResponseType(typeof(String), 500)]

@@ -90,10 +90,10 @@ namespace AccountAndJwt.AuthorizationService
 
 			app.UseHsts();
 			app.UseHttpsRedirection();
-			app.UseResponseCompression();
+			app.UseConfiguredSwagger();
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();
-			app.UseConfiguredSwagger();
+			app.UseResponseCompression();
 			app.UseGlobalExceptionHandler();
 			app.UseAuthentication();
 			app.UseMvcWithDefaultRoute();

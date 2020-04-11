@@ -52,7 +52,7 @@ namespace AccountAndJwt.Common.Extensions
 		public static void CollectMappings(this ModelBuilder modelBuilder, Assembly assemblyToScan)
 		{
 			var typesToRegister = assemblyToScan.GetTypes()
-				.Where(type => !string.IsNullOrEmpty(type.Namespace))
+				.Where(type => !String.IsNullOrEmpty(type.Namespace))
 				.Where(type =>
 				{
 					var info = type.GetTypeInfo();
