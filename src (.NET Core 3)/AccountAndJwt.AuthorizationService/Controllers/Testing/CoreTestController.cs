@@ -14,7 +14,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// </summary>
 	[ApiController]
 	[Route("api/[controller]/[action]")]
-	[ApiExplorerSettings(IgnoreApi = true)]
+	[ApiExplorerSettings(IgnoreApi = false)]
 	public class CoreTestController : ControllerBase
 	{
 		private readonly IServiceProvider _serviceProvider;

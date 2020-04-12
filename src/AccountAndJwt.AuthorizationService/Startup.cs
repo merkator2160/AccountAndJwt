@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using System;
 
 namespace AccountAndJwt.AuthorizationService
@@ -44,7 +43,6 @@ namespace AccountAndJwt.AuthorizationService
 			services.ConfigureResponseHandling();
 			services
 				.AddMvc()
-				.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 			return BuildServiceProvider(services);

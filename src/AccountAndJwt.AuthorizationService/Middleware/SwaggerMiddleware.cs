@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
@@ -31,7 +30,8 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 						Url = new Uri("https://www.linkedin.com/in/evgeniy-alexandrov-967388100")
 					}
 				});
-				c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "Documentation.xml"));
+
+				c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 				c.IgnoreObsoleteActions();
 				c.IgnoreObsoleteProperties();
 			});

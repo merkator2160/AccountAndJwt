@@ -9,6 +9,8 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Globalization;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Middleware
 {
@@ -43,20 +45,17 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 					context.Response.StatusCode = 500;
 					context.Response.ContentType = "text/plain";
 #if DEBUG
-					await context.Response.WriteAsync(Serialize(ex), Encoding.UTF8);
+					await context.Response.WriteAsync(SerializeByNewtonsoftJson(ex), Encoding.UTF8);
 #else
 					await context.Response.WriteAsync("Internal server error!", Encoding.UTF8);
 #endif
 				});
 			});
 		}
-		private static String Serialize(Exception ex)
+		private static String SerializeByNewtonsoftJson(Exception ex)
 		{
-			// TODO: Replace with new Microsoft JSON serializer
 			return JsonConvert.SerializeObject(ex, new JsonSerializerSettings()
 			{
-				NullValueHandling = NullValueHandling.Ignore,
-				DateParseHandling = DateParseHandling.None,
 				ContractResolver = new CamelCasePropertyNamesContractResolver(),
 				Converters =
 				{
@@ -66,6 +65,14 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 						DateTimeStyles = DateTimeStyles.AssumeUniversal
 					}
 				}
+			});
+		}
+		private static String SerializeByMicrosoftJson(Exception ex)
+		{
+			return System.Text.Json.JsonSerializer.Serialize(ex, new JsonSerializerOptions()
+			{
+				PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+				Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
 			});
 		}
 	}

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace AccountAndJwt.AuthorizationService
 {
@@ -45,7 +46,10 @@ namespace AccountAndJwt.AuthorizationService
 			services.ConfigureResponseHandling();
 			services
 				.AddControllers()
-				//.AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver() { NamingStrategy = new SnakeCaseNamingStrategy() })
+				.AddNewtonsoftJson(options =>
+				{
+					options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+				})
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 		}
 		public void ConfigureContainer(ContainerBuilder builder)

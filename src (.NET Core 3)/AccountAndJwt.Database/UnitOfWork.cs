@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace AccountAndJwt.Database
 {
-	public class UnitOfWork : IUnitOfWork, IDisposable
+	public class UnitOfWork : IUnitOfWork
 	{
 		private readonly DataContext _context;
 
@@ -23,13 +23,6 @@ namespace AccountAndJwt.Database
 		// IUnitOfWork ////////////////////////////////////////////////////////////////////////////
 		public IValueRepository Values { get; }
 		public IUserRepository Users { get; }
-
-
-		// IDisposable ////////////////////////////////////////////////////////////////////////////
-		public void Dispose()
-		{
-			_context?.Dispose();
-		}
 
 
 		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////

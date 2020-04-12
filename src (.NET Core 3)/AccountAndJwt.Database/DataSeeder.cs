@@ -47,6 +47,7 @@ namespace AccountAndJwt.Database
 					LastName = "Wilson"
 				});
 			}
+
 			if(!context.Users.Any(p => p.Login.Equals("admin")))
 			{
 				context.Users.Add(new UserDb
