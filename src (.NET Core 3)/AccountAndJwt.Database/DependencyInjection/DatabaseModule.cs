@@ -22,21 +22,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 		{
 			_currentAssembly = Assembly.GetExecutingAssembly();
 			_configuration = configuration;
-
-			ConnectionString = configuration.GetConnectionString(_defaultConnectionStringName);
-			Config = configuration.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 		}
-		public DatabaseModule(String connectionString)
-		{
-			_currentAssembly = Assembly.GetExecutingAssembly();
-			ConnectionString = connectionString;
-		}
-
-
-		// PROPERTIES /////////////////////////////////////////////////////////////////////////////
-		public Boolean IsMigration { get; set; }
-		public String ConnectionString { get; }
-		public DatabaseConfig Config { get; }
 
 
 		// COMPONENT REGISTRATION /////////////////////////////////////////////////////////////////
@@ -48,17 +34,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 		}
 		public void RegisterContext(ContainerBuilder builder)
 		{
-			var contextOptionsBuilder = new DbContextOptionsBuilder()
-				.UseSqlServer(ConnectionString, opt => opt
-					.EnableRetryOnFailure()
-					.CommandTimeout(IsMigration ? Config.MigrationTimeout : Config.CommandTimeout))
-				//.UseSnakeCaseNamingConvention()		// Usual case for PostgreSQL, I left it here for future usage, because this project is my common micro-service prototype
-#if DEBUG
-				.AddInterceptors(new HintCommandInterceptor())
-#endif
-				.Options;
-
-			builder.RegisterInstance(contextOptionsBuilder);
+			builder.RegisterInstance(CreateContextOptions(_configuration));
 			builder.RegisterType<DataContext>()
 				.AsSelf()
 				.AsImplementedInterfaces()
@@ -85,14 +61,31 @@ namespace AccountAndJwt.Database.DependencyInjection
 
 
 		// CONTEXT FUNCTIONS //////////////////////////////////////////////////////////////////////
-		public static void CreateDatabase(IConfiguration configurationService, Action<DataContext, String> strategy)
+		public static void CheckDatabase(IConfiguration configurationService, Action<DataContext, String> strategy)
 		{
-			var connectionString = configurationService.GetConnectionString(_defaultConnectionStringName);
-			var optionsBuilder = new DbContextOptionsBuilder().UseSqlServer(connectionString);
-			using(var context = new DataContext(optionsBuilder.Options))
+			using(var context = CreateMigrationContext(configurationService))
 			{
 				strategy.Invoke(context, configurationService["AudienceConfig:PasswordSalt"]);
 			}
+		}
+		public static DataContext CreateMigrationContext(IConfiguration configurationService)
+		{
+			return new DataContext(CreateContextOptions(configurationService, true));
+		}
+		private static DbContextOptions CreateContextOptions(IConfiguration configurationService, Boolean isMigrationMode = false)
+		{
+			var connectionString = configurationService.GetConnectionString(_defaultConnectionStringName);
+			var config = configurationService.GetSection("DatabaseConfig").Get<DatabaseConfig>();
+
+			return new DbContextOptionsBuilder()
+				.UseSqlServer(connectionString, opt => opt
+					.EnableRetryOnFailure()
+					.CommandTimeout(isMigrationMode ? config.MigrationTimeout : config.CommandTimeout))
+				//.UseSnakeCaseNamingConvention()		// Usual case for PostgreSQL, I left it here for further usage, because this project is my common micro-service prototype
+#if DEBUG
+				.AddInterceptors(new HintCommandInterceptor())
+#endif
+				.Options;
 		}
 
 

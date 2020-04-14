@@ -71,18 +71,18 @@ namespace AccountAndJwt.AuthorizationService
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseCors(CorsPolicies.Development);
-				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
+				DatabaseModule.CheckDatabase(_configuration, DatabaseModule.InitializeStrategy);
 			}
 			if(_env.IsStaging())
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseCors(CorsPolicies.Staging);
-				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
+				DatabaseModule.CheckDatabase(_configuration, DatabaseModule.InitializeStrategy);
 			}
 			if(_env.IsProduction())
 			{
 				app.UseCors(CorsPolicies.Production);
-				DatabaseModule.CreateDatabase(_configuration, DatabaseModule.InitializeStrategy);
+				DatabaseModule.CheckDatabase(_configuration, DatabaseModule.InitializeStrategy);
 			}
 
 			app.UseHsts();
