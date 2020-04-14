@@ -28,7 +28,6 @@ namespace AccountAndJwt.IntegrationTests.Api
 			var response = await client.GetAsync(url);
 
 			response.EnsureSuccessStatusCode();
-			Assert.True(true);
 		}
 
 		[Fact]

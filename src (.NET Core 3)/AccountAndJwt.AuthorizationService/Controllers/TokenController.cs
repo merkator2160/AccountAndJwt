@@ -1,5 +1,6 @@
 ﻿using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.Contracts.Models;
+using AccountAndJwt.Contracts.Models.Errors;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -32,12 +33,13 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		/// </summary>
 		[HttpPost]
 		[ProducesResponseType(typeof(AuthorizeResponseAm), 200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> AuthorizeByCredentials([FromBody]AuthorizeRequestAm credentials)
 		{
 			if(!ModelState.IsValid)
-				return StatusCode(460, $"Please provide valid \"{nameof(credentials)}\"");
+				return BadRequest(ModelState);
 
 			var result = await _tokenService.CreateAccessTokenByCredentialsAsync(credentials.Login, credentials.Password);
 

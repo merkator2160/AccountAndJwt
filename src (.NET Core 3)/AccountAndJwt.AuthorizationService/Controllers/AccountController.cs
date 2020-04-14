@@ -3,6 +3,7 @@ using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
 using AccountAndJwt.Common.Consts;
 using AccountAndJwt.Contracts.Models;
+using AccountAndJwt.Contracts.Models.Errors;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,12 +41,13 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[ProducesResponseType(typeof(RegisterUserResponseAm), 201)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Register([FromBody]RegisterUserAm userDetails)
 		{
 			if(!ModelState.IsValid)
-				return StatusCode(460, $"Please provide valid \"{nameof(userDetails)}\"");
+				return BadRequest(ModelState);
 
 			await _userService.RegisterAsync(_mapper.Map<UserDto>(userDetails));
 
@@ -86,6 +88,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPost]
 		[Authorize(Roles = Role.Admin)]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
@@ -93,7 +96,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		public async Task<IActionResult> AddRole([FromBody]AddRemoveRoleAm request)
 		{
 			if(!ModelState.IsValid)
-				return StatusCode(460, $"Please provide valid \"{nameof(request)}\"");
+				return BadRequest(ModelState);
 
 			await _userService.AddRoleAsync(request.UserId, request.Role);
 
@@ -108,6 +111,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPost]
 		[Authorize(Roles = Role.Admin)]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
@@ -115,7 +119,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		public async Task<IActionResult> RemoveRole([FromBody]AddRemoveRoleAm request)
 		{
 			if(!ModelState.IsValid)
-				return StatusCode(460, $"Please provide valid \"{nameof(request)}\"");
+				return BadRequest(ModelState);
 
 			await _userService.RemoveRoleAsync(request.UserId, request.Role);
 
@@ -130,6 +134,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPost]
 		[Authorize]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
@@ -157,7 +162,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		public async Task<IActionResult> ChangeName([FromBody]ChangeNameRequestAm request)
 		{
 			if(!ModelState.IsValid)
-				return StatusCode(460, $"Please provide valid \"{nameof(request)}\"");
+				return BadRequest(ModelState);
 
 			await _userService.ChangeNameAsync(User.GetId(), request.FirstName, request.LastName);
 
@@ -188,6 +193,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[Authorize(Roles = Role.Admin)]
 		[HttpGet]
 		[ProducesResponseType(typeof(UserAm[]), 200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
@@ -211,7 +217,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordAm request)
 		{
 			if(!ModelState.IsValid)
-				return StatusCode(460, $"Please provide valid \"{nameof(request)}\"");
+				return BadRequest(ModelState);
 
 			await _userService.UpdatePasswordAsync(User.GetId(), request.OldPassword, request.NewPassword);
 

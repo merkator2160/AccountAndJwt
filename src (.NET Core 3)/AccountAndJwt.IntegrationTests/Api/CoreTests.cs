@@ -20,6 +20,7 @@ namespace AccountAndJwt.IntegrationTests.Api
 
 		// TESTS //////////////////////////////////////////////////////////////////////////////////
 		[Theory]
+		[InlineData("/")]
 		[InlineData("/api/CoreTest/BasicTest")]
 		[InlineData("/api/CoreTest/ContextReferenceTest")]
 		public async Task BasicTest(String url)

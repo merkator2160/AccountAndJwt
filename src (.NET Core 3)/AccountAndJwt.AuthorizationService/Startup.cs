@@ -91,6 +91,7 @@ namespace AccountAndJwt.AuthorizationService
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();
 			app.UseRouting();
+			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseResponseCompression();
 			app.UseGlobalExceptionHandler();

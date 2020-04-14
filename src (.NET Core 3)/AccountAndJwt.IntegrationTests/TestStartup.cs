@@ -6,11 +6,14 @@ using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 using System;
+using System.Reflection;
 
 namespace AccountAndJwt.IntegrationTests
 {
@@ -36,7 +39,14 @@ namespace AccountAndJwt.IntegrationTests
 			services.AddJwtAuthService(_configuration);
 			services.AddHealthChecks();
 			services.ConfigureResponseHandling();
-			services.AddMvc();
+			services
+				.AddControllers()
+				.AddApplicationPart(Assembly.Load(new AssemblyName("AccountAndJwt.AuthorizationService")))
+				.AddNewtonsoftJson(options =>
+				{
+					options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+				})
+				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 		}
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
@@ -57,6 +67,7 @@ namespace AccountAndJwt.IntegrationTests
 			}
 
 			app.UseRouting();
+			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseDeveloperExceptionPage();
 			app.UseGlobalExceptionHandler();

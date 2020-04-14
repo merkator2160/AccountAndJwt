@@ -1,6 +1,7 @@
 ﻿using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
 using AccountAndJwt.Contracts.Models;
+using AccountAndJwt.Contracts.Models.Errors;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -94,12 +95,13 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPut]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Put([FromBody]ValueAm value)
 		{
 			if(!ModelState.IsValid)
-				return BadRequest("Please provide valid data.");
+				return BadRequest(ModelState);
 
 			await _valueService.UpdateAsync(_mapper.Map<ValueDto>(value));
 

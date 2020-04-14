@@ -52,7 +52,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 				.UseSqlServer(ConnectionString, opt => opt
 					.EnableRetryOnFailure()
 					.CommandTimeout(IsMigration ? Config.MigrationTimeout : Config.CommandTimeout))
-				.UseSnakeCaseNamingConvention()
+				//.UseSnakeCaseNamingConvention()		// Usual case for PostgreSQL, I left it here for future usage, because this project is my common micro-service prototype
 #if DEBUG
 				.AddInterceptors(new HintCommandInterceptor())
 #endif
