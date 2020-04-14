@@ -12,8 +12,6 @@ namespace AccountAndJwt.Database.Mappings
 			entityBuilder
 				.ToTable("Roles")
 				.HasKey(p => p.Id);
-
-			entityBuilder.Property(e => e.Id).ValueGeneratedNever();
 		}
 	}
 }

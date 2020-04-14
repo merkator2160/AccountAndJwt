@@ -1,10 +1,10 @@
 ﻿using AccountAndJwt.Common.Consts;
 using AccountAndJwt.Contracts.Models;
 using AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -15,16 +15,15 @@ namespace AccountAndJwt.IntegrationTests
 	public class CustomWebApplicationFactory : WebApplicationFactory<TestStartup>
 	{
 		// OVERRIDE ///////////////////////////////////////////////////////////////////////////////
-		protected override IWebHostBuilder CreateWebHostBuilder()
+		protected override IHostBuilder CreateHostBuilder()
 		{
-			return WebHost.CreateDefaultBuilder()
-				.UseEnvironment(HostingEnvironment.Development)
-				.UseWebRoot(Environment.CurrentDirectory)
-				.UseStartup<TestStartup>()
-				.ConfigureLogging(logging =>
+			return Host.CreateDefaultBuilder()
+				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+				.ConfigureWebHostDefaults(webBuilder =>
 				{
-					logging.ClearProviders();
-					logging.SetMinimumLevel(LogLevel.Trace);
+					webBuilder.UseStartup<TestStartup>();
+					webBuilder.UseEnvironment(HostingEnvironment.Development);
+					webBuilder.UseWebRoot(Environment.CurrentDirectory);
 				});
 		}
 

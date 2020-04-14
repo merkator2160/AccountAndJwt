@@ -45,12 +45,11 @@ namespace AccountAndJwt.Database.Repositories
 		}
 		public Task AddRoleAsync(Int32 userId, Int32 roleId)
 		{
-			var userRole = new UserRoleDb()
+			return Context.UserRoles.AddAsync(new UserRoleDb()
 			{
 				UserId = userId,
 				RoleId = roleId
-			};
-			return Context.UserRoles.AddAsync(userRole).AsTask();
+			}).AsTask();
 		}
 		public async Task DeleteRoleAsync(Int32 userId, Int32 roleId)
 		{

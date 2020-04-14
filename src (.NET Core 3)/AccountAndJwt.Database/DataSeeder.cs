@@ -11,9 +11,7 @@ namespace AccountAndJwt.Database
 		public static void AddInitialData(this DataContext context, String passwordSalt)
 		{
 			context.AddRoles();
-
-			var roles = context.Roles.ToArray();
-			context.AddUsers(roles, passwordSalt);
+			context.AddUsers(passwordSalt);
 		}
 		private static void AddRoles(this DataContext context)
 		{
@@ -34,7 +32,7 @@ namespace AccountAndJwt.Database
 
 			context.SaveChanges();
 		}
-		private static void AddUsers(this DataContext context, RoleDb[] roles, String passwordSalt)
+		private static void AddUsers(this DataContext context, String passwordSalt)
 		{
 			if(!context.Users.Any(p => p.Login.Equals("guest")))
 			{
@@ -61,11 +59,11 @@ namespace AccountAndJwt.Database
 					{
 						new UserRoleDb()
 						{
-							Role = roles.First(p => p.Name.Equals(Role.Admin))
+							RoleId = context.Roles.First(p => p.Name.Equals(Role.Admin)).Id
 						},
 						new UserRoleDb()
 						{
-							Role = roles.First(p => p.Name.Equals(Role.Moderator))
+							RoleId = context.Roles.First(p => p.Name.Equals(Role.Moderator)).Id
 						}
 					}
 				});

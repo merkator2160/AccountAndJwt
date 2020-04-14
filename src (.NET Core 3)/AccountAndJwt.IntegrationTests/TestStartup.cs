@@ -38,7 +38,7 @@ namespace AccountAndJwt.IntegrationTests
 			services.ConfigureResponseHandling();
 			services.AddMvc();
 		}
-		private void ConfigureContainer(ContainerBuilder builder)
+		public void ConfigureContainer(ContainerBuilder builder)
 		{
 			var authorizationServiceAssembly = Collector.GetAssembly("AccountAndJwt.AuthorizationService");
 			builder.RegisterConfiguration(_configuration, authorizationServiceAssembly);
