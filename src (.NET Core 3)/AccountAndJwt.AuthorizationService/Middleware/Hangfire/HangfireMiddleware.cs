@@ -1,9 +1,10 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs;
 using AccountAndJwt.Common.Hangfire.Auth;
 using AccountAndJwt.Database.DependencyInjection;
+using AccountAndJwt.Database.Models.Config;
 using Autofac;
 using Hangfire;
-using Hangfire.MemoryStorage;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,18 +36,21 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		}
 		public static void AddHangfire(this IServiceCollection services, IConfiguration configuration)
 		{
+			var connectionString = configuration.GetConnectionString(DatabaseModule.DefaultConnectionStringName);
+			var databaseConfig = configuration.GetSection("DatabaseConfig").Get<DatabaseConfig>();
+
 			var databaseModule = new DatabaseModule(configuration);
 			services.AddHangfire(config =>
 			{
-				//config.UseSqlServerStorage(databaseModule.ConnectionString, new SqlServerStorageOptions()
-				//{
-				//	DashboardJobListLimit = 1000,
-				//	CommandTimeout = TimeSpan.FromSeconds(databaseModule.Config.CommandTimeout),
-				//	TransactionTimeout = TimeSpan.FromSeconds(databaseModule.Config.CommandTimeout),
-				//	CommandBatchMaxTimeout = TimeSpan.FromSeconds(databaseModule.Config.CommandTimeout)
-				//});
+				config.UseSqlServerStorage(connectionString, new SqlServerStorageOptions()
+				{
+					DashboardJobListLimit = 1000,
+					CommandTimeout = TimeSpan.FromSeconds(databaseConfig.CommandTimeout),
+					TransactionTimeout = TimeSpan.FromSeconds(databaseConfig.CommandTimeout),
+					CommandBatchMaxTimeout = TimeSpan.FromSeconds(databaseConfig.CommandTimeout)
+				});
 				//or
-				config.UseMemoryStorage();
+				//config.UseMemoryStorage();
 			});
 		}
 		public static void RegisterJobActivator(this ILifetimeScope scope)

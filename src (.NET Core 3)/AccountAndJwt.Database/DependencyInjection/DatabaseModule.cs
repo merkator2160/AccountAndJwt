@@ -13,7 +13,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 {
 	public class DatabaseModule : Module
 	{
-		public const String _defaultConnectionStringName = "DefaultConnection";
+		public const String DefaultConnectionStringName = "DefaultConnection";
 		private readonly IConfiguration _configuration;
 		private readonly Assembly _currentAssembly;
 
@@ -74,7 +74,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 		}
 		private static DbContextOptions CreateContextOptions(IConfiguration configurationService, Boolean isMigrationMode = false)
 		{
-			var connectionString = configurationService.GetConnectionString(_defaultConnectionStringName);
+			var connectionString = configurationService.GetConnectionString(DefaultConnectionStringName);
 			var config = configurationService.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 
 			return new DbContextOptionsBuilder()
