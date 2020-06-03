@@ -1,0 +1,4 @@
+Swagger: /swagger
+Hangfire: /hangfire
+Ui: /
+Health checks: /healthz

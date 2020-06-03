@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
 		..\clean-with-scc.bat = ..\clean-with-scc.bat
+		..\Links.txt = ..\Links.txt
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
@@ -24,6 +25,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.UnitTests", "AccountAndJwt.UnitTests\AccountAndJwt.UnitTests.csproj", "{D91421B3-72FC-447A-BF52-BB31A2143B43}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.IntegrationTests", "AccountAndJwt.IntegrationTests\AccountAndJwt.IntegrationTests.csproj", "{C91CCC2D-FC1D-45F0-89F6-10E2A31AD2FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndJwt.Ui", "AccountAndJwt.Ui\AccountAndJwt.Ui.csproj", "{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +71,12 @@ Global
 		{C91CCC2D-FC1D-45F0-89F6-10E2A31AD2FE}.Local|Any CPU.Build.0 = Debug|Any CPU
 		{C91CCC2D-FC1D-45F0-89F6-10E2A31AD2FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C91CCC2D-FC1D-45F0-89F6-10E2A31AD2FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}.Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}.Local|Any CPU.Build.0 = Debug|Any CPU
+		{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
