@@ -2,8 +2,8 @@
 
 namespace AccountAndJwt.Common.Hangfire.Interfaces
 {
-	public interface IJob
+	public interface IJob<T>
 	{
-		Task ExecuteAsync();
+		Task ExecuteAsync(T parameter);
 	}
 }

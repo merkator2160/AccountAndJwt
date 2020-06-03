@@ -23,7 +23,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 		{
 			try
 			{
-				Console.WriteLine($"{nameof(SampleJob)} is executing");
+				Console.WriteLine($"{nameof(SampleParametrizedJob)} is executing");
 
 				await Task.Delay(1000);
 			}

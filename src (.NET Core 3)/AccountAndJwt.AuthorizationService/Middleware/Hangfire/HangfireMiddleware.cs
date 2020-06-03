@@ -1,4 +1,5 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs;
+using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Models;
 using AccountAndJwt.Common.Hangfire.Auth;
 using AccountAndJwt.Database.DependencyInjection;
 using AccountAndJwt.Database.Models.Config;
@@ -60,9 +61,14 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		public static void ConfigureHangfireJobs(this IApplicationBuilder app)
 		{
 #if DEVELOPMENT
-			BackgroundJob.Enqueue<SampleJob>(p => p.ExecuteAsync());
-			RecurringJob.AddOrUpdate<SampleJob>(
-				p => p.ExecuteAsync(),
+			var parameter = new SampleJobParameter()
+			{
+				Parameter = $"{nameof(SampleParametrizedJob)} is executing"
+			};
+
+			BackgroundJob.Enqueue<SampleParametrizedJob>(p => p.ExecuteAsync(parameter));
+			RecurringJob.AddOrUpdate<SampleParametrizedJob>(
+				p => p.ExecuteAsync(parameter),
 				Cron.Minutely,
 				timeZone: TimeZoneInfo.Utc,
 				queue: CreateEnvironmentDependentQueueName());
