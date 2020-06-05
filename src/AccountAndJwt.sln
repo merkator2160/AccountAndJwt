@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\.gitignore = ..\.gitignore
 		..\clean-with-scc.bat = ..\clean-with-scc.bat
 		..\Links.txt = ..\Links.txt
+		..\Notes.txt = ..\Notes.txt
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
@@ -26,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.UnitTests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.IntegrationTests", "AccountAndJwt.IntegrationTests\AccountAndJwt.IntegrationTests.csproj", "{C91CCC2D-FC1D-45F0-89F6-10E2A31AD2FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndJwt.Ui", "AccountAndJwt.Ui\AccountAndJwt.Ui.csproj", "{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Ui", "AccountAndJwt.Ui\AccountAndJwt.Ui.csproj", "{77C6D92F-3A28-49D4-8B8E-4CE745C001E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

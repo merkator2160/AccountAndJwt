@@ -1,0 +1,3 @@
+Blazor Ui control packs:
+Paid: DevExpress, Infragistics, Radzen, GrapeCity, Progress Telerik, Syncfusion
+Free: Blazored, MatBlazor, Ant Design Blazor, Blazorise, BlazorStrap, bUnit, Blazm, Blazor Extensions
