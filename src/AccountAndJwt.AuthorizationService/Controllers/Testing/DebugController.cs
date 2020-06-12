@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Database.Interfaces;
+﻿using AccountAndJwt.Database;
+using AccountAndJwt.Database.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +20,21 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		private readonly ILogger<DebugController> _logger;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly DataContext _context;
 
 
 		public DebugController(
 			IWebHostEnvironment env,
 			ILogger<DebugController> logger,
 			IMapper mapper,
-			IUnitOfWork unitOfWork)
+			IUnitOfWork unitOfWork,
+			DataContext context)
 		{
 			_env = env;
 			_logger = logger;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
+			_context = context;
 		}
 
 

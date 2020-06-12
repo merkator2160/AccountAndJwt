@@ -5,6 +5,7 @@ namespace AccountAndJwt.Database.Models.Storage
 	public class ValueDb
 	{
 		public Int32 Id { get; set; }
-		public String Value { get; set; }
+		public Int32 Value { get; set; }
+		public String Commentary { get; set; }
 	}
 }

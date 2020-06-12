@@ -8,7 +8,7 @@ namespace AccountAndJwt.AuthorizationService.Services.Interfaces
 	{
 		Task<ValueDto[]> GetAllAsync();
 		Task<ValueDto> GetAsync(Int32 id);
-		Task<ValueDto> AddAsync(String value);
+		Task<ValueDto> AddAsync(ValueDto value);
 		Task UpdateAsync(ValueDto value);
 		Task DeleteAsync(Int32 id);
 	}

@@ -9,6 +9,8 @@ namespace AccountAndJwt.AuthorizationService.Middleware.AutoMapper.Profiles
 	{
 		public ValueProfile()
 		{
+			CreateMap<AddValueAm, ValueDto>()
+				.ForMember(dest => dest.Id, opt => opt.Ignore());
 			CreateMap<ValueAm, ValueDto>()
 				.ReverseMap();
 			CreateMap<ValueDto, ValueDb>()

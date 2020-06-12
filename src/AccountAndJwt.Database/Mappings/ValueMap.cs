@@ -12,6 +12,10 @@ namespace AccountAndJwt.Database.Mappings
 			entityBuilder
 				.ToTable("Values")
 				.HasKey(p => p.Id);
+
+			entityBuilder
+				.Property(p => p.Commentary)
+				.HasMaxLength(50);
 		}
 	}
 }

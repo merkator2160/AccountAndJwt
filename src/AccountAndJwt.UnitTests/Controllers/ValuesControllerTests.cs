@@ -12,6 +12,7 @@ using Xunit;
 
 namespace AccountAndJwt.UnitTests.Controllers
 {
+	// I left this file here as a mock usage sample. It's actually doing nothing. It seems testing controllers like an isolated units not good idea.
 	public class ValuesControllerTests
 	{
 		private readonly IMapper _mapper;
@@ -35,12 +36,14 @@ namespace AccountAndJwt.UnitTests.Controllers
 				new ValueDto()
 				{
 					Id = 1,
-					Value = "value1"
+					Value = 1,
+					Commentary = "value1"
 				},
 				new ValueDto()
 				{
 					Id = 2,
-					Value = "value2"
+					Value = 2,
+					Commentary = "value2"
 				}
 			}));
 
@@ -71,16 +74,18 @@ namespace AccountAndJwt.UnitTests.Controllers
 			var valueService = Mock.Of<IValueService>(a => a.GetAsync(3) == Task.FromResult(new ValueDto()
 			{
 				Id = 3,
-				Value = "value3"
+				Value = 3,
+				Commentary = "value3"
 			}));
 			var controller = new ValuesController(_mapper, valueService);
-
 			var result = Assert.IsType<OkObjectResult>(controller.Get(3));
 			Assert.Equal(200, result.StatusCode);
-			var data = Assert.IsAssignableFrom<ValueAm>(result.Value);
+
+			var data = Assert.IsAssignableFrom<ValueAm>(result);
 			Assert.NotNull(data);
 			Assert.Equal(3, data.Id);
-			Assert.Equal("value3", data.Value);
+			Assert.Equal(3, data.Value);
+			Assert.Equal("value3", data.Commentary);
 		}
 
 		//[Fact]

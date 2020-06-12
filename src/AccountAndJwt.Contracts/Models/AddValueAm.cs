@@ -3,17 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AccountAndJwt.Contracts.Models
 {
-	/// <summary>
-	/// Value model
-	/// </summary>
-	public class ValueAm
+	public class AddValueAm
 	{
-		/// <summary>
-		/// Value unique identifier
-		/// </summary>
-		[Required]
-		public Int32 Id { get; set; }
-
 		/// <summary>
 		/// Value data
 		/// </summary>
@@ -23,7 +14,6 @@ namespace AccountAndJwt.Contracts.Models
 		/// <summary>
 		/// Value commentary
 		/// </summary>
-		[Required]
 		public String Commentary { get; set; }
 	}
 }

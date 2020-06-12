@@ -1,8 +1,8 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Middleware.Config;
-using AccountAndJwt.AuthorizationService.Services.Exceptions;
 using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
+using AccountAndJwt.AuthorizationService.Services.Models.Exceptions;
 using AccountAndJwt.Common.Helpers;
 using AccountAndJwt.Database.Interfaces;
 using AccountAndJwt.Database.Models.Storage;

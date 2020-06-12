@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.AuthorizationService.Services.Exceptions;
-using AccountAndJwt.AuthorizationService.Services.Interfaces;
+﻿using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
+using AccountAndJwt.AuthorizationService.Services.Models.Exceptions;
 using AccountAndJwt.Database.Interfaces;
 using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
@@ -35,12 +35,13 @@ namespace AccountAndJwt.AuthorizationService.Services
 
 			return _mapper.Map<ValueDto>(requestedValue);
 		}
-		public async Task<ValueDto> AddAsync(String value)
+		public async Task<ValueDto> AddAsync(ValueDto value)
 		{
-			var valueDb = new ValueDb()
-			{
-				Value = value
-			};
+			var storedValue = await _unitOfWork.Values.GetByValueAsync(value.Value);
+			if(storedValue != null)
+				throw new ValueDuplicationException($"Value with the same value \"{nameof(value.Value)}\" is already exists.");
+
+			var valueDb = _mapper.Map<ValueDb>(value);
 			await _unitOfWork.Values.AddAsync(valueDb);
 			await _unitOfWork.CommitAsync();
 

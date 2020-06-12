@@ -75,14 +75,15 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> Post([FromBody]String value)
+		public async Task<IActionResult> Post([FromBody] AddValueAm value)
 		{
-			if(String.IsNullOrEmpty(value))
-				return BadRequest($"{nameof(value)} is not presented in the request body");
+			if(!ModelState.IsValid)
+				return BadRequest(ModelState);
 
-			var valueDto = await _valueService.AddAsync(value);
+			var valueDto = _mapper.Map<ValueDto>(value);
+			var addedValue = await _valueService.AddAsync(valueDto);
 
-			return CreatedAtAction(nameof(Get), "Values", new { id = valueDto.Id }, value);
+			return CreatedAtAction(nameof(Get), "Values", new { id = addedValue.Id }, value);
 		}
 
 		/// <summary>
@@ -98,7 +99,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> Put([FromBody]ValueAm value)
+		public async Task<IActionResult> Put([FromBody] ValueAm value)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(ModelState);

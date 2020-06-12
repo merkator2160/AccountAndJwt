@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace AccountAndJwt.AuthorizationService.Services.Exceptions
+namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
 	public class LoginIsAlreadyUsedException : ApplicationException
 	{
