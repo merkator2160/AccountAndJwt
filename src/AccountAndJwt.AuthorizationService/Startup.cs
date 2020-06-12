@@ -4,10 +4,8 @@ using AccountAndJwt.AuthorizationService.Middleware.Hangfire;
 using AccountAndJwt.Common.Config;
 using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database.DependencyInjection;
-using AccountAndJwt.Database.Models.Storage;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -48,6 +46,7 @@ namespace AccountAndJwt.AuthorizationService
 			services.AddHealthChecks();
 			services.ConfigureResponseHandling();
 			services.AddOData();
+			services.AddMvcCore(options => { options.AddOdataMediaTypes(); });
 			services
 				.AddControllers()
 				.AddNewtonsoftJson(options =>
@@ -70,9 +69,6 @@ namespace AccountAndJwt.AuthorizationService
 		{
 			var scope = app.ApplicationServices.GetAutofacRoot();
 			scope.RegisterJobActivator();
-
-			var builder = new ODataConventionModelBuilder(app.ApplicationServices);
-			builder.EntitySet<ValueDb>("Values");
 
 			if(_env.IsDevelopment())
 			{
@@ -104,8 +100,10 @@ namespace AccountAndJwt.AuthorizationService
 			app.UseGlobalExceptionHandler();
 			app.UseEndpoints(endpoints =>
 			{
-				//endpoints.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
-				//endpoints.MapODataRoute("ODataRoute", "odata", builder.GetEdmModel());
+				endpoints.EnableDependencyInjection();
+				endpoints.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
+				endpoints.MapODataRoute("ODataRoute", "odata", app.ApplicationServices.CreateEdmModel());
+
 				endpoints.MapHealthChecks("/healthz", new HealthCheckOptions());
 				endpoints.MapControllers();
 			});

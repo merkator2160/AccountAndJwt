@@ -6,8 +6,6 @@ using System.Linq;
 
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
-	[ApiController]
-	[Route("odata/[controller]")]
 	public class DataController : ODataController
 	{
 		private readonly DataContext _context;
@@ -25,8 +23,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		/// </summary>
 		[HttpGet]
 		[EnableQuery]
-		[ProducesResponseType(typeof(ValueDb), 200)]
-		public IQueryable<ValueDb> Get()
+		public ActionResult<IQueryable<ValueDb>> Get()
 		{
 			return _context.Values;
 		}
