@@ -8,12 +8,13 @@ namespace AccountAndJwt.Database
 {
 	public static class DataSeeder
 	{
-		public static void AddInitialData(this DataContext context, String passwordSalt)
+		public static void AddAllInitialData(this DataContext context, String passwordSalt)
 		{
 			context.AddRoles();
 			context.AddUsers(passwordSalt);
+			context.AddValues();
 		}
-		private static void AddRoles(this DataContext context)
+		public static void AddRoles(this DataContext context)
 		{
 			if(!context.Roles.Any(p => p.Name.Equals(Role.Admin)))
 			{
@@ -32,7 +33,7 @@ namespace AccountAndJwt.Database
 
 			context.SaveChanges();
 		}
-		private static void AddUsers(this DataContext context, String passwordSalt)
+		public static void AddUsers(this DataContext context, String passwordSalt)
 		{
 			if(!context.Users.Any(p => p.Login.Equals("guest")))
 			{
@@ -66,6 +67,22 @@ namespace AccountAndJwt.Database
 							RoleId = context.Roles.First(p => p.Name.Equals(Role.Moderator)).Id
 						}
 					}
+				});
+			}
+
+			context.SaveChanges();
+		}
+		public static void AddValues(this DataContext context)
+		{
+			if(context.Values.Any())
+				return;
+
+			for(var i = 100; i < 200; i++)
+			{
+				context.Values.Add(new ValueDb()
+				{
+					Value = i,
+					Commentary = $"Value: {i}"
 				});
 			}
 

@@ -63,7 +63,8 @@ namespace AccountAndJwt.IntegrationTests
 			{
 				context.Database.EnsureCreated();
 				var salt = _configuration["AudienceConfig:PasswordSalt"];
-				context.AddInitialData(salt);
+				context.AddRoles();
+				context.AddUsers(salt);
 			}
 
 			app.UseRouting();

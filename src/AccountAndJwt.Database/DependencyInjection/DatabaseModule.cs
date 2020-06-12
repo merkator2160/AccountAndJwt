@@ -93,13 +93,13 @@ namespace AccountAndJwt.Database.DependencyInjection
 		public static void InitializeStrategy(DataContext context, String salt)
 		{
 			context.Database.EnsureCreated();
-			context.AddInitialData(salt);
+			context.AddAllInitialData(salt);
 		}
 		public static void DropCreateInitializeStrategy(DataContext context, String salt)
 		{
 			context.Database.EnsureDeleted();
 			context.Database.EnsureCreated();
-			context.AddInitialData(salt);
+			context.AddAllInitialData(salt);
 		}
 		public static void MigrateInitializeStrategy(DataContext context, String salt)
 		{
@@ -107,7 +107,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 			if(pendingMigrations.Length > 0)
 				context.Database.Migrate();
 
-			context.AddInitialData(salt);
+			context.AddAllInitialData(salt);
 		}
 	}
 }
