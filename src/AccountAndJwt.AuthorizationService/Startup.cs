@@ -46,6 +46,7 @@ namespace AccountAndJwt.AuthorizationService
 			services.AddHealthChecks();
 			services.ConfigureResponseHandling();
 			services.AddOData();
+			services.AddControllers();
 			services.AddMvcCore(options => { options.AddOdataMediaTypes(); });
 			services
 				.AddControllers()
@@ -90,23 +91,23 @@ namespace AccountAndJwt.AuthorizationService
 
 			app.UseHsts();
 			app.UseHttpsRedirection();
-			app.UseConfiguredSwagger();
-			app.UseHangfire();
-			app.ConfigureHangfireJobs();
 			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
+			app.UseHangfire();
+			app.ConfigureHangfireJobs();
 			app.UseResponseCompression();
-			app.UseGlobalExceptionHandler();
+			app.UseODataBatching();
+
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.EnableDependencyInjection();
-				endpoints.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
-				endpoints.MapODataRoute("ODataRoute", "odata", app.ApplicationServices.CreateEdmModel());
-
+				endpoints.RegisterOdataRoutes(app);
 				endpoints.MapHealthChecks("/healthz", new HealthCheckOptions());
 				endpoints.MapControllers();
 			});
+
+			app.UseConfiguredSwagger();
+			app.UseGlobalExceptionHandler();
 		}
 	}
 }

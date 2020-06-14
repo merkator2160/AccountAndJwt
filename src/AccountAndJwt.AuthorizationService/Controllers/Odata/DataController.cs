@@ -1,10 +1,11 @@
 ﻿using AccountAndJwt.Database;
-using AccountAndJwt.Database.Models.Storage;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
-namespace AccountAndJwt.AuthorizationService.Controllers.Testing
+namespace AccountAndJwt.AuthorizationService.Controllers.Odata
 {
 	public class DataController : ODataController
 	{
@@ -18,14 +19,17 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 
 
 		// ACTIONS ////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		/// 
-		/// </summary>
-		[HttpGet]
 		[EnableQuery]
-		public ActionResult<IQueryable<ValueDb>> Get()
+		public IActionResult Get()
 		{
-			return _context.Values;
+			return Ok(_context.Values);
+		}
+
+		[EnableQuery]
+		[ODataRoute("Data({id})")]
+		public IActionResult Get(Int32 id)
+		{
+			return Ok(_context.Values.FirstOrDefault(p => p.Id == id));
 		}
 	}
 }
