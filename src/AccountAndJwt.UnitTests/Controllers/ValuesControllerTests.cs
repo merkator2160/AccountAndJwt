@@ -47,7 +47,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 				}
 			}));
 
-			var controller = new ValuesController(_mapper, valueService);
+			var controller = new ValueController(_mapper, valueService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.GetAll());
 			Assert.Equal(200, result.StatusCode);
@@ -61,7 +61,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 		public void GetAllReturnNullTest()
 		{
 			var valueService = Mock.Of<IValueService>(a => a.GetAllAsync() == Task.FromResult(default(ValueDto[])));
-			var controller = new ValuesController(_mapper, valueService);
+			var controller = new ValueController(_mapper, valueService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.GetAll());
 			Assert.Equal(200, result.StatusCode);
@@ -77,7 +77,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 				Value = 3,
 				Commentary = "value3"
 			}));
-			var controller = new ValuesController(_mapper, valueService);
+			var controller = new ValueController(_mapper, valueService);
 			var result = Assert.IsType<OkObjectResult>(controller.Get(3));
 			Assert.Equal(200, result.StatusCode);
 
@@ -92,7 +92,7 @@ namespace AccountAndJwt.UnitTests.Controllers
 		public void GetReturnNullTest()
 		{
 			var valueService = Mock.Of<IValueService>(a => a.GetAsync(3) == Task.FromResult(default(ValueDto)));
-			var controller = new ValuesController(_mapper, valueService);
+			var controller = new ValueController(_mapper, valueService);
 
 			var result = Assert.IsType<OkObjectResult>(controller.Get(3));
 			Assert.Equal(200, result.StatusCode);

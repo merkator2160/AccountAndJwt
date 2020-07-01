@@ -16,13 +16,13 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 	[Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
-	public class ValuesController : ControllerBase
+	public class ValueController : ControllerBase
 	{
 		private readonly IMapper _mapper;
 		private readonly IValueService _valueService;
 
 
-		public ValuesController(IMapper mapper, IValueService valueService)
+		public ValueController(IMapper mapper, IValueService valueService)
 		{
 			_mapper = mapper;
 			_valueService = valueService;
@@ -83,7 +83,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 			var valueDto = _mapper.Map<ValueDto>(value);
 			var addedValue = await _valueService.AddAsync(valueDto);
 
-			return CreatedAtAction(nameof(Get), "Values", new { id = addedValue.Id }, value);
+			return CreatedAtAction(nameof(Get), "Value", new { id = addedValue.Id }, value);
 		}
 
 		/// <summary>

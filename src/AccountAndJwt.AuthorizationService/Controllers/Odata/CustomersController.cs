@@ -1,6 +1,5 @@
 ﻿using AccountAndJwt.Contracts.Models.Odata;
 using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,16 +60,15 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Odata
 
 		// ACTIONS ////////////////////////////////////////////////////////////////////////////////
 		[EnableQuery]
-		public IEnumerable<CustomerAm> Get()
+		public IEnumerable<CustomerAm> GetCustomers()
 		{
 			return _customers;
 		}
 
 		[EnableQuery]
-		[ODataRoute("Customers({id})")]
-		public CustomerAm Get(Int32 id)
+		public CustomerAm GetCustomer(Int32 key)
 		{
-			return _customers.FirstOrDefault(p => p.Id == id);
+			return _customers.FirstOrDefault(p => p.Id == key);
 		}
 	}
 }

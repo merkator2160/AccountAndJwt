@@ -28,9 +28,9 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 		{
 			var builder = new ODataConventionModelBuilder(serviceProvider);
 
-			builder.EntitySet<ValueDb>("Data");
-			builder.EntitySet<CustomerAm>("Customers");
-			builder.EntitySet<OrderAm>("Orders");
+			builder.EntitySet<ValueDb>("Values").EntityType.Name = "Value";
+			builder.EntitySet<CustomerAm>("Customers").EntityType.Name = "Customer";
+			builder.EntitySet<OrderAm>("Orders").EntityType.Name = "Order";
 
 			return builder.GetEdmModel();
 		}
