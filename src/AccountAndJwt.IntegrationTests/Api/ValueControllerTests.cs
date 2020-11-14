@@ -23,28 +23,28 @@ namespace AccountAndJwt.IntegrationTests.Api
 			var client = _factory.CreateClient();
 			await _factory.AuthorizeAsAdminAsync(client);
 
-			var postResponse1 = await client.PostAsJsonAsync("api/Values", new AddValueAm()
+			var postResponse1 = await client.PostAsJsonAsync("api/Value", new AddValueAm()
 			{
 				Value = 1,
 				Commentary = "qwerty 1"
 			});
 			postResponse1.EnsureSuccessStatusCode();
 
-			var postResponse2 = await client.PostAsJsonAsync("api/Values", new AddValueAm()
+			var postResponse2 = await client.PostAsJsonAsync("api/Value", new AddValueAm()
 			{
 				Value = 2,
 				Commentary = "qwerty 2"
 			});
 			postResponse2.EnsureSuccessStatusCode();
 
-			var postResponse3 = await client.PostAsJsonAsync("api/Values", new AddValueAm()
+			var postResponse3 = await client.PostAsJsonAsync("api/Value", new AddValueAm()
 			{
 				Value = 3,
 				Commentary = "qwerty 3"
 			});
 			postResponse3.EnsureSuccessStatusCode();
 
-			var getAllResponse = await client.GetAsync("/api/Values");
+			var getAllResponse = await client.GetAsync("/api/Value");
 			getAllResponse.EnsureSuccessStatusCode();
 
 			var allValues = await getAllResponse.DeserializeAsync<ValueAm[]>();
@@ -57,7 +57,7 @@ namespace AccountAndJwt.IntegrationTests.Api
 			Assert.Equal(allValues[1].Id, value2.Id);
 			Assert.Equal(allValues[1].Value, value2.Value);
 
-			var putValue2Response = await client.PutAsJsonAsync("/api/Values", new ValueAm()
+			var putValue2Response = await client.PutAsJsonAsync("/api/Value", new ValueAm()
 			{
 				Id = allValues[1].Id,
 				Value = 1,
@@ -76,7 +76,7 @@ namespace AccountAndJwt.IntegrationTests.Api
 			var deleteValue2Response = await client.DeleteAsync(postResponse2.Headers.Location);
 			deleteValue2Response.EnsureSuccessStatusCode();
 
-			getAllResponse = await client.GetAsync("/api/Values");
+			getAllResponse = await client.GetAsync("/api/Value");
 			getAllResponse.EnsureSuccessStatusCode();
 
 			allValues = await getAllResponse.DeserializeAsync<ValueAm[]>();
