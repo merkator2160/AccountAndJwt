@@ -12,7 +12,7 @@ namespace AccountAndJwt.AuthorizationService
 {
 	public class Program
 	{
-		public static void Main(String[] args)
+		private static void Main(String[] args)
 		{
 			var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 			try

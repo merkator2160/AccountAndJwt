@@ -37,7 +37,9 @@ namespace AccountAndJwt.AuthorizationService.Services
 				throw new LoginIsAlreadyUsedException("User name is already occupied");
 
 			var userDb = _mapper.Map<UserDb>(user);
-			_unitOfWork.Users.Add(userDb);
+			userDb.PasswordHash = KeyHelper.CreatePasswordHash(user.Password, _audienceConfig.PasswordSalt);
+
+			await _unitOfWork.Users.AddAsync(userDb);
 			await _unitOfWork.CommitAsync();
 		}
 		public async Task DeleteUserAsync(Int32 id)

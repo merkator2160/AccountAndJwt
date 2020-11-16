@@ -46,7 +46,6 @@ namespace AccountAndJwt.AuthorizationService
 			services.AddHealthChecks();
 			services.ConfigureResponseHandling();
 			services.AddOData();
-			services.AddControllers();
 			services.AddMvcCore(options => { options.AddOdataMediaTypes(); });
 			services
 				.AddControllers()

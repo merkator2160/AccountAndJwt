@@ -9,6 +9,8 @@ Ui debug URL Edge:   msedge --remote-debugging-port=9222 --user-data-dir="C:\Use
 OData:
 OData Microsoft routing conventions: https://docs.microsoft.com/en-us/odata/webapi/built-in-routing-conventions
 Documentation: https://github.com/xuzhg/WebApiSample/tree/master/AspNetCore3x/AspNetCore3xEndpoint
+
+odata/Customers?$select=HomeAddress
 Customers?$select=HomeAddress
 odata/Customers?$select=HomeAddress
 my/2/Customers?$select=HomeAddress

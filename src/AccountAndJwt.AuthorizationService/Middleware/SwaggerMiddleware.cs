@@ -21,7 +21,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 				c.SwaggerDoc(_documentName, new OpenApiInfo
 				{
 					Version = $"v{assemblyVersion}",
-					Title = "Monitor service",
+					Title = "Authorization service",
 					Description = "Monitor API",
 					Contact = new OpenApiContact()
 					{
