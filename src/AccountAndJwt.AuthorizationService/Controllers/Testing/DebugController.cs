@@ -13,6 +13,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// This controller only for debugging, playing, testing purposes (it does not appear in production)
 	/// </summary>
 	[ApiController]
+#if !DEVELOPMENT
+	[ApiExplorerSettings(IgnoreApi = false)]
+#endif
 	[Route("api/[controller]/[action]")]
 	public class DebugController : ControllerBase
 	{

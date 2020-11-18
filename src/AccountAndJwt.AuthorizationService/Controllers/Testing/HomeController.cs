@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AccountAndJwt.AuthorizationService.Controllers
+namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
 	[ApiController]
-	[ApiExplorerSettings(IgnoreApi = true)]
+#if !DEVELOPMENT
+	[ApiExplorerSettings(IgnoreApi = false)]
+#endif
 	public class HomeController : ControllerBase
 	{
 		[HttpGet("/")]

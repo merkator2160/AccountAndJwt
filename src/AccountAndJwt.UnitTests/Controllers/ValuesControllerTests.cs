@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.AuthorizationService.Controllers;
+﻿using AccountAndJwt.AuthorizationService.Controllers.Testing;
 using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
 using AccountAndJwt.Common.DependencyInjection;

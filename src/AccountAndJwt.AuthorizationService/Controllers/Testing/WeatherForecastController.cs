@@ -7,6 +7,9 @@ using System.Linq;
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
 	[ApiController]
+#if !DEVELOPMENT
+	[ApiExplorerSettings(IgnoreApi = false)]
+#endif
 	[Route("api/[controller]/[action]")]
 	public class WeatherForecastController : ControllerBase
 	{

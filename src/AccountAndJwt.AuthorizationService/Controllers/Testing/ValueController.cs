@@ -8,13 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace AccountAndJwt.AuthorizationService.Controllers
+namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
 	/// <summary>
 	/// Simple values controller
 	/// </summary>
 	[Authorize]
 	[ApiController]
+#if !DEVELOPMENT
+	[ApiExplorerSettings(IgnoreApi = false)]
+#endif
 	[Route("api/[controller]")]
 	public class ValueController : ControllerBase
 	{

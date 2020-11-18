@@ -37,7 +37,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		}
 		public static void AddHangfire(this IServiceCollection services, IConfiguration configuration)
 		{
-			var connectionString = configuration.GetConnectionString(DatabaseModule.DefaultConnectionStringName);
+			var connectionString = configuration.GetConnectionString(DatabaseModule.ConnectionStringName);
 			var databaseConfig = configuration.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 
 			var databaseModule = new DatabaseModule(configuration);

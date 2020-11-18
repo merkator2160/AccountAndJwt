@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AccountAndJwt.AuthorizationService.Controllers
 {
 	/// <summary>
-	/// Provide operations under JWT access tokens for whole API
+	/// Provides operations under JWT access tokens for the whole API
 	/// </summary>
 	[ApiController]
 	[Route("api/[controller]/[action]")]
@@ -29,14 +29,14 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		// ACTIONS ////////////////////////////////////////////////////////////////////////////////
 
 		/// <summary>
-		/// Get the access-token by username and password
+		/// Creates the access-token by username and password
 		/// </summary>
 		[HttpPost]
 		[ProducesResponseType(typeof(AuthorizeResponseAm), 200)]
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> AuthorizeByCredentials([FromBody]AuthorizeRequestAm credentials)
+		public async Task<IActionResult> AuthorizeByCredentials([FromBody] AuthorizeRequestAm credentials)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -47,13 +47,13 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		}
 
 		/// <summary>
-		/// Get new access token by provided refresh token
+		/// Creates new access token by provided refresh token
 		/// </summary>
 		[HttpPost]
 		[ProducesResponseType(typeof(RefreshTokenResponseAm), 200)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> RefreshToken([FromBody]String refreshToken)
+		public async Task<IActionResult> RefreshToken([FromBody] String refreshToken)
 		{
 			var result = await _tokenService.CreateAccessTokenByRefreshTokenAsync(refreshToken);
 
@@ -67,7 +67,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> RevokeToken([FromBody]String refreshToken)
+		public async Task<IActionResult> RevokeToken([FromBody] String refreshToken)
 		{
 			await _tokenService.RevokeRefreshToken(refreshToken);
 

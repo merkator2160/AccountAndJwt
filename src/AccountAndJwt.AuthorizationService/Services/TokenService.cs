@@ -35,10 +35,10 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var user = await _unitOfWork.Users.GetByLoginEagerAsync(login);
 			if(user == null)
-				throw new UserNotFoundException($"User with login \"{login}\" was not found");
+				throw new UserNotFoundException($"User with {nameof(login)} \"{login}\" was not found!");
 
 			if(!String.Equals(user.PasswordHash, KeyHelper.CreatePasswordHash(password, _audienceConfig.PasswordSalt)))
-				throw new UserNotFoundException("There is no match Login and Password");
+				throw new UserNotFoundException("There is no match login and password!");
 
 			var refreshTokenValue = Guid.NewGuid().ToString().Replace("-", "");
 
@@ -49,7 +49,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 			return new CreateAccessTokenByCredentialsDto()
 			{
 				AccessToken = CreateJwtAccessToken(user),
-				AccessTokenLifeTime = _audienceConfig.TokenLifetimeSec,
+				AccessTokenLifeTimeSec = _audienceConfig.TokenLifetimeSec,
 				RefreshToken = refreshTokenValue
 			};
 		}
@@ -57,19 +57,19 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetByRefreshTokenEagerAsync(refreshToken);
 			if(requestedUser == null)
-				throw new RefreshTokenNotFoundException("Refresh token has expired");
+				throw new RefreshTokenNotFoundException("Refresh token has expired!");
 
 			return new CreateAccessTokenByRefreshTokenDto()
 			{
 				AccessToken = CreateJwtAccessToken(requestedUser),
-				AccessTokenLifeTime = _audienceConfig.TokenLifetimeSec
+				AccessTokenLifeTimeSec = _audienceConfig.TokenLifetimeSec
 			};
 		}
 		public async Task RevokeRefreshToken(String refreshToken)
 		{
 			var requestedUser = await _unitOfWork.Users.GetByRefreshTokenEagerAsync(refreshToken);
 			if(requestedUser == null)
-				throw new RefreshTokenNotFoundException("Refresh token has already expired");
+				throw new RefreshTokenNotFoundException("Refresh token has already expired!");
 
 			requestedUser.RefreshToken = null;
 			_unitOfWork.Users.Update(requestedUser);
@@ -88,8 +88,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 				new Claim(JwtRegisteredClaimNames.Iat, currentDateUtc.ToUniversalTime().ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
 				new Claim(JwtRegisteredClaimNames.Email, user.Email),
 				new Claim(nameof(user.FirstName), user.FirstName),
-				new Claim(nameof(user.LastName), user.LastName),
-				new Claim("custom", "customValue")
+				new Claim(nameof(user.LastName), user.LastName)
 			};
 			claims.AddRange(user.UserRoles.Select(p => new Claim("roles", p.Role.Name)));
 

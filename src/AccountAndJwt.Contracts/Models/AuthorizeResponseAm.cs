@@ -15,7 +15,7 @@ namespace AccountAndJwt.Contracts.Models
 		/// <summary>
 		/// Access token lifetime
 		/// </summary>
-		public Double AccessTokenLifeTime { get; set; }
+		public Int32 AccessTokenLifeTimeSec { get; set; }
 
 		/// <summary>
 		/// Refresh token

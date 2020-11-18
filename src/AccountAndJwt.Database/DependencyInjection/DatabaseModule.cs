@@ -1,5 +1,4 @@
 ﻿using AccountAndJwt.Common.DependencyInjection;
-using AccountAndJwt.Database.Interceptors;
 using AccountAndJwt.Database.Models.Config;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 {
 	public class DatabaseModule : Module
 	{
-		public const String DefaultConnectionStringName = "DefaultConnection";
+		public const String ConnectionStringName = "DefaultConnection";
 		private readonly IConfiguration _configuration;
 		private readonly Assembly _currentAssembly;
 
@@ -74,7 +73,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 		}
 		private static DbContextOptions CreateContextOptions(IConfiguration configurationService, Boolean isMigrationMode = false)
 		{
-			var connectionString = configurationService.GetConnectionString(DefaultConnectionStringName);
+			var connectionString = configurationService.GetConnectionString(ConnectionStringName);
 			var config = configurationService.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 
 			return new DbContextOptionsBuilder()
@@ -82,7 +81,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 					.EnableRetryOnFailure()
 					.CommandTimeout(isMigrationMode ? config.MigrationTimeout : config.CommandTimeout))
 				//.UseSnakeCaseNamingConvention()		// Usual case for PostgreSQL, I left it here for further usage, because this project is my common micro-service prototype
-#if DEBUG
+#if DEVELOPMENT
 				.AddInterceptors(new HintCommandInterceptor())
 #endif
 				.Options;

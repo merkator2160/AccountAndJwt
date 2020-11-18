@@ -22,7 +22,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 				{
 					Version = $"v{assemblyVersion}",
 					Title = "Authorization service",
-					Description = "Monitor API",
+					Description = "AccountAndJwt authorization API",
 					Contact = new OpenApiContact()
 					{
 						Name = "Aleksandrov Evgeniy",

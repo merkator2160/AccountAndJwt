@@ -1,6 +1,5 @@
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -10,7 +9,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace AccountAndJwt.AuthorizationService
 {
-	public class Program
+	internal class Program
 	{
 		private static void Main(String[] args)
 		{

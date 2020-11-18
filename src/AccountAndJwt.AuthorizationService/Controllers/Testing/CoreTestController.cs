@@ -13,8 +13,10 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// This controller only for integration testing purposes (it does not appear in production)
 	/// </summary>
 	[ApiController]
-	[Route("api/[controller]/[action]")]
+#if !DEVELOPMENT
 	[ApiExplorerSettings(IgnoreApi = false)]
+#endif
+	[Route("api/[controller]/[action]")]
 	public class CoreTestController : ControllerBase
 	{
 		private readonly IServiceProvider _serviceProvider;
