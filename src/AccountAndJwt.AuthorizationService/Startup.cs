@@ -93,20 +93,21 @@ namespace AccountAndJwt.AuthorizationService
 			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();
+			app.UseConfiguredSwagger();
 			app.UseResponseCompression();
 			app.UseODataBatching();
 
+			app.UseGlobalExceptionHandler();
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.RegisterOdataRoutes(app);
 				endpoints.MapHealthChecks("/healthz", new HealthCheckOptions());
 				endpoints.MapControllers();
 			});
-
-			app.UseConfiguredSwagger();
-			app.UseGlobalExceptionHandler();
 		}
 	}
 }
