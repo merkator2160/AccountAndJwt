@@ -36,8 +36,9 @@ namespace AccountAndJwt.AuthorizationService
 				{
 					webBuilder.UseStartup<Startup>();
 #if !DEVELOPMENT
-					webBuilder.UseKestrel();
-					webBuilder.UseUrls("http://*:5001");
+					// For standalone launch configurations
+					//webBuilder.UseKestrel();
+					//webBuilder.UseUrls("http://*:5001");
 #endif
 					webBuilder
 						.ConfigureLogging((hostingContext, logging) =>

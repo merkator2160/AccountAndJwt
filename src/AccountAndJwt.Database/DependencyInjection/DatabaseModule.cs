@@ -1,4 +1,5 @@
 ﻿using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Database.Interceptors;
 using AccountAndJwt.Database.Models.Config;
 using Autofac;
 using Microsoft.EntityFrameworkCore;

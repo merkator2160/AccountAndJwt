@@ -14,7 +14,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// </summary>
 	[ApiController]
 #if !DEVELOPMENT
-	[ApiExplorerSettings(IgnoreApi = false)]
+	[ApiExplorerSettings(IgnoreApi = true)]
 #endif
 	[Route("api/[controller]/[action]")]
 	public class DebugController : ControllerBase

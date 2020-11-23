@@ -8,7 +8,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
 	[ApiController]
 #if !DEVELOPMENT
-	[ApiExplorerSettings(IgnoreApi = false)]
+	[ApiExplorerSettings(IgnoreApi = true)]
 #endif
 	[Route("api/[controller]/[action]")]
 	public class WeatherForecastController : ControllerBase

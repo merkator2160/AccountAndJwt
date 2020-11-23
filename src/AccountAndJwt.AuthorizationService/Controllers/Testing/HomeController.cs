@@ -4,7 +4,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
 	[ApiController]
 #if !DEVELOPMENT
-	[ApiExplorerSettings(IgnoreApi = false)]
+	[ApiExplorerSettings(IgnoreApi = true)]
 #endif
 	public class HomeController : ControllerBase
 	{
