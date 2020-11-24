@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
-	public class UserNotFoundException : ApplicationException
+	internal class UserNotFoundException : ApplicationException
 	{
 		public UserNotFoundException()
 		{
@@ -17,7 +17,7 @@ namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 		{
 
 		}
-		protected UserNotFoundException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected UserNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

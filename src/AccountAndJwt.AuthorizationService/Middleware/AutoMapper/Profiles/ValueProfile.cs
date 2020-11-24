@@ -5,7 +5,7 @@ using AutoMapper;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.AutoMapper.Profiles
 {
-	public class ValueProfile : Profile
+	internal class ValueProfile : Profile
 	{
 		public ValueProfile()
 		{

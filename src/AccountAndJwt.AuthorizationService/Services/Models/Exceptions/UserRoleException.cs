@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
-	public class UserRoleException : ApplicationException
+	internal class UserRoleException : ApplicationException
 	{
 		public UserRoleException()
 		{
@@ -17,7 +17,7 @@ namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 		{
 
 		}
-		protected UserRoleException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected UserRoleException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

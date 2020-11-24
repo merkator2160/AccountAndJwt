@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
-	public class RefreshTokenNotFoundException : ApplicationException
+	internal class RefreshTokenNotFoundException : ApplicationException
 	{
 		public RefreshTokenNotFoundException()
 		{
@@ -17,7 +17,7 @@ namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 		{
 
 		}
-		protected RefreshTokenNotFoundException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected RefreshTokenNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

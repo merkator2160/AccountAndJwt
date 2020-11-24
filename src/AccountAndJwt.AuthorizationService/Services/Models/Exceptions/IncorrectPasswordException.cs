@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
-	public class IncorrectPasswordException : ApplicationException
+	internal class IncorrectPasswordException : ApplicationException
 	{
 		public IncorrectPasswordException()
 		{
@@ -17,7 +17,7 @@ namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 		{
 
 		}
-		protected IncorrectPasswordException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected IncorrectPasswordException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

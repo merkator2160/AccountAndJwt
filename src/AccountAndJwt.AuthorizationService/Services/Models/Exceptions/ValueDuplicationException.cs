@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
-	public class ValueDuplicationException : ApplicationException
+	internal class ValueDuplicationException : ApplicationException
 	{
 		public ValueDuplicationException()
 		{
@@ -17,7 +17,7 @@ namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 		{
 
 		}
-		protected ValueDuplicationException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected ValueDuplicationException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

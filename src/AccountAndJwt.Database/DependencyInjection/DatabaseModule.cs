@@ -84,6 +84,8 @@ namespace AccountAndJwt.Database.DependencyInjection
 				//.UseSnakeCaseNamingConvention()		// Usual case for PostgreSQL, I left it here for further usage, because this project is my common micro-service prototype
 #if DEVELOPMENT
 				.AddInterceptors(new HintCommandInterceptor())
+				.EnableSensitiveDataLogging()
+				.EnableDetailedErrors()
 #endif
 				.Options;
 		}

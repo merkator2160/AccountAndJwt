@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
-	public class ValueNotFoundException : ApplicationException
+	internal class ValueNotFoundException : ApplicationException
 	{
 		public ValueNotFoundException()
 		{
@@ -17,7 +17,7 @@ namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 		{
 
 		}
-		protected ValueNotFoundException(SerializationInfo info, StreamingContext contex) : base(info, contex)
+		protected ValueNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

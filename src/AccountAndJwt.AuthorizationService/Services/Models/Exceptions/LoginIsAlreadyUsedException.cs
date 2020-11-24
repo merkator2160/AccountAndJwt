@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AccountAndJwt.AuthorizationService.Services.Models.Exceptions
 {
-	public class LoginIsAlreadyUsedException : ApplicationException
+	internal class LoginIsAlreadyUsedException : ApplicationException
 	{
 		public LoginIsAlreadyUsedException()
 		{
