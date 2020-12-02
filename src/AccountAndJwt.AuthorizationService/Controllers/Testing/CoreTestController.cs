@@ -13,9 +13,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// This controller only for integration testing purposes (it does not appear in production)
 	/// </summary>
 	[ApiController]
-#if !DEVELOPMENT
-	[ApiExplorerSettings(IgnoreApi = true)]
-#endif
 	[Route("api/[controller]/[action]")]
 	public class CoreTestController : ControllerBase
 	{
@@ -29,6 +26,10 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 
 
 		// ACTIONS ////////////////////////////////////////////////////////////////////////////////
+
+		/// <summary>
+		/// This test only checks controller availability
+		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 500)]
@@ -37,6 +38,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 			return Ok();
 		}
 
+		/// <summary>
+		/// This test returns reference equality information about two two injected data contexts, reference should be the same
+		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 500)]
@@ -51,6 +55,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 			return Ok();
 		}
 
+		/// <summary>
+		/// Throws an unhandled exception
+		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(typeof(String), 500)]
 		public IActionResult UnhandledExceptionTest()
@@ -58,6 +65,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 			throw new Exception("Exception message!");
 		}
 
+		/// <summary>
+		/// Throws an unhandled application exception
+		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(typeof(String), 500)]
 		public IActionResult UnhandledApplicationExceptionTest()
@@ -65,6 +75,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 			throw new ApplicationException("ApplicationException message!");
 		}
 
+		/// <summary>
+		/// Returns collection of claims assigned to the current user from provided JWT token
+		/// </summary>
 		[Authorize]
 		[HttpGet]
 		[ProducesResponseType(typeof(GetClaimsResponseAm[]), 200)]

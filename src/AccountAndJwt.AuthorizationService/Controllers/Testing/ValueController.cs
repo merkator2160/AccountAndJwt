@@ -15,9 +15,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// </summary>
 	[Authorize]
 	[ApiController]
-#if !DEVELOPMENT
-	[ApiExplorerSettings(IgnoreApi = true)]
-#endif
 	[Route("api/[controller]")]
 	public class ValueController : ControllerBase
 	{

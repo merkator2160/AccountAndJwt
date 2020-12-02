@@ -6,13 +6,13 @@ namespace AccountAndJwt.Common.Config
 {
 	public static class CustomConfigurationProvider
 	{
-		public const String _defaultEnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
+		public const String DefaultEnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
 
 
 		// FUNCTIONS //////////////////////////////////////////////////////////////////////////////
 		public static IConfigurationRoot CollectEnvironmentRelatedConfiguration()
 		{
-			return CollectEnvironmentRelatedConfiguration(_defaultEnvironmentVariableName);
+			return CollectEnvironmentRelatedConfiguration(DefaultEnvironmentVariableName);
 		}
 		public static IConfigurationRoot CollectEnvironmentRelatedConfiguration(String environmentVariableName)
 		{
@@ -27,7 +27,6 @@ namespace AccountAndJwt.Common.Config
 			var builder = new ConfigurationBuilder()
 				.AddEnvironmentVariables()
 				.SetBasePath(basePath)
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
 				.AddJsonFile($"appsettings.{environment}.json", optional: false, reloadOnChange: false);
 
 			return builder.Build();

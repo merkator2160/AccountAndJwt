@@ -3,7 +3,7 @@
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
 	[ApiController]
-#if !DEVELOPMENT
+#if !DEBUG
 	[ApiExplorerSettings(IgnoreApi = true)]
 #endif
 	public class HomeController : ControllerBase
@@ -11,7 +11,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		[HttpGet("/")]
 		public IActionResult Index()
 		{
-			return Ok();
+			return Ok("Authorization service");
 		}
 	}
 }

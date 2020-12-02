@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Database;
+﻿using AccountAndJwt.Common.Config;
+using AccountAndJwt.Database;
 using AccountAndJwt.Database.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
@@ -13,9 +14,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 	/// This controller only for debugging, playing, testing purposes (it does not appear in production)
 	/// </summary>
 	[ApiController]
-#if !DEVELOPMENT
-	[ApiExplorerSettings(IgnoreApi = true)]
-#endif
 	[Route("api/[controller]/[action]")]
 	public class DebugController : ControllerBase
 	{
@@ -44,7 +42,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		// ACTIONS //////////////////////////////////////////////////////////////////////////////////////
 
 		/// <summary>
-		/// Creates the log entry
+		/// Creates a log entry
 		/// </summary>
 		/// <returns></returns>
 		[HttpPost]
@@ -59,29 +57,40 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		}
 
 		/// <summary>
-		/// Returns current environment name
+		/// Returns current environment name retrieved from IWebHostEnvironment
 		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult GetEnvironmentName()
+		public IActionResult GetAspNetEnvironment()
 		{
 			return Ok(_env.EnvironmentName);
 		}
 
 		/// <summary>
-		/// Returns a variable associated with current environment
+		/// Returns a raw current server environment variable value introduced in current server global environment variables pool
 		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(typeof(String), 200)]
 		[ProducesResponseType(typeof(String), 500)]
-		public IActionResult GetEnvironmentVariable()
+		public IActionResult GetRawEnvironmentVariable()
 		{
-			return Ok(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+			return Ok(Environment.GetEnvironmentVariable(CustomConfigurationProvider.DefaultEnvironmentVariableName));
 		}
 
 		/// <summary>
-		/// Returns information about available repositories
+		/// Returns name of the variable which uses to determine current server environment
+		/// </summary>
+		[HttpGet]
+		[ProducesResponseType(typeof(String), 200)]
+		[ProducesResponseType(typeof(String), 500)]
+		public IActionResult GetRawEnvironmentVariableName()
+		{
+			return Ok(CustomConfigurationProvider.DefaultEnvironmentVariableName);
+		}
+
+		/// <summary>
+		/// Returns information about available repositories for the primary database 
 		/// </summary>
 		[HttpGet]
 		[ProducesResponseType(typeof(String), 200)]
