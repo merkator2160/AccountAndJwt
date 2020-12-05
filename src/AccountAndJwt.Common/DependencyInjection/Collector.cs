@@ -13,6 +13,13 @@ namespace AccountAndJwt.Common.DependencyInjection
 		{
 			builder.RegisterServices(Assembly.GetCallingAssembly());
 		}
+		public static void RegisterServices(this ContainerBuilder builder, Assembly[] assemblies)
+		{
+			foreach(var assembly in assemblies)
+			{
+				builder.RegisterServices(assembly);
+			}
+		}
 		public static void RegisterServices(this ContainerBuilder builder, Assembly assembly)
 		{
 			builder

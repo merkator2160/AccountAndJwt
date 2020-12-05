@@ -34,7 +34,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetByLoginEagerAsync(user.Login);
 			if(requestedUser != null)
-				throw new LoginIsAlreadyUsedException("User name is already occupied");
+				throw new LoginIsAlreadyUsedException("User name is already occupied!");
 
 			var userDb = _mapper.Map<UserDb>(user);
 			userDb.PasswordHash = KeyHelper.CreatePasswordHash(user.Password, _audienceConfig.PasswordSalt);
@@ -46,7 +46,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetEagerAsync(id);
 			if(requestedUser == null)
-				throw new UserNotFoundException("User with provided id was not found");
+				throw new UserNotFoundException($"User with provided id: \"{id}\" was not found!");
 
 			_unitOfWork.Users.Remove(requestedUser);
 			await _unitOfWork.CommitAsync();
@@ -55,7 +55,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetEagerAsync(id);
 			if(requestedUser == null)
-				throw new UserNotFoundException("User with provided id was not found");
+				throw new UserNotFoundException($"User with provided id: \"{id}\" was not found!");
 
 			return _mapper.Map<UserDto>(requestedUser);
 		}
@@ -67,11 +67,11 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetAsync(userId);
 			if(requestedUser == null)
-				throw new UserNotFoundException("User with provided id was not found");
+				throw new UserNotFoundException($"User with provided id: \"{userId}\" was not found!");
 
 			var providedOldPasswordHash = KeyHelper.CreatePasswordHash(oldPassword, _audienceConfig.PasswordSalt);
 			if(!String.Equals(providedOldPasswordHash, requestedUser.PasswordHash))
-				throw new IncorrectPasswordException($"The {nameof(oldPassword)} is wrong");
+				throw new IncorrectPasswordException($"The {nameof(oldPassword)} is wrong!");
 
 			requestedUser.PasswordHash = KeyHelper.CreatePasswordHash(newPassword, _audienceConfig.PasswordSalt);
 			_unitOfWork.Users.Update(requestedUser);
@@ -81,7 +81,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
-				throw new UserNotFoundException("User with provided id was not found");
+				throw new UserNotFoundException($"User with provided id: \"{userId}\" was not found!");
 
 			requestedUser.Email = newEmail;
 			_unitOfWork.Users.Update(requestedUser);
@@ -98,7 +98,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
-				throw new UserNotFoundException("User with provided id was not found");
+				throw new UserNotFoundException($"User with provided id: \"{userId}\" was not found!");
 
 			requestedUser.FirstName = firstName;
 			requestedUser.LastName = lastName;
@@ -109,11 +109,11 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
-				throw new UserNotFoundException("User with provided id was not found");
+				throw new UserNotFoundException($"User with provided id: \"{userId}\" was not found!");
 
 			var requestedRole = await _unitOfWork.Users.GetRoleWithUserAsync(roleName);
 			if(requestedUser.UserRoles.Any(p => String.Equals(p.Role.Name, requestedRole.Name)))
-				throw new UserRoleException($"User with provided id already have the \"{roleName}\" role");
+				throw new UserRoleException($"User with provided id already have the \"{roleName}\" role!");
 
 			await _unitOfWork.Users.AddRoleAsync(requestedUser.Id, requestedRole.Id);
 			await _unitOfWork.CommitAsync();
@@ -122,7 +122,7 @@ namespace AccountAndJwt.AuthorizationService.Services
 		{
 			var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
 			if(requestedUser == null)
-				throw new UserNotFoundException("User with provided id was not found");
+				throw new UserNotFoundException($"User with provided id: \"{userId}\" was not found!");
 
 			var requestedRole = await _unitOfWork.Users.GetRoleWithUserAsync(roleName);
 			var requestedUserRole = requestedUser.UserRoles.FirstOrDefault(p => String.Equals(p.Role.Name, requestedRole.Name));

@@ -51,6 +51,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		/// </summary>
 		[HttpPost]
 		[ProducesResponseType(typeof(RefreshTokenResponseAm), 200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> RefreshToken([FromBody] String refreshToken)
@@ -65,6 +66,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		/// </summary>
 		[HttpPost]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> RevokeToken([FromBody] String refreshToken)

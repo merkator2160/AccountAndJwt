@@ -44,7 +44,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> Register([FromBody]RegisterUserAm userDetails)
+		public async Task<IActionResult> Register([FromBody] RegisterUserAm userDetails)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -66,11 +66,12 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPost]
 		[Authorize(Roles = Role.Admin)]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> DeleteAccount([FromBody]Int32 userId)
+		public async Task<IActionResult> DeleteAccount([FromBody] Int32 userId)
 		{
 			if(userId == 0)
 				return StatusCode(460, $"Please provide \"{nameof(userId)}\"");
@@ -93,7 +94,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> AddRole([FromBody]AddRemoveRoleAm request)
+		public async Task<IActionResult> AddRole([FromBody] AddRemoveRoleAm request)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -116,7 +117,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> RemoveRole([FromBody]AddRemoveRoleAm request)
+		public async Task<IActionResult> RemoveRole([FromBody] AddRemoveRoleAm request)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -138,7 +139,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> ChangeEmail([FromBody]String newEmail)
+		public async Task<IActionResult> ChangeEmail([FromBody] String newEmail)
 		{
 			if(String.IsNullOrEmpty(newEmail))
 				return StatusCode(460, $"Please provide valid \"{nameof(newEmail)}\"");
@@ -159,7 +160,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> ChangeName([FromBody]ChangeNameRequestAm request)
+		public async Task<IActionResult> ChangeName([FromBody] ChangeNameRequestAm request)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -181,7 +182,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> GetUser(Int32 userId)
+		public async Task<IActionResult> GetUser([FromQuery] Int32 userId)
 		{
 			return Ok(_mapper.Map<UserAm>(await _userService.GetUserAsync(userId)));
 		}
@@ -193,7 +194,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[Authorize(Roles = Role.Admin)]
 		[HttpGet]
 		[ProducesResponseType(typeof(UserAm[]), 200)]
-		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
 		[ProducesResponseType(typeof(String), 460)]
@@ -211,10 +211,11 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[Authorize]
 		[HttpPost]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordAm request)
+		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordAm request)
 		{
 			if(!ModelState.IsValid)
 				return BadRequest(ModelState);
