@@ -9,6 +9,8 @@ namespace AccountAndJwt.Common.Consts
 			public const String AtomXml = "application/atom+xml";
 			public const String AtomcatXml = "application/atomcat+xml";
 			public const String Ecmascript = "application/ecmascript";
+			public const String ExcelXls = "application/vnd.ms-excel";
+			public const String ExcelXlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 			public const String JavaArchive = "application/java-archive";
 			public const String Javascript = "application/javascript";
 			public const String Json = "application/json";

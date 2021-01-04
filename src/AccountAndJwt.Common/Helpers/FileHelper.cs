@@ -8,6 +8,10 @@ namespace AccountAndJwt.Common.Helpers
 {
 	public static class FileHelper
 	{
+		// PROPERTIES /////////////////////////////////////////////////////////////////////////////
+		public static String DesktopDirectory => Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+
 		// READING ////////////////////////////////////////////////////////////////////////////////
 		public static Task<T> GetFromJsonFileAsync<T>(String filePath)
 		{
@@ -121,6 +125,16 @@ namespace AccountAndJwt.Common.Helpers
 				using(var streamWriter = new StreamWriter(stream, encoding))
 				{
 					streamWriter.Write(str);
+				}
+			}
+		}
+		public static void SaveOnDisk(this Byte[] data, String filePath)
+		{
+			using(var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+			{
+				using(var streamWriter = new BinaryWriter(stream))
+				{
+					streamWriter.Write(data);
 				}
 			}
 		}

@@ -17,7 +17,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.AutoMapper.Profiles
 			CreateMap<UserDto, UserDb>()
 				.ForMember(dest => dest.UserRoles, opt => opt.Ignore())
 				.ForMember(dest => dest.RefreshToken, opt => opt.Ignore())
-				.ForMember(from => from.PasswordHash, opt => opt.Ignore())
+				.ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
 				.ReverseMap()
 				.ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role.Name)));
 

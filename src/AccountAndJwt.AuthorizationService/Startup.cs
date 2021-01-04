@@ -94,7 +94,6 @@ namespace AccountAndJwt.AuthorizationService
 			app.UseAuthentication();
 			app.UseAuthorization();
 
-
 			app.UseHangfire();
 			app.ConfigureHangfireJobs();
 			app.UseConfiguredSwagger();
