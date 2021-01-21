@@ -1,13 +1,13 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Models;
-using AccountAndJwt.Common.Hangfire.Interfaces;
 using AccountAndJwt.Database.Interfaces;
+using DenverTraffic.Common.Hangfire.Interfaces;
 using Hangfire;
 using System;
 using System.Threading.Tasks;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {
-	internal class SampleParametrizedJob : IJob<SampleJobParameter>
+	internal class SampleParametrizedJob : IAsyncJob<SampleJobParameter>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 

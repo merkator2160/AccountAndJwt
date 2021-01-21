@@ -2,8 +2,8 @@
 
 namespace DenverTraffic.Common.Hangfire.Interfaces
 {
-	public interface IJob<T>
+	public interface IAsyncJob<T>
 	{
-		Task Execute(T parameter);
+		Task ExecuteAsync(T parameter);
 	}
 }

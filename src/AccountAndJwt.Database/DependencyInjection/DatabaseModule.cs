@@ -13,7 +13,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 {
 	public class DatabaseModule : Module
 	{
-		public const String ConnectionStringName = "DefaultConnection";
+		private const String _defaultConnectionStringName = "DefaultConnection";
 		private readonly IConfiguration _configuration;
 		private readonly Assembly _currentAssembly;
 
@@ -23,6 +23,10 @@ namespace AccountAndJwt.Database.DependencyInjection
 			_currentAssembly = Assembly.GetExecutingAssembly();
 			_configuration = configuration;
 		}
+
+
+		// PROPERTIES /////////////////////////////////////////////////////////////////////////////
+		public static String ConnectionStringName => _defaultConnectionStringName;
 
 
 		// COMPONENT REGISTRATION /////////////////////////////////////////////////////////////////
@@ -61,20 +65,20 @@ namespace AccountAndJwt.Database.DependencyInjection
 
 
 		// CONTEXT FUNCTIONS //////////////////////////////////////////////////////////////////////
-		public static void CheckDatabase(IConfiguration configurationService, Action<DataContext, String> strategy)
+		public static void CheckDatabase(IConfiguration configurationService, Action<DataContext, String> strategy, String connectionStringName = _defaultConnectionStringName)
 		{
-			using(var context = CreateMigrationContext(configurationService))
+			using(var context = CreateMigrationContext(configurationService, connectionStringName))
 			{
 				strategy.Invoke(context, configurationService["AudienceConfig:PasswordSalt"]);
 			}
 		}
-		public static DataContext CreateMigrationContext(IConfiguration configurationService)
+		public static DataContext CreateMigrationContext(IConfiguration configurationService, String connectionStringName = _defaultConnectionStringName)
 		{
-			return new DataContext(CreateContextOptions(configurationService, true));
+			return new DataContext(CreateContextOptions(configurationService, connectionStringName, true));
 		}
-		private static DbContextOptions CreateContextOptions(IConfiguration configurationService, Boolean isMigrationMode = false)
+		private static DbContextOptions CreateContextOptions(IConfiguration configurationService, String connectionStringName = _defaultConnectionStringName, Boolean isMigrationMode = false)
 		{
-			var connectionString = configurationService.GetConnectionString(ConnectionStringName);
+			var connectionString = configurationService.GetConnectionString(connectionStringName);
 			var config = configurationService.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 
 			return new DbContextOptionsBuilder()

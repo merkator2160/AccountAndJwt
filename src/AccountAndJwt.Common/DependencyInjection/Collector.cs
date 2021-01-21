@@ -13,17 +13,17 @@ namespace AccountAndJwt.Common.DependencyInjection
 		{
 			builder.RegisterServices(Assembly.GetCallingAssembly());
 		}
-		public static void RegisterServices(this ContainerBuilder builder, Assembly[] assemblies)
+		public static void RegisterServices(this ContainerBuilder builder, Assembly[] assembliesToScan)
 		{
-			foreach(var assembly in assemblies)
+			foreach(var assembly in assembliesToScan)
 			{
 				builder.RegisterServices(assembly);
 			}
 		}
-		public static void RegisterServices(this ContainerBuilder builder, Assembly assembly)
+		public static void RegisterServices(this ContainerBuilder builder, Assembly assemblyToScan)
 		{
 			builder
-				.RegisterAssemblyTypes(assembly)
+				.RegisterAssemblyTypes(assemblyToScan)
 				.Where(p => p.IsClass && p.Name.EndsWith("Service"))
 				.AsSelf()
 				.AsImplementedInterfaces();
@@ -40,13 +40,20 @@ namespace AccountAndJwt.Common.DependencyInjection
 				.AsSelf()
 				.AsImplementedInterfaces();
 		}
+		public static void RegisterConfiguration(this ContainerBuilder builder, IConfiguration configuration, Assembly[] assembliesToScan)
+		{
+			foreach(var assembly in assembliesToScan)
+			{
+				builder.RegisterConfiguration(configuration, assembly);
+			}
+		}
 		public static void RegisterLocalConfiguration(this ContainerBuilder builder, IConfiguration configuration)
 		{
 			builder.RegisterConfiguration(configuration, Assembly.GetCallingAssembly());
 		}
-		public static void RegisterConfiguration(this ContainerBuilder builder, IConfiguration configuration, Assembly assembly)
+		public static void RegisterConfiguration(this ContainerBuilder builder, IConfiguration configuration, Assembly assemblyToScan)
 		{
-			var configTypes = assembly.DefinedTypes.Where(p => p.IsClass && p.Name.EndsWith("Config")).ToArray();
+			var configTypes = assemblyToScan.DefinedTypes.Where(p => p.IsClass && p.Name.EndsWith("Config")).ToArray();
 			foreach(var x in configTypes)
 			{
 				var configInstance = configuration.GetSection(x.Name).Get(x);

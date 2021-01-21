@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Common.Hangfire.Interfaces;
+﻿using DenverTraffic.Common.Hangfire.Interfaces;
 using Hangfire;
 
 namespace AccountAndJwt.Common.Hangfire.Extensions
@@ -7,7 +7,7 @@ namespace AccountAndJwt.Common.Hangfire.Extensions
 	{
 		public static void Enqueue<T>(this BackgroundJob job) where T : IJob
 		{
-			BackgroundJob.Enqueue<T>(p => p.ExecuteAsync());
+			BackgroundJob.Enqueue<T>(p => p.Execute());
 		}
 	}
 }
