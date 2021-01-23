@@ -8,7 +8,7 @@ namespace AccountAndJwt.Database
 {
 	public static class DataSeeder
 	{
-		public static void AddAllInitialData(this DataContext context, String passwordSalt)
+		public static void PopulateDatabase(this DataContext context, String passwordSalt)
 		{
 			context.AddRoles();
 			context.AddUsers(passwordSalt);

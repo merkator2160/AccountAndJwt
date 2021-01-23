@@ -3,6 +3,7 @@ using AccountAndJwt.Common.Config;
 using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database;
 using Autofac;
+using Autofac.Extras.NLog;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;

@@ -6,6 +6,7 @@ using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Autofac.Extras.NLog;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -84,11 +85,11 @@ namespace AccountAndJwt.AuthorizationService
 			}
 			if(_env.IsProduction())
 			{
+				app.UseHsts();
 				app.UseCors(CorsPolicies.Production);
 				DatabaseModule.CheckDatabase(_configuration, DatabaseModule.InitializeStrategy);
 			}
 
-			app.UseHsts();
 			app.UseHttpsRedirection();
 			app.UseRouting();
 			app.UseAuthentication();

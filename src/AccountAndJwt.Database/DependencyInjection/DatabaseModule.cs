@@ -14,14 +14,20 @@ namespace AccountAndJwt.Database.DependencyInjection
 	public class DatabaseModule : Module
 	{
 		private const String _defaultConnectionStringName = "DefaultConnection";
+		private readonly String _connectionStringName;
 		private readonly IConfiguration _configuration;
 		private readonly Assembly _currentAssembly;
 
 
-		public DatabaseModule(IConfiguration configuration)
+		public DatabaseModule(IConfiguration configuration) : this(configuration, _defaultConnectionStringName)
+		{
+
+		}
+		public DatabaseModule(IConfiguration configuration, String connectionStringName)
 		{
 			_currentAssembly = Assembly.GetExecutingAssembly();
 			_configuration = configuration;
+			_connectionStringName = connectionStringName;
 		}
 
 
@@ -38,7 +44,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 		}
 		public void RegisterContext(ContainerBuilder builder)
 		{
-			builder.RegisterInstance(CreateContextOptions(_configuration));
+			builder.RegisterInstance(CreateContextOptions(_configuration, _connectionStringName));
 			builder.RegisterType<DataContext>()
 				.AsSelf()
 				.AsImplementedInterfaces()
@@ -99,13 +105,13 @@ namespace AccountAndJwt.Database.DependencyInjection
 		public static void InitializeStrategy(DataContext context, String salt)
 		{
 			context.Database.EnsureCreated();
-			context.AddAllInitialData(salt);
+			context.PopulateDatabase(salt);
 		}
 		public static void DropCreateInitializeStrategy(DataContext context, String salt)
 		{
 			context.Database.EnsureDeleted();
 			context.Database.EnsureCreated();
-			context.AddAllInitialData(salt);
+			context.PopulateDatabase(salt);
 		}
 		public static void MigrateInitializeStrategy(DataContext context, String salt)
 		{
@@ -113,7 +119,7 @@ namespace AccountAndJwt.Database.DependencyInjection
 			if(pendingMigrations.Length > 0)
 				context.Database.Migrate();
 
-			context.AddAllInitialData(salt);
+			context.PopulateDatabase(salt);
 		}
 	}
 }
