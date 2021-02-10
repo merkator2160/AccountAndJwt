@@ -14,13 +14,13 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 
 		public static void AddConfiguredSwaggerGen(this IServiceCollection services)
 		{
-			var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+			var assemblyName = Assembly.GetExecutingAssembly().GetName();
 
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc(_documentName, new OpenApiInfo
 				{
-					Version = $"v{assemblyVersion}",
+					Version = $"v{assemblyName.Version}",
 					Title = "Authorization service",
 					Description = "AccountAndJwt authorization API",
 					Contact = new OpenApiContact()
@@ -30,7 +30,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 						Url = new Uri("https://www.linkedin.com/in/evgeniy-alexandrov-967388100")
 					}
 				});
-				c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+				c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assemblyName.Name}.xml"));
 				c.IgnoreObsoleteActions();
 				c.IgnoreObsoleteProperties();
 			});
