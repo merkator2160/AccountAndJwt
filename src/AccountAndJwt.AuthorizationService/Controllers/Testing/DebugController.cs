@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 #if DEBUG
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
@@ -98,6 +100,20 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		public IActionResult GetAvailableRepositories()
 		{
 			return Ok(_unitOfWork);
+		}
+
+		/// <summary>
+		/// Returns external internet IP address
+		/// </summary>
+		[HttpGet]
+		[ProducesResponseType(typeof(String), 200)]
+		[ProducesResponseType(typeof(String), 500)]
+		public async Task<IActionResult> GetExternalIpAddress()
+		{
+			using(var client = new HttpClient())
+			{
+				return Ok(await client.GetStringAsync("http://checkip.amazonaws.com/"));
+			}
 		}
 	}
 }

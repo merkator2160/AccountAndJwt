@@ -72,6 +72,11 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 				Cron.Minutely,
 				timeZone: TimeZoneInfo.Utc,
 				queue: CreateEnvironmentDependentQueueName());
+
+			RecurringJob.AddOrUpdate<RecreateDatabaseJob>(
+				p => p.Execute(),
+				Cron.Never(),
+				TimeZoneInfo.Utc);
 #else
 			ConfigureOneTimeJobs();
 			ConfigureRecurringJobs();
@@ -87,6 +92,11 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		private static void ConfigureOneTimeJobs()
 		{
 			//BackgroundJob.Enqueue<DeliveryReportJob>(p => p.ExecuteAsync());
+
+			RecurringJob.AddOrUpdate<RecreateDatabaseJob>(
+				p => p.Execute(),
+				Cron.Never(),
+				TimeZoneInfo.Utc);
 		}
 		private static void ConfigureRecurringJobs()
 		{

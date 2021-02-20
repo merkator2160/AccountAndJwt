@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
@@ -11,7 +12,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		[HttpGet("/")]
 		public IActionResult Index()
 		{
-			return Ok("Authorization service");
+			return Ok($"Authorization service v{Assembly.GetExecutingAssembly().GetName().Version}");
 		}
 	}
 }
