@@ -2,17 +2,27 @@
 using DenverTraffic.Common.Hangfire.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
+using NLog;
+using System;
+using System.Threading;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {
-	internal class RecreateDatabaseJob : IJob
+	internal class RecreateDatabaseJob : IJob, IDisposable
 	{
 		private readonly IConfiguration _configuration;
+		private readonly ILogger _logger;
+
+		private readonly Boolean _isMutexFree;
+		private readonly Mutex _mutex;
 
 
-		public RecreateDatabaseJob(IConfiguration configuration)
+		public RecreateDatabaseJob(IConfiguration configuration, ILogger logger)
 		{
 			_configuration = configuration;
+			_logger = logger;
+
+			_mutex = new Mutex(true, nameof(RecreateDatabaseJob), out _isMutexFree);
 		}
 
 
@@ -20,7 +30,25 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 		[AutomaticRetry(Attempts = 0)]
 		public void Execute()
 		{
-			DatabaseModule.CheckDatabase(_configuration, DatabaseModule.DropCreateInitializeStrategy);
+			try
+			{
+				if(!_isMutexFree)
+					return;
+
+				DatabaseModule.CheckDatabase(_configuration, DatabaseModule.DropCreateInitializeStrategy);
+			}
+			catch(Exception ex)
+			{
+				_logger.Log(LogLevel.Error, ex.Message);
+				throw;
+			}
+		}
+
+
+		// IDisposable ////////////////////////////////////////////////////////////////////////////
+		public void Dispose()
+		{
+			_mutex?.Dispose();
 		}
 	}
 }
