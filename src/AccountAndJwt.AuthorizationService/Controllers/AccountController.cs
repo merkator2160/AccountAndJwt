@@ -42,6 +42,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPost]
 		[ProducesResponseType(typeof(RegisterUserResponseAm), 201)]
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Register([FromBody] RegisterUserAm userDetails)
@@ -69,6 +70,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> DeleteAccount([FromBody] Int32 userId)
@@ -92,6 +94,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> AddRole([FromBody] AddRemoveRoleAm request)
@@ -115,6 +118,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(403)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> RemoveRole([FromBody] AddRemoveRoleAm request)
@@ -158,6 +162,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[Authorize]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> ChangeName([FromBody] ChangeNameRequestAm request)
@@ -213,6 +218,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[ProducesResponseType(200)]
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordAm request)

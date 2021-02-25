@@ -59,7 +59,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> Get(Int32 id)
+		public async Task<IActionResult> Get([FromRoute] Int32 id)
 		{
 			return Ok(_mapper.Map<ValueAm>(await _valueService.GetAsync(id)));
 		}
@@ -73,6 +73,8 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		[HttpPost]
 		[ProducesResponseType(typeof(String), 201)]
 		[ProducesResponseType(401)]
+		[ProducesResponseType(typeof(ModelStateAm), 400)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Post([FromBody] AddValueAm value)
@@ -97,6 +99,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> Put([FromBody] ValueAm value)
@@ -121,7 +124,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 		[ProducesResponseType(401)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
-		public async Task<IActionResult> Delete(Int32 id)
+		public async Task<IActionResult> Delete([FromRoute] Int32 id)
 		{
 			await _valueService.DeleteAsync(id);
 

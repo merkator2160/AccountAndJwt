@@ -39,7 +39,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 			}
 			catch(Exception ex)
 			{
-				_logger.Log(LogLevel.Error, ex.Message);
+				_logger.Error(ex, ex.Message);
 				throw;
 			}
 		}

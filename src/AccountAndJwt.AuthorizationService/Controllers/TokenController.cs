@@ -34,6 +34,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
 		[HttpPost]
 		[ProducesResponseType(typeof(AuthorizeResponseAm), 200)]
 		[ProducesResponseType(typeof(ModelStateAm), 400)]
+		[ProducesResponseType(typeof(ModelStateAm), 415)]
 		[ProducesResponseType(typeof(String), 460)]
 		[ProducesResponseType(typeof(String), 500)]
 		public async Task<IActionResult> AuthorizeByCredentials([FromBody] AuthorizeRequestAm credentials)
