@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Common.Consts;
+﻿using AccountAndJwt.Common.Const;
+using AccountAndJwt.Common.Consts;
 using AccountAndJwt.Contracts.Models;
 using AspNetCore.Http.Extensions;
 using Autofac.Extensions.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Common.Consts;
+﻿using AccountAndJwt.Common.Const;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;

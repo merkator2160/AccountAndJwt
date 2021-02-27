@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AccountAndJwt.Common.Const;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 					if(ex is ApplicationException)
 					{
 						context.Response.StatusCode = 460;
-						context.Response.ContentType = "text/plain";
+						context.Response.ContentType = HttpMimeType.Text.Plain;
 
 						await context.Response.WriteAsync(ex.Message, Encoding.UTF8);
 
@@ -43,7 +44,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 					logger.LogError(ex, ex.Message);
 
 					context.Response.StatusCode = 500;
-					context.Response.ContentType = "text/plain";
+					context.Response.ContentType = HttpMimeType.Text.Plain;
 #if DEBUG
 					await context.Response.WriteAsync(SerializeByNewtonsoftJson(ex), Encoding.UTF8);
 #else

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AccountAndJwt.Common.Consts
+namespace AccountAndJwt.Common.Const
 {
 	public static class HttpMimeType
 	{
