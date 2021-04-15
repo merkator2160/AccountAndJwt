@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace DenverTraffic.Common.Hangfire.Interfaces
+﻿namespace AccountAndJwt.Common.Hangfire.Interfaces
 {
 	public interface IJob<T>
 	{
-		Task Execute(T parameter);
+		void Execute(T parameter);
 	}
 }

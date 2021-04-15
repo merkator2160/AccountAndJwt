@@ -63,15 +63,15 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 #if DEVELOPMENT
 			var parameter = new SampleJobParameter()
 			{
-				Parameter = $"{nameof(SampleParametrizedJob)} is executing"
+				Parameter = $"{nameof(SampleAsyncParametrizedJob)} is executing"
 			};
 
-			BackgroundJob.Enqueue<SampleParametrizedJob>(p => p.ExecuteAsync(parameter));
-			RecurringJob.AddOrUpdate<SampleParametrizedJob>(
+			BackgroundJob.Enqueue<SampleAsyncParametrizedJob>(p => p.ExecuteAsync(parameter));
+			RecurringJob.AddOrUpdate<SampleAsyncParametrizedJob>(
 				p => p.ExecuteAsync(parameter),
-				Cron.Minutely,
-				timeZone: TimeZoneInfo.Utc,
-				queue: CreateEnvironmentDependentQueueName());
+				Cron.Never,
+				TimeZoneInfo.Utc,
+				CreateEnvironmentDependentQueueName());
 
 			RecurringJob.AddOrUpdate<RecreateDatabaseJob>(
 				p => p.Execute(),
@@ -91,8 +91,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		}
 		private static void ConfigureOneTimeJobs()
 		{
-			//BackgroundJob.Enqueue<DeliveryReportJob>(p => p.ExecuteAsync());
-
+			BackgroundJob.Enqueue<SampleAsyncJob>(p => p.ExecuteAsync());
 			RecurringJob.AddOrUpdate<RecreateDatabaseJob>(
 				p => p.Execute(),
 				Cron.Never(),
@@ -100,11 +99,11 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
 		}
 		private static void ConfigureRecurringJobs()
 		{
-			//RecurringJob.AddOrUpdate<SampleJob>(
-			// p => p.ExecuteAsync(),
-			// Cron.Minutely,
-			// timeZone: TimeZoneInfo.Utc,
-			// queue: CreateEnvironmentDependentQueueName());
+			RecurringJob.AddOrUpdate<SampleAsyncJob>(
+			 p => p.ExecuteAsync(),
+			 Cron.Minutely,
+			 timeZone: TimeZoneInfo.Utc,
+			 queue: CreateEnvironmentDependentQueueName());
 		}
 	}
 }

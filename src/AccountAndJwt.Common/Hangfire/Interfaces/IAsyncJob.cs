@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DenverTraffic.Common.Hangfire.Interfaces
+namespace AccountAndJwt.Common.Hangfire.Interfaces
 {
 	public interface IAsyncJob
 	{

@@ -1,36 +1,52 @@
-﻿using AccountAndJwt.Database.Interfaces;
-using DenverTraffic.Common.Hangfire.Interfaces;
+﻿using AccountAndJwt.Common.Hangfire.Interfaces;
 using Hangfire;
+using NLog;
 using System;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {
-	internal class SampleJob : IAsyncJob
+	internal class SampleJob : IJob, IDisposable
 	{
-		private readonly IUnitOfWork _unitOfWork;
+		private readonly ILogger _logger;
+
+		private readonly Boolean _isMutexFree;
+		private readonly Mutex _mutex;
 
 
-		public SampleJob(IUnitOfWork unitOfWork)
+		public SampleJob(ILogger logger)
 		{
-			_unitOfWork = unitOfWork;
+			_logger = logger;
+
+			_mutex = new Mutex(true, nameof(RecreateDatabaseJob), out _isMutexFree);
 		}
 
 
 		// IJob ///////////////////////////////////////////////////////////////////////////////////
 		[AutomaticRetry(Attempts = 0)]
-		public async Task ExecuteAsync()
+		public void Execute()
 		{
 			try
 			{
-				Console.WriteLine($"{nameof(SampleParametrizedJob)} is executing");
+				if(!_isMutexFree)
+					return;
 
-				await Task.Delay(1000);
+				Console.WriteLine($"{nameof(SampleAsyncJob)} is executing!");
+
+				Thread.Sleep(1000);
 			}
 			catch(Exception ex)
 			{
+				_logger.Error(ex, $"{ex.Message}\r\n{ex.StackTrace}");
 				throw;
 			}
+		}
+
+
+		// IDisposable ////////////////////////////////////////////////////////////////////////////
+		public void Dispose()
+		{
+			_mutex?.Dispose();
 		}
 	}
 }

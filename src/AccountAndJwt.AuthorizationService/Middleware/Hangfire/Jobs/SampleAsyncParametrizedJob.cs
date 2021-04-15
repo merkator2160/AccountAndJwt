@@ -1,25 +1,23 @@
-﻿using AccountAndJwt.Common.Hangfire.Interfaces;
-using AccountAndJwt.Database.DependencyInjection;
+﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Models;
+using AccountAndJwt.Common.Hangfire.Interfaces;
 using Hangfire;
-using Microsoft.Extensions.Configuration;
 using NLog;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {
-	internal class RecreateDatabaseJob : IJob, IDisposable
+	internal class SampleAsyncParametrizedJob : IAsyncJob<SampleJobParameter>, IDisposable
 	{
-		private readonly IConfiguration _configuration;
 		private readonly ILogger _logger;
 
 		private readonly Boolean _isMutexFree;
 		private readonly Mutex _mutex;
 
 
-		public RecreateDatabaseJob(IConfiguration configuration, ILogger logger)
+		public SampleAsyncParametrizedJob(ILogger logger)
 		{
-			_configuration = configuration;
 			_logger = logger;
 
 			_mutex = new Mutex(true, nameof(RecreateDatabaseJob), out _isMutexFree);
@@ -28,14 +26,16 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 
 		// IJob ///////////////////////////////////////////////////////////////////////////////////
 		[AutomaticRetry(Attempts = 0)]
-		public void Execute()
+		public async Task ExecuteAsync(SampleJobParameter parameter)
 		{
 			try
 			{
 				if(!_isMutexFree)
 					return;
 
-				DatabaseModule.CheckDatabase(_configuration, DatabaseModule.DropCreateInitializeStrategy);
+				Console.WriteLine(parameter.Parameter);
+
+				await Task.Delay(1000);
 			}
 			catch(Exception ex)
 			{

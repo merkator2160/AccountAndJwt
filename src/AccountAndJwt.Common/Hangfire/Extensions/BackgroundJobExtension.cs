@@ -1,4 +1,4 @@
-﻿using DenverTraffic.Common.Hangfire.Interfaces;
+﻿using AccountAndJwt.Common.Hangfire.Interfaces;
 using Hangfire;
 
 namespace AccountAndJwt.Common.Hangfire.Extensions

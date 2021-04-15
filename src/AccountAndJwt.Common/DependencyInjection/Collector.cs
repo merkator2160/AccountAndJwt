@@ -40,18 +40,18 @@ namespace AccountAndJwt.Common.DependencyInjection
 				.AsSelf()
 				.AsImplementedInterfaces();
 		}
-		public static void RegisterConfiguration(this ContainerBuilder builder, IConfiguration configuration, Assembly[] assembliesToScan)
+		public static void RegisterServiceConfiguration(this ContainerBuilder builder, IConfiguration configuration, Assembly[] assembliesToScan)
 		{
 			foreach(var assembly in assembliesToScan)
 			{
-				builder.RegisterConfiguration(configuration, assembly);
+				builder.RegisterServiceConfiguration(configuration, assembly);
 			}
 		}
 		public static void RegisterLocalConfiguration(this ContainerBuilder builder, IConfiguration configuration)
 		{
-			builder.RegisterConfiguration(configuration, Assembly.GetCallingAssembly());
+			builder.RegisterServiceConfiguration(configuration, Assembly.GetCallingAssembly());
 		}
-		public static void RegisterConfiguration(this ContainerBuilder builder, IConfiguration configuration, Assembly assemblyToScan)
+		public static void RegisterServiceConfiguration(this ContainerBuilder builder, IConfiguration configuration, Assembly assemblyToScan)
 		{
 			var configTypes = assemblyToScan.DefinedTypes.Where(p => p.IsClass && p.Name.EndsWith("Config")).ToArray();
 			foreach(var x in configTypes)

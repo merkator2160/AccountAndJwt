@@ -41,7 +41,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware
 					}
 
 					var logger = app.ApplicationServices.GetService<ILogger<Startup>>();
-					logger.LogError(ex, ex.Message);
+					logger.LogError(ex, $"{ex.Message}\r\n{ex.StackTrace}");
 
 					context.Response.StatusCode = 500;
 					context.Response.ContentType = HttpMimeType.Text.Plain;

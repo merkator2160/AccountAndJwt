@@ -52,7 +52,7 @@ namespace AccountAndJwt.IntegrationTests
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
 			var authorizationServiceAssembly = Collector.GetAssembly("AccountAndJwt.AuthorizationService");
-			builder.RegisterConfiguration(_configuration, authorizationServiceAssembly);
+			builder.RegisterServiceConfiguration(_configuration, authorizationServiceAssembly);
 			builder.RegisterServices(authorizationServiceAssembly);
 			builder.RegisterModule<NLogModule>();
 			builder.RegisterModule(new InMemoryDatabaseModule(_configuration, Collector.GetAssembly("AccountAndJwt.Database")));
