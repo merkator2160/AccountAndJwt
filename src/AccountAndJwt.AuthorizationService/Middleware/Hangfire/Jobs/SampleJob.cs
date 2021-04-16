@@ -18,7 +18,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 		{
 			_logger = logger;
 
-			_mutex = new Mutex(true, nameof(RecreateDatabaseJob), out _isMutexFree);
+			_mutex = new Mutex(true, nameof(SampleJob), out _isMutexFree);
 		}
 
 
@@ -31,7 +31,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 				if(!_isMutexFree)
 					return;
 
-				Console.WriteLine($"{nameof(SampleAsyncJob)} is executing!");
+				Console.WriteLine($"{nameof(SampleJob)} is executing!");
 
 				Thread.Sleep(1000);
 			}

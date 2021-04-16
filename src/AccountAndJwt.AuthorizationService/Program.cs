@@ -20,7 +20,7 @@ namespace AccountAndJwt.AuthorizationService
 			}
 			catch(Exception ex)
 			{
-				logger.Error(ex, "Stopped program because of exception");
+				logger.Error(ex, $"{ex.Message}\r\n{ex.StackTrace}");
 				throw;
 			}
 			finally

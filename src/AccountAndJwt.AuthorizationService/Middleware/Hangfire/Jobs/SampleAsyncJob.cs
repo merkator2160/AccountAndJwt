@@ -19,7 +19,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 		{
 			_logger = logger;
 
-			_mutex = new Mutex(true, nameof(RecreateDatabaseJob), out _isMutexFree);
+			_mutex = new Mutex(true, nameof(SampleAsyncJob), out _isMutexFree);
 		}
 
 
