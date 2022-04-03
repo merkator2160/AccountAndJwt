@@ -3,9 +3,6 @@ Hangfire: /hangfire
 Ui: /
 Health checks: /healthz
 
-Ui debug URL Chrome: chrome --remote-debugging-port=9222 --user-data-dir="C:\Users\MERKATOR\AppData\Local\Temp\blazor-chrome-debug" https://localhost:44392/
-Ui debug URL Edge:   msedge --remote-debugging-port=9222 --user-data-dir="C:\Users\MERKATOR\AppData\Local\Temp\blazor-edge-debug" --no-first-run https://localhost:44392/
-
 OData:
 OData Microsoft routing conventions: https://docs.microsoft.com/en-us/odata/webapi/built-in-routing-conventions
 Documentation: https://github.com/xuzhg/WebApiSample/tree/master/AspNetCore3x/AspNetCore3xEndpoint

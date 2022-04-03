@@ -1,0 +1,6 @@
+docker run -d \
+        -v <copied-directory>:<path to volume> \
+        --network=<network-name> \
+        image-name
+
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
