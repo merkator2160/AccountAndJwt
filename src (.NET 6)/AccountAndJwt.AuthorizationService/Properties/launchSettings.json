@@ -22,11 +22,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DefaultConnection": "Data Source=host.docker.internal\\SQLEXPRESS;Initial Catalog=AccountAndJwtDbDev;Integrated Security=False;User Id=docker;Password=JBZAN9CdjR5S3SKlr15b"
-      }
+      "launchUrl": "swagger"
     },
     "Docker": {
       "commandName": "Docker",

@@ -58,7 +58,7 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
         }
         public static void ConfigureHangfireJobs(this IApplicationBuilder app)
         {
-#if DEVELOPMENT
+#if DEBUG
             var parameter = new SampleJobParameter()
             {
                 Parameter = $"{nameof(SampleAsyncParametrizedJob)} is executing"

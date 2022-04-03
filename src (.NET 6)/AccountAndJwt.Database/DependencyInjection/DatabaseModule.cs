@@ -91,7 +91,7 @@ namespace AccountAndJwt.Database.DependencyInjection
                     .EnableRetryOnFailure()
                     .CommandTimeout(isMigrationMode ? config.MigrationTimeout : config.CommandTimeout))
                 //.UseSnakeCaseNamingConvention()		// Usual case for PostgreSQL, I left it here for further usage, because this project is my common micro-service prototype
-#if DEVELOPMENT
+#if DEBUG
                 .AddInterceptors(new HintCommandInterceptor())
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors()

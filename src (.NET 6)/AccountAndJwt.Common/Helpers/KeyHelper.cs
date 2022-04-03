@@ -16,10 +16,7 @@ namespace AccountAndJwt.Common.Helpers
         }
         public static String CreateRandomBase64String(Int32 length)
         {
-            var randomBytes = new Byte[length];
-            new RNGCryptoServiceProvider().GetBytes(randomBytes);
-
-            return Convert.ToBase64String(randomBytes);
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(length));
         }
         public static String CreatePasswordHash(String password, String salt)
         {

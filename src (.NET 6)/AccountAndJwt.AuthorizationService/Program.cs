@@ -22,7 +22,7 @@ namespace AccountAndJwt.AuthorizationService
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ex.Message}\r\n{ex.StackTrace}");
+                Console.Error.WriteLine($"{ex.Message}\r\n{ex.StackTrace}");
                 throw;
             }
             finally
