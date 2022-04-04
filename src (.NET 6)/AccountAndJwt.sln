@@ -7,7 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.Common", "Acc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{C8A3CE83-9CD1-414C-993C-CE5D439A80B3}"
 	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
@@ -47,13 +46,11 @@ Global
 		{E9D63C14-655E-4D68-B512-5EB72E56C66D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9D63C14-655E-4D68-B512-5EB72E56C66D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08B2345D-FB34-4EBA-ABA1-B5E22578BBDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08B2345D-FB34-4EBA-ABA1-B5E22578BBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU		
+		{08B2345D-FB34-4EBA-ABA1-B5E22578BBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B2345D-FB34-4EBA-ABA1-B5E22578BBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08B2345D-FB34-4EBA-ABA1-B5E22578BBDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{021627F8-3255-49B2-BC67-67428DA20D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{021627F8-3255-49B2-BC67-67428DA20D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{021627F8-3255-49B2-BC67-67428DA20D63}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{021627F8-3255-49B2-BC67-67428DA20D63}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{021627F8-3255-49B2-BC67-67428DA20D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{021627F8-3255-49B2-BC67-67428DA20D63}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B03AC3AA-8EC6-4F25-9C87-07BF28B0B83F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -62,8 +59,6 @@ Global
 		{B03AC3AA-8EC6-4F25-9C87-07BF28B0B83F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9BAB624B-F3E1-474D-AE06-7105F99A005A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9BAB624B-F3E1-474D-AE06-7105F99A005A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BAB624B-F3E1-474D-AE06-7105F99A005A}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BAB624B-F3E1-474D-AE06-7105F99A005A}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{9BAB624B-F3E1-474D-AE06-7105F99A005A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BAB624B-F3E1-474D-AE06-7105F99A005A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{504BB210-97A3-463A-86F9-A816B5537075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

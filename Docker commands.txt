@@ -1,15 +1,30 @@
 https://losst.ru/zapusk-kontejnera-docker
 
+
+docker image ls
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
+docker attach Ubuntu1804
+docker run --name Ubuntu1804 ubuntu:18.04
+
+docker-compose build
+docker-compose up -d
+docker-compose stop
+docker-compose down
+
+docker-compose ps
+docker-compose run [service name] env
+docker-compose logs -f [service name]
+docker-compose exec [service name] [command]
+docker-compose images
+
+
 docker run -d \
         -v <copied-directory>:<path to volume> \
         --network=<network-name> \
         image-name
 
-docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
-docker attach Ubuntu1804
-docker run --name Ubuntu1804 ubuntu:18.04
-
-docker run -dt 
+docker run 
+-dt 
 -v "C:\Users\MERKATOR\vsdbg\vs2017u5:/remote_debugger:rw" 
 -v "C:\Users\MERKATOR\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro" 
 -v "C:\Users\MERKATOR\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro" 
@@ -24,7 +39,10 @@ docker run -dt
 -e "DOTNET_USE_POLLING_FILE_WATCHER=1" 
 -e "NUGET_PACKAGES=/root/.nuget/fallbackpackages2" 
 -e "NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages;/root/.nuget/fallbackpackages2" 
--P --name AccountAndJwt.AuthorizationService --entrypoint tail accountandjwtauthorizationservice:dev -f /dev/null ba427aef0eb4e75ab96630369cfc6cc0a6e438c97e4ace4f362c2b3fac71906b
+-P --name AccountAndJwt.AuthorizationService 
+--entrypoint tail accountandjwtauthorizationservice:dev 
+-f /dev/null ba427aef0eb4e75ab96630369cfc6cc0a6e438c97e4ace4f362c2b3fac71906b
 
 
 docker run --name accountandjwtauthorizationservice -e DefaultConnection=Data Source=host.docker.internal\SQLEXPRESS;Initial Catalog=AccountAndJwtDbDev;Integrated Security=False;User Id=docker;Password=JBZAN9CdjR5S3SKlr15b
+
