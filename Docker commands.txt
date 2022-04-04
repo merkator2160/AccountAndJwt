@@ -1,6 +1,30 @@
+https://losst.ru/zapusk-kontejnera-docker
+
 docker run -d \
         -v <copied-directory>:<path to volume> \
         --network=<network-name> \
         image-name
 
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
+docker attach Ubuntu1804
+docker run --name Ubuntu1804 ubuntu:18.04
+
+docker run -dt 
+-v "C:\Users\MERKATOR\vsdbg\vs2017u5:/remote_debugger:rw" 
+-v "C:\Users\MERKATOR\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro" 
+-v "C:\Users\MERKATOR\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro" 
+-v "G:\GitHub\AccountAndJwt\src (.NET 6)\AccountAndJwt.AuthorizationService:/app" 
+-v "G:\GitHub\AccountAndJwt\src (.NET 6):/src/" 
+-v "C:\Users\MERKATOR\.nuget\packages\:/root/.nuget/fallbackpackages2" 
+-v "C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages:/root/.nuget/fallbackpackages" 
+--env-file "G:\GitHub\AccountAndJwt\src (.NET 6)\AccountAndJwt.AuthorizationService\Development.env" 
+-e "ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true" 
+-e "ASPNETCORE_ENVIRONMENT=Development" 
+-e "ASPNETCORE_URLS=https://+:443;http://+:80" 
+-e "DOTNET_USE_POLLING_FILE_WATCHER=1" 
+-e "NUGET_PACKAGES=/root/.nuget/fallbackpackages2" 
+-e "NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages;/root/.nuget/fallbackpackages2" 
+-P --name AccountAndJwt.AuthorizationService --entrypoint tail accountandjwtauthorizationservice:dev -f /dev/null ba427aef0eb4e75ab96630369cfc6cc0a6e438c97e4ace4f362c2b3fac71906b
+
+
+docker run --name accountandjwtauthorizationservice -e DefaultConnection=Data Source=host.docker.internal\SQLEXPRESS;Initial Catalog=AccountAndJwtDbDev;Integrated Security=False;User Id=docker;Password=JBZAN9CdjR5S3SKlr15b

@@ -2,6 +2,7 @@ using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Middleware.Cors;
 using AccountAndJwt.AuthorizationService.Middleware.Hangfire;
 using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Common.Exceptions;
 using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -18,7 +19,8 @@ namespace AccountAndJwt.AuthorizationService
             //TODO: We need logging here, with container support
             try
             {
-                Run(args);
+                RunEnvironmentPrecheck();
+                RunApplication(args);
             }
             catch (Exception ex)
             {
@@ -30,7 +32,18 @@ namespace AccountAndJwt.AuthorizationService
                 //TODO: Finalize global application logging for container
             }
         }
-        private static void Run(String[] args)
+        private static void RunEnvironmentPrecheck()
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (String.IsNullOrWhiteSpace(environment))
+                throw new EnvironmentVariableNotFoundException($"Unable to start! Environment variable with name \"ASPNETCORE_ENVIRONMENT\" was not found. " +
+                                                               $"Possible values: \"{Environments.Development}\", \"{Environments.Production}\"");
+
+            var connectionString = Environment.GetEnvironmentVariable(DatabaseModule.ConnectionStringName);
+            if (String.IsNullOrWhiteSpace(connectionString))
+                throw new EnvironmentVariableNotFoundException($"Unable to start! Connection string environment variable, with name \"{DatabaseModule.ConnectionStringName}\" was not found.");
+        }
+        private static void RunApplication(String[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
