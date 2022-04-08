@@ -12,9 +12,9 @@ namespace AccountAndJwt.AuthorizationService.Middleware
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName();
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc(_documentName, new OpenApiInfo
+                options.SwaggerDoc(_documentName, new OpenApiInfo
                 {
                     Version = $"v{assemblyName.Version}",
                     Title = "Authorization service",
@@ -26,9 +26,9 @@ namespace AccountAndJwt.AuthorizationService.Middleware
                         Url = new Uri("https://www.linkedin.com/in/evgeniy-alexandrov-967388100")
                     }
                 });
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assemblyName.Name}.xml"));
-                c.IgnoreObsoleteActions();
-                c.IgnoreObsoleteProperties();
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assemblyName.Name}.xml"));
+                options.IgnoreObsoleteActions();
+                options.IgnoreObsoleteProperties();
             });
         }
         public static void UseConfiguredSwagger(this IApplicationBuilder app)

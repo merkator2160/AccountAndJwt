@@ -33,8 +33,6 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire
             var connectionString = configuration.GetSection(DatabaseModule.ConnectionStringName).Value;        // Extracts connection string from environment variable
             var databaseConfig = configuration.GetSection("DatabaseConfig").Get<DatabaseConfig>();
 
-            var test = CreateEnvironmentDependentQueueName();
-
             services.AddHangfireServer(options =>
             {
                 options.Queues = new[] { "default" };
