@@ -127,13 +127,13 @@ namespace AccountAndJwt.AuthorizationService
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseResponseCompression();
+            app.UseGlobalExceptionHandler();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/healthz", new HealthCheckOptions());
                 endpoints.MapControllers();
             });
-            app.UseResponseCompression();
-            app.UseGlobalExceptionHandler();
         }
     }
 }
