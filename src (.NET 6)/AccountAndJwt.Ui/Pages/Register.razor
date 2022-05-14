@@ -1,0 +1,36 @@
+﻿<EditForm Model="@_registerUserRequest" OnValidSubmit="@RegisterUser">
+    <div>
+        <br /><br /><br /><br /><br />
+    </div>
+    <div>
+        <h3 style="font-weight:bold">Register</h3>
+    </div>
+    <div>
+        <br />
+    </div>
+    <div class="col-12 row">
+        <input class="form-control col-12" @bind="_registerUserRequest.Login" placeholder="login" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input type="password" class="form-control col-12" @bind="_registerUserRequest.Password" placeholder="password" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input type="password" class="form-control col-12" @bind="_registerUserRequest.ConfirmPassword" placeholder="confirm password" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input class="form-control col-12" @bind="_registerUserRequest.Email" placeholder="email address" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <span class="col-12"></span>
+        <input type="submit" class="form-control col-6 btn btn-primary" value="Sign up" />
+        <a href="/" class="col-6">Already an user?</a>
+    </div>
+    <br />
+    <div class="col-12 row" style="text-align:left; font-weight:bold">
+        <span class="col-12">@_errorMessage</span>
+    </div>
+</EditForm>

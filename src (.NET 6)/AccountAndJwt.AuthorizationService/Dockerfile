@@ -1,5 +1,4 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-#https://docs.microsoft.com/en-us/visualstudio/containers/tutorial-multicontainer?view=vs-2022
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
@@ -9,6 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["AccountAndJwt.AuthorizationService/AccountAndJwt.AuthorizationService.csproj", "AccountAndJwt.AuthorizationService/"]
+COPY ["AccountAndJwt.Contracts/AccountAndJwt.Contracts.csproj", "AccountAndJwt.Contracts/"]
+COPY ["AccountAndJwt.Common/AccountAndJwt.Common.csproj", "AccountAndJwt.Common/"]
+COPY ["AccountAndJwt.Database/AccountAndJwt.Database.csproj", "AccountAndJwt.Database/"]
 RUN dotnet restore "AccountAndJwt.AuthorizationService/AccountAndJwt.AuthorizationService.csproj"
 COPY . .
 WORKDIR "/src/AccountAndJwt.AuthorizationService"

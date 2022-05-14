@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace AccountAndJwt.Common.Consts
+﻿namespace AccountAndJwt.Common.Const
 {
-	public static class Role
-	{
-		public const String Admin = "Admin";
-		public const String Moderator = "Moderator";
-	}
+    public static class Role
+    {
+        public const String Admin = "Admin";
+        public const String Moderator = "Moderator";
+    }
 }

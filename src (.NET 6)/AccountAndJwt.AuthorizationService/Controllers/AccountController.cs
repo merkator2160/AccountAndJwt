@@ -1,9 +1,9 @@
 ﻿using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
-using AccountAndJwt.Common.Consts;
-using AccountAndJwt.Contracts.Models;
-using AccountAndJwt.Contracts.Models.Errors;
+using AccountAndJwt.Common.Const;
+using AccountAndJwt.Contracts.Models.Api;
+using AccountAndJwt.Contracts.Models.Api.Errors;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,0 +1,35 @@
+﻿<div class="col-md-6 offset-md-3 mt-5">
+    <div class="alert alert-info">
+        Username: test<br />
+        Password: test
+    </div>
+    <div class="card">
+        <h4 class="card-header">Blazor WebAssembly JWT Login Example</h4>
+        <div class="card-body">
+            <EditForm Model="@_authorizeRequest" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label>Username</label>
+                    <InputText @bind-Value="_authorizeRequest.Login" class="form-control" />
+                    <ValidationMessage For="@(() => _authorizeRequest.Login)" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <InputText @bind-Value="_authorizeRequest.Password" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => _authorizeRequest.Password)" />
+                </div>
+                <button class="btn btn-primary">
+                    @if (_loading) 
+                    {
+                        <span class="spinner-border spinner-border-sm mr-1"></span>
+                    }
+                    Login
+                </button>
+                @if (!String.IsNullOrEmpty(_errorMessage)) 
+                {
+                    <div class="alert alert-danger mt-3 mb-0">@_errorMessage</div>
+                }
+            </EditForm>
+        </div>
+    </div>
+</div>

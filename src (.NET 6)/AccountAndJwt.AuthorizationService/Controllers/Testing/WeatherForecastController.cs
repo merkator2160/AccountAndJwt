@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Contracts.Models;
+﻿using AccountAndJwt.Contracts.Models.Api;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
