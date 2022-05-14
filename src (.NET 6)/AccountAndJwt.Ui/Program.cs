@@ -47,14 +47,14 @@ namespace AccountAndJwt.Ui
             const String key = "key";
 
             var localStorage = host.Services.GetRequiredService<ILocalStorageService>();
-            await localStorage.SetObjectAsync(key, new User()
+            await localStorage.SetItemAsync(key, new User()
             {
                 Id = 4,
                 FirstName = "FirstName",
                 LastName = "LastName"
             });
 
-            var test = await localStorage.GetObjectAsync<User>(key);
+            var test = await localStorage.GetItemAsync<User>(key);
         }
         private static async Task BlazoredSessionStorageTestAsync(WebAssemblyHost host)
         {

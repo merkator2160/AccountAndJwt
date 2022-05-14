@@ -2,8 +2,8 @@
 {
     internal interface ILocalStorageService
     {
-        Task<T> GetObjectAsync<T>(String key);
-        Task SetObjectAsync<T>(String key, T value);
-        Task RemoveAsync(String key);
+        Task<T> GetItemAsync<T>(String key);
+        Task SetItemAsync<T>(String key, T value);
+        Task RemoveItemAsync(String key);
     }
 }

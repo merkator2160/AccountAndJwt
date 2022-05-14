@@ -16,7 +16,7 @@ namespace AccountAndJwt.Ui.Services
 
 
         // ILocalStorageService ///////////////////////////////////////////////////////////////////
-        public async Task<T> GetObjectAsync<T>(String key)
+        public async Task<T> GetItemAsync<T>(String key)
         {
             var json = await _jsRuntime.InvokeAsync<String>("localStorage.getItem", key);
             if (json == null)
@@ -24,11 +24,11 @@ namespace AccountAndJwt.Ui.Services
 
             return JsonSerializer.Deserialize<T>(json);
         }
-        public async Task SetObjectAsync<T>(String key, T value)
+        public async Task SetItemAsync<T>(String key, T value)
         {
             await _jsRuntime.InvokeVoidAsync("localStorage.setItem", key, JsonSerializer.Serialize(value));
         }
-        public async Task RemoveAsync(String key)
+        public async Task RemoveItemAsync(String key)
         {
             await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", key);
         }

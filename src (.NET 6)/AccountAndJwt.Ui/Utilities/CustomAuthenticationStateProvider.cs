@@ -1,6 +1,7 @@
 ﻿using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Ui.Clients.Interfaces;
 using AccountAndJwt.Ui.Models;
+using AccountAndJwt.Ui.Services.Interfaces;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -11,9 +12,10 @@ namespace AccountAndJwt.Ui.Utilities
 {
     internal class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private const String _sessionStorageUserKey = "user";
+        private const String _storageUserKey = "user";
 
         private readonly ISessionStorageService _sessionStorageService;
+        private readonly ILocalStorageService _localStorageService;
         private readonly IAuthorizationHttpClient _authorizationHttpClient;
         private readonly JwtTokenParser _jwtTokenParser;
         private readonly NavigationManager _navigationManager;
@@ -21,10 +23,16 @@ namespace AccountAndJwt.Ui.Utilities
         private User _user;
 
 
-        public CustomAuthenticationStateProvider(ISessionStorageService sessionStorageService, IAuthorizationHttpClient authorizationHttpClient, JwtTokenParser jwtTokenParser, NavigationManager navigationManager)
+        public CustomAuthenticationStateProvider(
+            ISessionStorageService sessionStorageService,
+            ILocalStorageService localStorageService,
+            IAuthorizationHttpClient authorizationHttpClient,
+            JwtTokenParser jwtTokenParser,
+            NavigationManager navigationManager)
         {
             _user = CreateUnauthorizedUser();
             _sessionStorageService = sessionStorageService;
+            _localStorageService = localStorageService;
             _authorizationHttpClient = authorizationHttpClient;
             _jwtTokenParser = jwtTokenParser;
             _navigationManager = navigationManager;
@@ -38,7 +46,7 @@ namespace AccountAndJwt.Ui.Utilities
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var userFromStorage = await _sessionStorageService.GetItemAsync<User>(_sessionStorageUserKey);
+            var userFromStorage = await _localStorageService.GetItemAsync<User>(_storageUserKey);
             if (userFromStorage == null)
             {
                 return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
@@ -68,7 +76,7 @@ namespace AccountAndJwt.Ui.Utilities
             var authorizeResponse = await response.Content.ReadFromJsonAsync<AuthorizeResponseAm>();
 
             _user = CreateAuthorizedUser(authorizeResponse);
-            await _sessionStorageService.SetItemAsync(_sessionStorageUserKey, _user);
+            await _localStorageService.SetItemAsync(_storageUserKey, _user);
 
             var identity = CreateClaimsIdentity(_user);
             var claimsPrincipal = new ClaimsPrincipal(identity);
@@ -78,7 +86,7 @@ namespace AccountAndJwt.Ui.Utilities
         }
         public async Task Logout()
         {
-            await _sessionStorageService.RemoveItemAsync(_sessionStorageUserKey);
+            await _localStorageService.RemoveItemAsync(_storageUserKey);
 
             var identity = new ClaimsIdentity();
             var user = new ClaimsPrincipal(identity);

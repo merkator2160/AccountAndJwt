@@ -245,4 +245,5 @@ ModelManifest.xml
 Logs/
 **/*.DotSettings.user
 **/appsettings.Development.json
+**/appsettings.Production.json
 **/Development.env
