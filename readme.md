@@ -1,4 +1,4 @@
-This project demonstrates implementation of base functionality .NET Core 2 WebAPI + JWT Token authorization.
+This project demonstrates implementation of base functionality .NET Core WebAPI + JWT Token authorization.
 I’m presenting the best practices of attribute routing, named actions, which corresponds to the correct HTTP verbs.
 
 ApplicationUser Model:
