@@ -1,8 +1,9 @@
 ﻿using AccountAndJwt.Contracts.Models.Api;
+using AccountAndJwt.Ui.Utilities.TokenParser.Models;
 
 namespace AccountAndJwt.Ui.Models
 {
-    internal class User
+    public class User
     {
         public Int32 Id { get; set; }
         public String FirstName { get; set; }
@@ -10,7 +11,10 @@ namespace AccountAndJwt.Ui.Models
         public String Email { get; set; }
 
         public Boolean IsAuthorized { get; set; }
-        public AuthorizeResponseAm Tokens { get; set; }
+
+        public AuthorizeResponseAm ServerTokens { get; set; }
+        public AppToken ParsedToken { get; set; }
+
         public DateTime TokenExpirationTimeUtc { get; set; }
     }
 }

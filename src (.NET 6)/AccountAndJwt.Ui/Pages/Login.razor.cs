@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Contracts.Models.Api;
-using AccountAndJwt.Ui.Utilities;
+using AccountAndJwt.Ui.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -9,8 +9,8 @@ namespace AccountAndJwt.Ui.Pages
     public partial class Login
     {
         private readonly AuthorizeRequestAm _authorizeRequest = new();
-        private CustomAuthenticationStateProvider _authenticationStateProvider;
         private Boolean _loading;
+        private Boolean _stayLoggedIn;
         private String _errorMessage;
 
 
@@ -19,11 +19,7 @@ namespace AccountAndJwt.Ui.Pages
         public NavigationManager Navigation { get; set; }
 
         [Inject]
-        public AuthenticationStateProvider AuthenticationService
-        {
-            get => _authenticationStateProvider;
-            set => _authenticationStateProvider = (CustomAuthenticationStateProvider)value;
-        }
+        public IAuthorizationService AuthenticationService { get; set; }
 
         [CascadingParameter]
         public Task<AuthenticationState> AuthState { get; set; }
@@ -35,7 +31,7 @@ namespace AccountAndJwt.Ui.Pages
             var authState = AuthState.Result;
             var user = authState.User;
 
-            if (user.Identity.IsAuthenticated)
+            if (user.Identity!.IsAuthenticated)
                 Navigation.NavigateTo("/");
         }
         private async void HandleValidSubmit()
@@ -43,7 +39,7 @@ namespace AccountAndJwt.Ui.Pages
             _loading = true;
             try
             {
-                await _authenticationStateProvider.Login(_authorizeRequest.Login, _authorizeRequest.Password);
+                await AuthenticationService.Login(_authorizeRequest.Login, _authorizeRequest.Password, _stayLoggedIn);
 
                 Navigation.NavigateTo("/");
             }
@@ -51,6 +47,7 @@ namespace AccountAndJwt.Ui.Pages
             {
                 _errorMessage = ex.Message;
                 _loading = false;
+
                 StateHasChanged();
             }
         }

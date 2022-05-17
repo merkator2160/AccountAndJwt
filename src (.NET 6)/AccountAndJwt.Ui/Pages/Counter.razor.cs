@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace AccountAndJwt.Ui.Pages
 {
@@ -8,10 +9,21 @@ namespace AccountAndJwt.Ui.Pages
         private Int32 _currentCount;
 
 
+        // PROPERTIES /////////////////////////////////////////////////////////////////////////////
+        [CascadingParameter]
+        public Task<AuthenticationState> AuthState { get; set; }
+
+
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-        private void IncrementCount()
+        private async Task IncrementCount()
         {
-            _currentCount++;
+            var authState = await AuthState;
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+                _currentCount++;
+            else
+                _currentCount--;
         }
     }
 }

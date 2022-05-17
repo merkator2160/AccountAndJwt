@@ -4,9 +4,12 @@ using AccountAndJwt.Ui.Models;
 using AccountAndJwt.Ui.Services;
 using AccountAndJwt.Ui.Services.Interfaces;
 using AccountAndJwt.Ui.Utilities;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace AccountAndJwt.Ui
@@ -16,20 +19,16 @@ namespace AccountAndJwt.Ui
         public static async Task Main(String[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.ConfigureContainer(new AutofacServiceProviderFactory(ConfigureContainer));
 
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            //var test = builder.Configuration["ServerConfig:BaseAddress"];
-
             builder.Services
-                .AddScoped<JwtTokenParser>()
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<ILocalStorageService, LocalStorageService>()
+                .AddOptions()
                 .AddAuthorizationCore()
                 .AddBlazoredSessionStorage()
-                .AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>()
-                .AddScoped<HttpClient>()
+                //.Replace(ServiceDescriptor.Scoped<IJsonSerializer, NewtonSoftJsonSerializer>())
                 .AddScoped<IAuthorizationHttpClient>(sp => new AuthorizationHttpClient()
                 {
                     BaseAddress = new Uri(builder.Configuration["ServerConfig:AuthorizationService:BaseAddress"])
@@ -41,6 +40,22 @@ namespace AccountAndJwt.Ui
             //await BlazoredSessionStorageTestAsync(host);
 
             await host.RunAsync();
+        }
+        private static void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<HttpClient>().AsSelf();
+            builder.RegisterType<SignOutSessionStateManager>().AsSelf();
+            builder.RegisterType<UserService>().AsImplementedInterfaces();
+            builder.RegisterType<LocalStorageService>().AsImplementedInterfaces();
+            builder.RegisterType<CustomAuthenticationStateProvider>().As<AuthenticationStateProvider>().AsImplementedInterfaces().SingleInstance();
+            //builder.Register(sp =>
+            //{
+            //    var configuration = sp.Resolve<WebAssemblyHostConfiguration>();
+            //    return new AuthorizationHttpClient()
+            //    {
+            //        BaseAddress = new Uri(configuration["ServerConfig:AuthorizationService:BaseAddress"])
+            //    };
+            //}).AsImplementedInterfaces();
         }
         private static async Task LocalStorageTestAsync(WebAssemblyHost host)
         {

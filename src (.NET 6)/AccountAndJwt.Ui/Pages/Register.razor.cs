@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Ui.Models;
-using AccountAndJwt.Ui.Utilities;
+using AccountAndJwt.Ui.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -9,7 +9,8 @@ namespace AccountAndJwt.Ui.Pages
     public partial class Register
     {
         private readonly RegisterUserVm _registerUserRequest = new();
-        private CustomAuthenticationStateProvider _authenticationStateProvider;
+        private Boolean _loading;
+        private Boolean _stayLoggedIn;
         private String _errorMessage;
 
 
@@ -18,31 +19,37 @@ namespace AccountAndJwt.Ui.Pages
         public NavigationManager Navigation { get; set; }
 
         [Inject]
-        public AuthenticationStateProvider AuthenticationService
-        {
-            get => _authenticationStateProvider;
-            set => _authenticationStateProvider = (CustomAuthenticationStateProvider)value;
-        }
+        public IAuthorizationService AuthenticationService { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> AuthState { get; set; }
 
 
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-        private async Task<bool> RegisterUser()
+        protected override void OnInitialized()
         {
-            throw new NotImplementedException();
+            var authState = AuthState.Result;
+            var user = authState.User;
 
-            //var returnedUser = await userService.RegisterUserAsync(_registerUserRequest);
+            if (user.Identity!.IsAuthenticated)
+                Navigation.NavigateTo("/");
+        }
+        private async Task RegisterUser()
+        {
+            try
+            {
+                _loading = true;
+                await AuthenticationService.Login(_registerUserRequest.Login, _registerUserRequest.Password, _stayLoggedIn);
 
-            //if (returnedUser.EmailAddress != null)
-            //{
-            //    _authenticationStateProvider.Login();
-            //    Navigation.NavigateTo("/");
-            //}
-            //else
-            //{
-            //    _errorMessage = "Invalid username or password";
-            //}
+                Navigation.NavigateTo("/");
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                _loading = false;
 
-            //return await Task.FromResult(true);
+                StateHasChanged();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using AccountAndJwt.Ui.Clients.Interfaces;
 using AccountAndJwt.Ui.Models;
 using AccountAndJwt.Ui.Services.Interfaces;
+using AccountAndJwt.Ui.Utilities.TokenParser;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -10,14 +11,14 @@ using System.Security.Claims;
 
 namespace AccountAndJwt.Ui.Utilities
 {
-    internal class CustomAuthenticationStateProvider : AuthenticationStateProvider
+    internal class CustomAuthenticationStateProvider : AuthenticationStateProvider, IAuthorizationService
     {
-        private const String _storageUserKey = "user";
+        private const String _userKey = "user";
+        private const String _authType = "apiauth_type";
 
         private readonly ISessionStorageService _sessionStorageService;
         private readonly ILocalStorageService _localStorageService;
         private readonly IAuthorizationHttpClient _authorizationHttpClient;
-        private readonly JwtTokenParser _jwtTokenParser;
         private readonly NavigationManager _navigationManager;
 
         private User _user;
@@ -27,14 +28,12 @@ namespace AccountAndJwt.Ui.Utilities
             ISessionStorageService sessionStorageService,
             ILocalStorageService localStorageService,
             IAuthorizationHttpClient authorizationHttpClient,
-            JwtTokenParser jwtTokenParser,
             NavigationManager navigationManager)
         {
             _user = CreateUnauthorizedUser();
             _sessionStorageService = sessionStorageService;
             _localStorageService = localStorageService;
             _authorizationHttpClient = authorizationHttpClient;
-            _jwtTokenParser = jwtTokenParser;
             _navigationManager = navigationManager;
         }
 
@@ -43,27 +42,27 @@ namespace AccountAndJwt.Ui.Utilities
         public User User => _user;
 
 
-        // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
+        // OVERRIDE ///////////////////////////////////////////////////////////////////////////////
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var userFromStorage = await _localStorageService.GetItemAsync<User>(_storageUserKey);
+            var userFromStorage = await _localStorageService.GetItemAsync<User>(_userKey);
             if (userFromStorage == null)
             {
-                return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
+                userFromStorage = await _sessionStorageService.GetItemAsync<User>(_userKey);
+                if (userFromStorage == null)
+                    return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
             }
 
             var now = DateTime.UtcNow;
             if (now > userFromStorage.TokenExpirationTimeUtc)
-            {
                 return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
-            }
 
-            var identity = CreateClaimsIdentity(userFromStorage);
-            var claimsPrincipal = new ClaimsPrincipal(identity);
-
-            return await Task.FromResult(new AuthenticationState(claimsPrincipal));
+            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(userFromStorage.ParsedToken.Payload.ClaimDictionary.ToClaims(), _authType))));
         }
-        public async Task Login(String login, String password)
+
+
+        // IAuthorizationService //////////////////////////////////////////////////////////////////
+        public async Task Login(String login, String password, Boolean stayLoggedIn)
         {
             var response = await _authorizationHttpClient.AuthorizeByCredentialsAsync(new AuthorizeRequestAm()
             {
@@ -74,24 +73,24 @@ namespace AccountAndJwt.Ui.Utilities
                 throw new ApplicationException(await response.Content.ReadAsStringAsync());
 
             var authorizeResponse = await response.Content.ReadFromJsonAsync<AuthorizeResponseAm>();
-
             _user = CreateAuthorizedUser(authorizeResponse);
-            await _localStorageService.SetItemAsync(_storageUserKey, _user);
 
-            var identity = CreateClaimsIdentity(_user);
-            var claimsPrincipal = new ClaimsPrincipal(identity);
+            if (stayLoggedIn)
+                await _localStorageService.SetItemAsync(_userKey, _user);
+            else
+                await _sessionStorageService.SetItemAsync(_userKey, _user);
 
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(_user.ParsedToken.Payload.ClaimDictionary.ToClaims(), _authType)))));
             _navigationManager.NavigateTo("/");
         }
         public async Task Logout()
         {
-            await _localStorageService.RemoveItemAsync(_storageUserKey);
+            await _localStorageService.RemoveItemAsync(_userKey);
+            await _sessionStorageService.RemoveItemAsync(_userKey);
 
-            var identity = new ClaimsIdentity();
-            var user = new ClaimsPrincipal(identity);
+            _user = CreateUnauthorizedUser();
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()))));
 
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
             _navigationManager.NavigateTo("/");
         }
 
@@ -99,23 +98,18 @@ namespace AccountAndJwt.Ui.Utilities
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         private User CreateAuthorizedUser(AuthorizeResponseAm authorizeResponse)
         {
-            var token = _jwtTokenParser.ParseToken(authorizeResponse.AccessToken);
-
-            Console.WriteLine(token.Header.TokenAlgorithm);
-            Console.WriteLine(token.Payload.TokenExpirationTime);
-            Console.WriteLine(token.Payload.GetClaimValueByKey("exp"));
-            Console.WriteLine(token.Payload.ClaimExists("key").ToString());
-            Console.WriteLine(token.ToJson());
+            var token = authorizeResponse.AccessToken.ParseToken();
 
             return new User()
             {
-                Id = Int32.Parse(token.Payload.Claims[ClaimTypes.Sid]),
-                FirstName = token.Payload.Claims[ClaimTypes.Name],
-                LastName = token.Payload.Claims[ClaimTypes.Surname],
-                Email = token.Payload.Claims[ClaimTypes.Email],
+                Id = token.Payload.Sid,
+                FirstName = token.Payload.FirstName,
+                LastName = token.Payload.LastName,
+                Email = token.Payload.Email,
                 TokenExpirationTimeUtc = token.Payload.TokenExpirationTime,
                 IsAuthorized = true,
-                Tokens = authorizeResponse
+                ServerTokens = authorizeResponse,
+                ParsedToken = token
             };
         }
         private User CreateUnauthorizedUser()
@@ -124,13 +118,6 @@ namespace AccountAndJwt.Ui.Utilities
             {
                 IsAuthorized = true,
             };
-        }
-        private ClaimsIdentity CreateClaimsIdentity(User user)
-        {
-            var token = _jwtTokenParser.ParseToken(user.Tokens.AccessToken);
-            var claimList = token.Payload.Claims.Select(x => new Claim(x.Key, x.Value)).ToArray();
-
-            return new ClaimsIdentity(claimList, "apiauth_type"); ;
         }
     }
 }

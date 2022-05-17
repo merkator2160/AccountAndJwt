@@ -11,11 +11,6 @@
         public String AccessToken { get; set; }
 
         /// <summary>
-        /// Access token lifetime
-        /// </summary>
-        public Int32 AccessTokenLifeTimeSec { get; set; }
-
-        /// <summary>
         /// Refresh token
         /// </summary>
         public String RefreshToken { get; set; }

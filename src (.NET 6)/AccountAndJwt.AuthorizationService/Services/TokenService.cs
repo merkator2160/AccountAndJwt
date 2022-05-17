@@ -44,7 +44,6 @@ namespace AccountAndJwt.AuthorizationService.Services
             return new CreateAccessTokenByCredentialsDto()
             {
                 AccessToken = CreateJwtAccessToken(user),
-                AccessTokenLifeTimeSec = _audienceConfig.TokenLifetimeSec,
                 RefreshToken = refreshTokenValue
             };
         }
@@ -83,7 +82,7 @@ namespace AccountAndJwt.AuthorizationService.Services
                 new Claim(ClaimTypes.Name, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName)
             };
-            claims.AddRange(user.UserRoles.Select(p => new Claim("roles", p.Role.Name)));
+            claims.AddRange(user.UserRoles.Select(p => new Claim(ClaimTypes.Role, p.Role.Name)));
 
             return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
                 issuer: _audienceConfig.ValidIssuer,

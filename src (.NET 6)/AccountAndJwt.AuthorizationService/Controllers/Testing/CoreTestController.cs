@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Common.Const;
+using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -75,7 +76,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         /// <summary>
         /// Returns collection of claims assigned to the current user from provided JWT token
         /// </summary>
-        [Authorize]
+        [Authorize(Roles = Role.Admin)]
         [HttpGet]
         [ProducesResponseType(typeof(GetClaimsResponseAm[]), 200)]
         [ProducesResponseType(401)]

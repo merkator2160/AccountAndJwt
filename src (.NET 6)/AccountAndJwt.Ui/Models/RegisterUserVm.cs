@@ -20,6 +20,7 @@ namespace AccountAndJwt.Ui.Models
         /// Password
         /// </summary>
         [Required]
+        [Compare(nameof(Password), ErrorMessage = "Password and Confirm password must match")]
         public String ConfirmPassword { get; set; }
 
         /// <summary>

@@ -1,6 +1,5 @@
-﻿using AccountAndJwt.Ui.Utilities;
+﻿using AccountAndJwt.Ui.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace AccountAndJwt.Ui.Shared
@@ -9,13 +8,13 @@ namespace AccountAndJwt.Ui.Shared
     {
         // PROPERTIES /////////////////////////////////////////////////////////////////////////////
         [Inject]
-        public AuthenticationStateProvider AuthenticationService { get; set; }
+        public IAuthorizationService AuthorizationService { get; set; }
 
 
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         private async Task LogOut(MouseEventArgs args)
         {
-            await ((CustomAuthenticationStateProvider)AuthenticationService).Logout();
+            await AuthorizationService.Logout();
         }
     }
 }
