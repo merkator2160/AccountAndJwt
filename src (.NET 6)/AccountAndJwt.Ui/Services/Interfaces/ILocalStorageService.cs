@@ -1,6 +1,6 @@
 ﻿namespace AccountAndJwt.Ui.Services.Interfaces
 {
-    internal interface ILocalStorageService
+    public interface ILocalStorageService
     {
         Task<T> GetItemAsync<T>(String key);
         Task SetItemAsync<T>(String key, T value);

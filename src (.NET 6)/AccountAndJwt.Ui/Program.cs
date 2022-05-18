@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Radzen;
 
 namespace AccountAndJwt.Ui
 {
@@ -28,6 +29,15 @@ namespace AccountAndJwt.Ui
                 .AddOptions()
                 .AddAuthorizationCore()
                 .AddBlazoredSessionStorage()
+
+                // Radzen //
+                .AddScoped<IRadzenThemeService, RadzenThemeService>()
+                .AddScoped<DialogService>()
+                .AddScoped<NotificationService>()
+                .AddScoped<TooltipService>()
+                .AddScoped<ContextMenuService>()
+                // Radzen //
+
                 //.Replace(ServiceDescriptor.Scoped<IJsonSerializer, NewtonSoftJsonSerializer>())
                 .AddScoped<IAuthorizationHttpClient>(sp => new AuthorizationHttpClient()
                 {
@@ -35,6 +45,7 @@ namespace AccountAndJwt.Ui
                 });
 
             var host = builder.Build();
+            host.Services.GetRequiredService<IRadzenThemeService>().Initialize();
 
             //await LocalStorageTestAsync(host);
             //await BlazoredSessionStorageTestAsync(host);

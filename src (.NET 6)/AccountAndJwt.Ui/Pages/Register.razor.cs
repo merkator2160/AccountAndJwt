@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Ui.Models;
+﻿using AccountAndJwt.Ui.Models.ViewModels;
 using AccountAndJwt.Ui.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;

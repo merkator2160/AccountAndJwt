@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AccountAndJwt.Ui.Models
+namespace AccountAndJwt.Ui.Models.ViewModels
 {
     public class RegisterUserVm
     {

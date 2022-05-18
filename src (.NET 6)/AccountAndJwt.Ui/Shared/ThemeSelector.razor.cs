@@ -1,29 +1,19 @@
 ﻿using AccountAndJwt.Ui.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
-namespace AccountAndJwt.Ui.Pages
+namespace AccountAndJwt.Ui.Shared
 {
-    [Route("radzenTest")]
-    public partial class RadzenComponentTest
+    public partial class ThemeSelector
     {
-        private String _text = "Hi";
-
-
-
         // PROPERTIES /////////////////////////////////////////////////////////////////////////////
         [Inject]
         public IRadzenThemeService RadzenThemeService { get; set; }
 
 
-
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-        protected override void OnInitialized()
+        void ChangeTheme(Object value)
         {
-
-        }
-        private void ButtonClicked()
-        {
-            _text = "Hello world!";
+            RadzenThemeService.Change((String)value);
         }
     }
 }

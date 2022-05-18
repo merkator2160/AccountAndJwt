@@ -3,16 +3,15 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    @*<h1>Sorry</h1>
-                    <p>You're not authorized to reach this page.</p>
-                    <p>You may need to log in as a different user.</p>*@
-                    
                     @if (context.User.Identity?.IsAuthenticated != true)
                     {
                         <RedirectToLogin />
                     }
                     else
                     {
+                        <h1>Sorry</h1>
+                        <p>You're not authorized to reach this page.</p>
+                        <p>You may need to log in as a different user.</p>
                         <p role="alert">You are not authorized to access this resource.</p>
                     }
                 </NotAuthorized>
