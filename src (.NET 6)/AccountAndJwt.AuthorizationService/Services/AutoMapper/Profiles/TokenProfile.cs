@@ -2,7 +2,7 @@
 using AccountAndJwt.Contracts.Models.Api;
 using AutoMapper;
 
-namespace AccountAndJwt.AuthorizationService.Middleware.AutoMapper.Profiles
+namespace AccountAndJwt.AuthorizationService.Services.AutoMapper.Profiles
 {
     internal class TokenProfile : Profile
     {

@@ -4,6 +4,7 @@ using AccountAndJwt.AuthorizationService.Services.Models;
 using AccountAndJwt.Common.Const;
 using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Contracts.Models.Api.Errors;
+using AccountAndJwt.Database.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,15 @@ namespace AccountAndJwt.AuthorizationService.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserService _userService;
         private readonly IUrlHelper _urlHelper;
 
 
-        public AccountController(IUserService userService, IUrlHelper urlHelper, IMapper mapper)
+        public AccountController(IUserService userService, IUrlHelper urlHelper, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
             _userService = userService;
             _urlHelper = urlHelper;
         }
@@ -35,8 +38,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// <summary>
         /// Register new user by provided credentials
         /// </summary>
-        /// <param name="userDetails"></param>
-        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(RegisterUserResponseAm), 201)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
@@ -60,8 +61,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// <summary>
         /// [Auth=(admin)] Delete existed account by it id
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = Role.Admin)]
         [ProducesResponseType(200)]
@@ -82,10 +81,23 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         }
 
         /// <summary>
+        /// [Auth=(admin)] Returns all available roles
+        /// </summary>
+        [Authorize(Roles = Role.Admin)]
+        [HttpGet]
+        [ProducesResponseType(typeof(RoleAm), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(typeof(String), 460)]
+        [ProducesResponseType(typeof(String), 500)]
+        public async Task<IActionResult> GetAvailableRoles()
+        {
+            return Ok(_mapper.Map<RoleAm[]>(await _unitOfWork.Users.GetAvailableRolesAsync()));
+        }
+
+        /// <summary>
         /// [Auth=(admin)] Add role to user with specified id
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = Role.Admin)]
         [ProducesResponseType(200)]
@@ -132,8 +144,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// <summary>
         /// [Auth] Change E-Mail of current user
         /// </summary>
-        /// <param name="newEmail"></param>
-        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [ProducesResponseType(200)]
@@ -154,8 +164,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// <summary>
         /// [Auth] Change current user First and Last name by provided id
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [ProducesResponseType(200)]
@@ -176,8 +184,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// <summary>
         /// [Auth=(admin)] Get information about user by provided id
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
         [Authorize(Roles = Role.Admin)]
         [HttpGet]
         [ProducesResponseType(typeof(UserAm), 200)]
@@ -193,7 +199,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// <summary>
         /// [Auth=(admin)] Get information about all users
         /// </summary>
-        /// <returns></returns>
         [Authorize(Roles = Role.Admin)]
         [HttpGet]
         [ProducesResponseType(typeof(UserAm[]), 200)]
@@ -209,8 +214,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// <summary>
         /// [Auth] Changing current user password
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [ProducesResponseType(200)]

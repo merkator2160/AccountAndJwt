@@ -35,13 +35,13 @@ namespace AccountAndJwt.AuthorizationService.Middleware
                         return;
                     }
 
-                    var logger = app.ApplicationServices.GetService<ILogger>();
+                    var logger = app.ApplicationServices.GetService<ILogger<Program>>();
                     logger.LogError(ex, $"{ex.Message}\r\n{ex.StackTrace}");
 
                     context.Response.StatusCode = 500;
                     context.Response.ContentType = HttpMimeType.Application.Json;
 #if DEBUG
-					await context.Response.WriteAsync(SerializeByNewtonsoftJson(ex), Encoding.UTF8);
+                    await context.Response.WriteAsync(SerializeByNewtonsoftJson(ex), Encoding.UTF8);
 #else
                     await context.Response.WriteAsync("Internal server error!", Encoding.UTF8);
 #endif

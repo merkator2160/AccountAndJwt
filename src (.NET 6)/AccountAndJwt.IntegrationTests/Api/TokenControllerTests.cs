@@ -11,7 +11,7 @@ namespace AccountAndJwt.IntegrationTests.Api
         [Fact]
         public async Task AuthorizeByCredentialsTest()
         {
-            using (var factory = new CustomWebApplicationFactory())
+            await using (var factory = new CustomWebApplicationFactory())
             {
                 var client = factory.CreateClient();
                 var response = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
@@ -31,7 +31,7 @@ namespace AccountAndJwt.IntegrationTests.Api
         [Fact]
         public async Task RefreshTokenTest()
         {
-            using (var factory = new CustomWebApplicationFactory())
+            await using (var factory = new CustomWebApplicationFactory())
             {
                 var client = factory.CreateClient();
                 var authorizedResponse = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
@@ -59,7 +59,7 @@ namespace AccountAndJwt.IntegrationTests.Api
         [Fact]
         public async Task RevokeTokenTest()
         {
-            using (var factory = new CustomWebApplicationFactory())
+            await using (var factory = new CustomWebApplicationFactory())
             {
                 var client = factory.CreateClient();
                 var authorizedResponse = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()

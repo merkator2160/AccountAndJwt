@@ -7,6 +7,8 @@ using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
@@ -68,6 +70,10 @@ namespace AccountAndJwt.AuthorizationService
             services.AddHealthChecks();
             services.AddAuthentication();
             services.AddAuthorization();
+            services.AddLogging();
+            services
+                .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+                .AddScoped(x => x.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext));
             services
                 .AddControllers()
                 .AddApplicationPart(Assembly.Load(new AssemblyName("AccountAndJwt.AuthorizationService")))

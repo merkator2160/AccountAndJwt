@@ -7,13 +7,13 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
     internal class RecreateDatabaseJob : IJob, IDisposable
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger _logger;
+        private readonly ILogger<RecreateDatabaseJob> _logger;
 
         private readonly Boolean _isMutexFree;
         private readonly Mutex _mutex;
 
 
-        public RecreateDatabaseJob(IConfiguration configuration, ILogger logger)
+        public RecreateDatabaseJob(IConfiguration configuration, ILogger<RecreateDatabaseJob> logger)
         {
             _configuration = configuration;
             _logger = logger;

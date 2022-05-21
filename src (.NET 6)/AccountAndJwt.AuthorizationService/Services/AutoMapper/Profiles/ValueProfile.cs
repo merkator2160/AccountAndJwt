@@ -3,7 +3,7 @@ using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 
-namespace AccountAndJwt.AuthorizationService.Middleware.AutoMapper.Profiles
+namespace AccountAndJwt.AuthorizationService.Services.AutoMapper.Profiles
 {
     internal class ValueProfile : Profile
     {

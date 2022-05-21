@@ -5,13 +5,13 @@ namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {
     internal class SampleAsyncJob : IAsyncJob, IDisposable
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<SampleAsyncJob> _logger;
 
         private readonly Boolean _isMutexFree;
         private readonly Mutex _mutex;
 
 
-        public SampleAsyncJob(ILogger logger)
+        public SampleAsyncJob(ILogger<SampleAsyncJob> logger)
         {
             _logger = logger;
 

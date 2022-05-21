@@ -3,7 +3,7 @@ using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 
-namespace AccountAndJwt.AuthorizationService.Middleware.AutoMapper.Profiles
+namespace AccountAndJwt.AuthorizationService.Services.AutoMapper.Profiles
 {
     internal class UserProfile : Profile
     {
@@ -23,6 +23,10 @@ namespace AccountAndJwt.AuthorizationService.Middleware.AutoMapper.Profiles
             CreateMap<RegisterUserAm, UserDto>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Roles, opt => opt.Ignore());
+
+            CreateMap<RoleDb, RoleAm>()
+                .ReverseMap()
+                .ForMember(dest => dest.UserRoles, opt => opt.Ignore());
         }
     }
 }
