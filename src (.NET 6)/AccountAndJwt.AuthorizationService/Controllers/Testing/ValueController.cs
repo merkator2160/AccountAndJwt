@@ -18,6 +18,8 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
     [Route("api/[controller]")]
     public class ValueController : ControllerBase
     {
+        private const UInt16 _pageSizeLimit = 1000;
+
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -44,8 +46,14 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
-        public async Task<IActionResult> GetPaged([FromRoute] Int32 pageSize, Int32 pageNumber)
+        public async Task<IActionResult> GetPaged([FromRoute] Int32 pageSize, [FromRoute] Int32 pageNumber)
         {
+            if (pageSize <= 0 || pageSize > _pageSizeLimit)
+                return StatusCode(460, $"Page size min: 1, max: {_pageSizeLimit}");
+
+            if (pageNumber <= 0 || pageNumber > UInt16.MaxValue)
+                return StatusCode(460, $"Page number min: 1, max: {UInt16.MaxValue}");
+
             return Ok(_mapper.Map<PagedValueResponseAm>(await _unitOfWork.Values.GetPagedAsync(pageSize, pageNumber)));
         }
 
