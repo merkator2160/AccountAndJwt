@@ -1,10 +1,10 @@
-﻿using AccountAndJwt.Ui.Clients.Interfaces;
-using AccountAndJwt.Ui.Models;
+﻿using AccountAndJwt.Contracts.Models.Api;
+using AccountAndJwt.Ui.Clients.Interfaces;
 using AccountAndJwt.Ui.Services.Interfaces;
 
 namespace AccountAndJwt.Ui.Services
 {
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IAuthorizationHttpClient _authorizationHttpClient;
         private readonly IAuthorizationService _authorizationService;
@@ -18,10 +18,10 @@ namespace AccountAndJwt.Ui.Services
 
 
         // IUserService ///////////////////////////////////////////////////////////////////////////
-        public async Task<User[]> GetAll()
+        public async Task<UserAm[]> GetAll()
         {
             // TODO: Redesign + pagination
-            return await _authorizationHttpClient.Get<User[]>("api/Account/GetAllUsers", _authorizationService.User.ServerTokens.AccessToken);
+            return await _authorizationHttpClient.Get<UserAm[]>("api/Account/GetAllUsers", _authorizationService.User.ServerTokens.AccessToken);
         }
     }
 }

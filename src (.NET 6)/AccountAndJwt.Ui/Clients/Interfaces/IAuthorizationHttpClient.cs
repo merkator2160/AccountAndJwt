@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Api.Response;
 
 namespace AccountAndJwt.Ui.Clients.Interfaces
 {
@@ -10,7 +11,7 @@ namespace AccountAndJwt.Ui.Clients.Interfaces
         Task<HttpResponseMessage> RevokeTokenAsync(String refreshToken);
 
         // Debug //
-        Task<WeatherForecastAm[]> GetWeatherForecastAsync();
+        Task<WeatherForecastResponseAm[]> GetWeatherForecastAsync();
 
         // Other //
         Task<T> Get<T>(String uri, String accessToken);

@@ -1,5 +1,6 @@
 ﻿using AccountAndJwt.Common.Const;
-using AccountAndJwt.Contracts.Models.Api;
+using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Api.Response;
 using AspNetCore.Http.Extensions;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
@@ -31,13 +32,13 @@ namespace AccountAndJwt.IntegrationTests
         // AUTHORIZATION //////////////////////////////////////////////////////////////////////////
         public async Task AuthorizeAsGuestAsync(HttpClient client)
         {
-            await AuthorizeAsync("guest", "HtR00MtOxKyHUg7359QL", client);
+            await AuthorizeAsync(client, "guest", "HtR00MtOxKyHUg7359QL");
         }
         public async Task AuthorizeAsAdminAsync(HttpClient client)
         {
-            await AuthorizeAsync("admin", "ipANWvuFUA5e2qWk0iTd", client);
+            await AuthorizeAsync(client, "admin", "ipANWvuFUA5e2qWk0iTd");
         }
-        public async Task AuthorizeAsync(String login, String password, HttpClient client)
+        public async Task AuthorizeAsync(HttpClient client, String login, String password)
         {
             var response = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
             {

@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Api.Response;
 using AccountAndJwt.Ui.Clients.Interfaces;
 using AccountAndJwt.Ui.Models;
 using AccountAndJwt.Ui.Services.Interfaces;

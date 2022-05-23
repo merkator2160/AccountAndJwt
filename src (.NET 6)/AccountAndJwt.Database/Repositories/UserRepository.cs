@@ -1,18 +1,33 @@
 ﻿using AccountAndJwt.Database.Interfaces;
+using AccountAndJwt.Database.Models;
 using AccountAndJwt.Database.Models.Storage;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace AccountAndJwt.Database.Repositories
 {
     internal class UserRepository : EfRepositoryBase<UserDb, DataContext>, IUserRepository
     {
-        public UserRepository(DataContext context) : base(context)
-        {
+        private readonly IMapper _mapper;
 
+
+        public UserRepository(DataContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
         }
 
 
         // IUserRepository ////////////////////////////////////////////////////////////////////////
+        public Task<Boolean> UserExistsAsync(String login)
+        {
+            return Context.Users.AnyAsync(p => p.Login.Equals(login));
+        }
+        public Task<Boolean> UserRoleExistsAsync(Int32 userId, Int32 roleId)
+        {
+            return Context.UserRoles.AnyAsync(p => p.RoleId == roleId && p.UserId == userId);
+        }
+
         public Task<UserDb> GetByLoginEagerAsync(String login)
         {
             return Context.Users
@@ -34,18 +49,19 @@ namespace AccountAndJwt.Database.Repositories
                 .ThenInclude(p => p.Role)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
-        public Task<UserDb[]> GetAllEagerAsync()
+        public async Task<PagedUserDb> GetPagedEagerAsync(Int32 pageSize, Int32 pageNumber)
         {
-            return Context.Users
-                .Include(p => p.UserRoles)
-                .ThenInclude(p => p.Role)
-                .ToArrayAsync();
+            var query = Context.Users
+               .Include(p => p.UserRoles)
+               .ThenInclude(p => p.Role);
+
+            return _mapper.Map<PagedUserDb>(await query.ToPagedListAsync(pageNumber, pageSize));
         }
         public Task<RoleDb[]> GetAvailableRolesAsync()
         {
             return Context.Roles.ToArrayAsync();
         }
-        public Task AddRoleAsync(Int32 userId, Int32 roleId)
+        public Task AddUserRoleAsync(Int32 userId, Int32 roleId)
         {
             return Context.UserRoles.AddAsync(new UserRoleDb()
             {
@@ -53,17 +69,21 @@ namespace AccountAndJwt.Database.Repositories
                 RoleId = roleId
             }).AsTask();
         }
-        public async Task DeleteRoleAsync(Int32 userId, Int32 roleId)
+        public void DeleteUserRole(UserRoleDb userRole)
+        {
+            Context.UserRoles.Remove(userRole);
+        }
+        public async Task DeleteUserRoleAsync(Int32 userId, Int32 roleId)
         {
             var requestedUserRole = await Context.UserRoles.FirstAsync(p => p.RoleId == roleId && p.UserId == userId);
             Context.UserRoles.Remove(requestedUserRole);
         }
-        public Task<RoleDb> GetRoleWithUserAsync(String roleName)
+        public Task<RoleDb> GetRoleWithUserAsync(Int32 roleId)
         {
             return Context.Roles
                 .Include(p => p.UserRoles)
                 .ThenInclude(p => p.User)
-                .FirstOrDefaultAsync(p => p.Name == roleName);
+                .FirstOrDefaultAsync(p => p.Id == roleId);
         }
     }
 }

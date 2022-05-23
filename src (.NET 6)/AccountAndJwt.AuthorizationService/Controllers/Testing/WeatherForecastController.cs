@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
@@ -22,12 +22,12 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 
         // ACTIONS ////////////////////////////////////////////////////////////////////////////////
         [HttpGet]
-        [ProducesResponseType(typeof(WeatherForecastAm[]), 200)]
+        [ProducesResponseType(typeof(WeatherForecastResponseAm[]), 200)]
         [ProducesResponseType(typeof(String), 500)]
         public IActionResult GetWeatherForecast()
         {
             var rng = new Random();
-            var weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecastAm
+            var weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecastResponseAm
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),

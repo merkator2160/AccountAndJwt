@@ -1,9 +1,9 @@
-﻿using AccountAndJwt.Ui.Models;
+﻿using AccountAndJwt.Contracts.Models.Api;
 
 namespace AccountAndJwt.Ui.Services.Interfaces
 {
     internal interface IUserService
     {
-        Task<User[]> GetAll();
+        Task<UserAm[]> GetAll();
     }
 }

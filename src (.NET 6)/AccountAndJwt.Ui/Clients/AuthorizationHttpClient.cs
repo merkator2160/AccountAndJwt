@@ -1,4 +1,5 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Api.Response;
 using AccountAndJwt.Ui.Clients.Interfaces;
 using System.Net;
 using System.Net.Http.Headers;
@@ -33,9 +34,9 @@ namespace AccountAndJwt.Ui.Clients
         }
 
         // Debug //
-        public async Task<WeatherForecastAm[]> GetWeatherForecastAsync()
+        public async Task<WeatherForecastResponseAm[]> GetWeatherForecastAsync()
         {
-            return await this.GetFromJsonAsync<WeatherForecastAm[]>("api/WeatherForecast/GetWeatherForecast");
+            return await this.GetFromJsonAsync<WeatherForecastResponseAm[]>("api/WeatherForecast/GetWeatherForecast");
         }
 
         // Other //

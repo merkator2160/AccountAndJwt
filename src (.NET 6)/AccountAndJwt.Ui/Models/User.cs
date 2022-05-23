@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api.Response;
 using AccountAndJwt.Ui.Utilities.TokenParser.Models;
 
 namespace AccountAndJwt.Ui.Models

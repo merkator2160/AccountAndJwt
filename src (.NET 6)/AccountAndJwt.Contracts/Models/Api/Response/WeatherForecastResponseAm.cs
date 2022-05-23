@@ -1,6 +1,6 @@
-namespace AccountAndJwt.Contracts.Models.Api
+namespace AccountAndJwt.Contracts.Models.Api.Response
 {
-    public class WeatherForecastAm
+    public class WeatherForecastResponseAm
     {
         public DateTime Date { get; set; }
         public Int32 TemperatureC { get; set; }

@@ -58,11 +58,12 @@ namespace AccountAndJwt.IntegrationTests
             var authorizationServiceAssembly = Collector.GetAssembly("AccountAndJwt.AuthorizationService");
             builder.RegisterServiceConfiguration(_configuration, authorizationServiceAssembly);
             builder.RegisterServices(authorizationServiceAssembly);
-            builder.RegisterModule(new InMemoryDatabaseModule(_configuration, Collector.GetAssembly("AccountAndJwt.Database")));
+            builder.RegisterModule(new InMemoryDatabaseModule(_configuration, Collector.GetAssembly("AccountAndJwt.Database"), false));
             builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
         }
         public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
+            // TODO: Each test, each new DB initial seeding
             using (var context = serviceProvider.GetRequiredService<DataContext>())
             {
                 context.Database.EnsureCreated();

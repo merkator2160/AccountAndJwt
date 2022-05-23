@@ -1,5 +1,5 @@
 using AccountAndJwt.Common.Const;
-using AccountAndJwt.Contracts.Models.Api;
+using AccountAndJwt.Contracts.Models.Api.Response;
 using System;
 using System.Net;
 using System.Threading.Tasks;

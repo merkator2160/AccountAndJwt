@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api.Response;
 using AccountAndJwt.Ui.Clients.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -7,7 +7,7 @@ namespace AccountAndJwt.Ui.Pages
     [Route("fetchdata")]
     public partial class FetchData
     {
-        private WeatherForecastAm[] _forecasts;
+        private WeatherForecastResponseAm[] _forecasts;
 
 
         // PROPERTIES /////////////////////////////////////////////////////////////////////////////

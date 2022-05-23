@@ -1,5 +1,7 @@
-﻿using AccountAndJwt.AuthorizationService.Services.Models;
-using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api;
+using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Api.Response;
+using AccountAndJwt.Database.Models;
 using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 
@@ -9,24 +11,20 @@ namespace AccountAndJwt.AuthorizationService.Services.AutoMapper.Profiles
     {
         public UserProfile()
         {
-            CreateMap<UserDto, UserAm>()
-                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
-                .ReverseMap();
+            CreateMap<UserDb, UserAm>()
+                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role)));
 
-            CreateMap<UserDto, UserDb>()
+            CreateMap<RegisterUserRequestAm, UserDb>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.UserRoles, opt => opt.Ignore())
                 .ForMember(dest => dest.RefreshToken, opt => opt.Ignore())
-                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
-                .ReverseMap()
-                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(p => p.Role.Name)));
-
-            CreateMap<RegisterUserAm, UserDto>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.Roles, opt => opt.Ignore());
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
             CreateMap<RoleDb, RoleAm>()
                 .ReverseMap()
                 .ForMember(dest => dest.UserRoles, opt => opt.Ignore());
+
+            CreateMap<PagedUserDb, PagedUserResponseAm>();
         }
     }
 }

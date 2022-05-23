@@ -11,8 +11,7 @@ namespace AccountAndJwt.Common.Helpers
             const String charPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();
 
-            return new String(Enumerable.Repeat(charPool, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            return new String(Enumerable.Repeat(charPool, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
         public static String CreateRandomBase64String(Int32 length)
         {

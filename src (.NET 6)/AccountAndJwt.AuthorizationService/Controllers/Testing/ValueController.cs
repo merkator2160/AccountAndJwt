@@ -1,7 +1,9 @@
-﻿using AccountAndJwt.AuthorizationService.Services.Interfaces;
-using AccountAndJwt.AuthorizationService.Services.Models;
-using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Contracts.Models.Api.Errors;
+using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Api.Response;
+using AccountAndJwt.Database.Interfaces;
+using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AccountAndJwt.AuthorizationService.Controllers.Testing
 {
     /// <summary>
-    /// Simple values controller
+    /// RESTful values controller
     /// </summary>
     [Authorize]
     [ApiController]
@@ -17,32 +19,34 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
     public class ValueController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IValueService _valueService;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public ValueController(IMapper mapper, IValueService valueService)
+        public ValueController(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-            _valueService = valueService;
+            _unitOfWork = unitOfWork;
         }
 
 
         // ACTIONS ////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// [Auth] Retrieves all values
+        /// [Auth] Retrieves some values, paged
         /// </summary>
         /// <remarks>Awesomeness!</remarks>
         /// <response code="200">Values take it</response>
-        /// <response code="500">Oops! Can't get values right now</response>
-        [HttpGet]
-        [ProducesResponseType(typeof(ValueAm[]), 200)]
+        /// <response code="401">Unauthorized without JWT token</response>
+        /// <response code="460">Business logic validation exception</response>
+        /// <response code="500">Server side error</response>
+        [HttpGet("{pageSize}/{pageNumber}")]
+        [ProducesResponseType(typeof(PagedValueResponseAm), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetPaged([FromRoute] Int32 pageSize, Int32 pageNumber)
         {
-            return Ok(_mapper.Map<ValueAm[]>(await _valueService.GetAllAsync()));
+            return Ok(_mapper.Map<PagedValueResponseAm>(await _unitOfWork.Values.GetPagedAsync(pageSize, pageNumber)));
         }
 
         /// <summary>
@@ -50,8 +54,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         /// </summary>
         /// <remarks>Awesomeness!</remarks>
         /// <response code="200">Value founded</response>
-        /// <response code="400">Value has missing/invalid values</response>
-        /// <response code="500">Oops! Can't get your value right now</response>
+        /// <response code="401">Unauthorized without JWT token</response>
+        /// <response code="460">Business logic validation exception</response>
+        /// <response code="500">Server side error</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ValueAm), 200)]
         [ProducesResponseType(401)]
@@ -59,31 +64,43 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         [ProducesResponseType(typeof(String), 500)]
         public async Task<IActionResult> Get([FromRoute] Int32 id)
         {
-            return Ok(_mapper.Map<ValueAm>(await _valueService.GetAsync(id)));
+            var requestedValue = await _unitOfWork.Values.GetAsync(id);
+            if (requestedValue == null)
+                return StatusCode(460, $"Value with desired \"{nameof(id)}\" was not found!");
+
+            return Ok(_mapper.Map<ValueAm>(requestedValue));
         }
 
         /// <summary>
         /// [Auth] Add new value
         /// </summary>
         /// <remarks>Awesomeness!</remarks>
-        /// <response code="200">Value created</response>
-        /// <response code="500">Oops! Can't create your value right now</response>
+        /// <response code="201">Value created</response>
+        /// <response code="400">Value has missing/invalid values</response>
+        /// <response code="401">Unauthorized without JWT token</response>
+        /// <response code="460">Business logic validation exception</response>
+        /// <response code="500">Server side error</response>
         [HttpPost]
         [ProducesResponseType(typeof(String), 201)]
-        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(ModelStateAm), 415)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
-        public async Task<IActionResult> Post([FromBody] AddValueAm value)
+        public async Task<IActionResult> Post([FromBody] AddValueRequestAm value)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var valueDto = _mapper.Map<ValueDto>(value);
-            var addedValue = await _valueService.AddAsync(valueDto);
+            var storedValue = await _unitOfWork.Values.GetByValueAsync(value.Value);
+            if (storedValue != null)
+                return StatusCode(460, $"Value with the same value \"{nameof(value.Value)}\" is already exists!");
 
-            return CreatedAtAction(nameof(Get), "Value", new { id = addedValue.Id }, value);
+            var valueDb = _mapper.Map<ValueDb>(value);
+            await _unitOfWork.Values.AddAsync(valueDb);
+            await _unitOfWork.CommitAsync();
+
+            return CreatedAtAction(nameof(Get), "Value", new { id = valueDb.Id }, value);
         }
 
         /// <summary>
@@ -92,20 +109,29 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         /// <remarks>Awesomeness!</remarks>
         /// <response code="200">Value changed</response>
         /// <response code="400">Value has missing/invalid values</response>
-        /// <response code="500">Oops! Can't update your value right now</response>
+        /// <response code="401">Unauthorized without JWT token</response>
+        /// <response code="415">Unsupported media type</response>
+        /// <response code="460">Business logic validation exception</response>
+        /// <response code="500">Server side error</response>
         [HttpPut]
         [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(typeof(ModelStateAm), 415)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
-        public async Task<IActionResult> Put([FromBody] ValueAm value)
+        public async Task<IActionResult> Put([FromBody] UpdateValueRequestAm value)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _valueService.UpdateAsync(_mapper.Map<ValueDto>(value));
+            var requestedValue = await _unitOfWork.Values.GetAsync(value.Id);
+            if (requestedValue == null)
+                return StatusCode(460, $"Value with desired \"{nameof(value.Id)}\" was not found!");
+
+            _mapper.Map(value, requestedValue);
+            _unitOfWork.Values.Update(requestedValue);
+            await _unitOfWork.CommitAsync();
 
             return Ok();
         }
@@ -115,8 +141,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         /// </summary>
         /// <remarks>Awesomeness!</remarks>
         /// <response code="200">Value deleted</response>
-        /// <response code="400">Value has missing/invalid values</response>
-        /// <response code="500">Oops! Can't delete your value right now</response>
+        /// <response code="401">Unauthorized without JWT token</response>
+        /// <response code="460">Business logic validation exception</response>
+        /// <response code="500">Server side error</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
@@ -124,7 +151,12 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         [ProducesResponseType(typeof(String), 500)]
         public async Task<IActionResult> Delete([FromRoute] Int32 id)
         {
-            await _valueService.DeleteAsync(id);
+            var requestedValue = await _unitOfWork.Values.GetAsync(id);
+            if (requestedValue == null)
+                return StatusCode(460, $"Value with desired \"{nameof(id)}\" was not found!");
+
+            _unitOfWork.Values.Remove(requestedValue);
+            await _unitOfWork.CommitAsync();
 
             return Ok();
         }

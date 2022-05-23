@@ -1,91 +1,81 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Api.Response;
 using AspNetCore.Http.Extensions;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace AccountAndJwt.IntegrationTests.Api
 {
-    public class TokenControllerTests
+    public class TokenControllerTests : IClassFixture<CustomWebApplicationFactory>
     {
+        const String _login = "admin";
+        const String _password = "ipANWvuFUA5e2qWk0iTd";
+
+        private readonly CustomWebApplicationFactory _factory;
+
+
+        public TokenControllerTests(CustomWebApplicationFactory factory)
+        {
+            _factory = factory;
+        }
+
+
+        // TESTS //////////////////////////////////////////////////////////////////////////////////
         [Fact]
         public async Task AuthorizeByCredentialsTest()
         {
-            await using (var factory = new CustomWebApplicationFactory())
-            {
-                var client = factory.CreateClient();
-                var response = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
-                {
-                    Login = "admin",
-                    Password = "ipANWvuFUA5e2qWk0iTd"
-                });
+            var client = _factory.CreateClient();
+            var authorizedResponse = await AuthorizeByCredentials(client, _login, _password);
 
-                response.EnsureSuccessStatusCode();
-                var authorizedResponse = await response.DeserializeAsync<AuthorizeResponseAm>();
-
-                Assert.True(!String.IsNullOrEmpty(authorizedResponse.AccessToken));
-                Assert.True(!String.IsNullOrEmpty(authorizedResponse.RefreshToken));
-            }
+            Assert.NotNull(authorizedResponse.AccessToken);
+            Assert.NotNull(authorizedResponse.RefreshToken);
         }
 
         [Fact]
         public async Task RefreshTokenTest()
         {
-            await using (var factory = new CustomWebApplicationFactory())
-            {
-                var client = factory.CreateClient();
-                var authorizedResponse = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
-                {
-                    Login = "admin",
-                    Password = "ipANWvuFUA5e2qWk0iTd"
-                });
+            var client = _factory.CreateClient();
+            var authorizedResponse = await AuthorizeByCredentials(client, _login, _password);
 
-                authorizedResponse.EnsureSuccessStatusCode();
-                var authorizedObject = await authorizedResponse.DeserializeAsync<AuthorizeResponseAm>();
+            Assert.NotNull(authorizedResponse.AccessToken);
+            Assert.NotNull(authorizedResponse.RefreshToken);
 
-                Assert.True(!String.IsNullOrEmpty(authorizedObject.AccessToken));
-                Assert.True(!String.IsNullOrEmpty(authorizedObject.RefreshToken));
+            var refreshResponse = await client.PostAsJsonAsync("/api/Token/RefreshToken", authorizedResponse.RefreshToken);
+            refreshResponse.EnsureSuccessStatusCode();
 
-                var refreshResponse = await client.PostAsJsonAsync("/api/Token/RefreshToken", authorizedObject.RefreshToken);
-                refreshResponse.EnsureSuccessStatusCode();
+            var accessToken = await refreshResponse.Content.ReadAsStringAsync();
 
-                var refreshObject = await authorizedResponse.DeserializeAsync<RefreshTokenResponseAm>();
-
-                Assert.True(!String.IsNullOrEmpty(refreshObject.AccessToken));
-                Assert.Equal(authorizedObject.AccessToken, refreshObject.AccessToken);
-            }
+            Assert.NotNull(accessToken);
         }
 
         [Fact]
         public async Task RevokeTokenTest()
         {
-            await using (var factory = new CustomWebApplicationFactory())
+            var client = _factory.CreateClient();
+            var authorizedResponseFirst = await AuthorizeByCredentials(client, _login, _password);
+
+            var revokeResponse = await client.PostAsJsonAsync("/api/Token/RevokeToken", authorizedResponseFirst.RefreshToken);
+            revokeResponse.EnsureSuccessStatusCode();
+
+            var authorizedResponseSecond = await AuthorizeByCredentials(client, _login, _password);
+
+            Assert.NotEqual(authorizedResponseFirst.RefreshToken, authorizedResponseSecond.RefreshToken);
+        }
+
+
+        // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
+        private async Task<AuthorizeResponseAm> AuthorizeByCredentials(HttpClient client, String login, String password)
+        {
+            var response = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
             {
-                var client = factory.CreateClient();
-                var authorizedResponse = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
-                {
-                    Login = "admin",
-                    Password = "ipANWvuFUA5e2qWk0iTd"
-                });
-                authorizedResponse.EnsureSuccessStatusCode();
-                var authorizedObject = await authorizedResponse.DeserializeAsync<AuthorizeResponseAm>();
+                Login = login,
+                Password = password
+            });
 
-                Assert.True(!String.IsNullOrEmpty(authorizedObject.AccessToken));
-                Assert.True(!String.IsNullOrEmpty(authorizedObject.RefreshToken));
-
-                var revokeResponse = await client.PostAsJsonAsync("/api/Token/RevokeToken", authorizedObject.RefreshToken);
-                revokeResponse.EnsureSuccessStatusCode();
-
-                var authorizedResponseSecond = await client.PostAsJsonAsync("/api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
-                {
-                    Login = "admin",
-                    Password = "ipANWvuFUA5e2qWk0iTd"
-                });
-                authorizedResponseSecond.EnsureSuccessStatusCode();
-                var authorizedObjectSecond = await authorizedResponse.DeserializeAsync<AuthorizeResponseAm>();
-
-                Assert.Equal(authorizedObject.RefreshToken, authorizedObjectSecond.RefreshToken);
-            }
+            response.EnsureSuccessStatusCode();
+            return await response.DeserializeAsync<AuthorizeResponseAm>();
         }
     }
 }
