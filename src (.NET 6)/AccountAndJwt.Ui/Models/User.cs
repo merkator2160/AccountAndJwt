@@ -15,6 +15,6 @@ namespace AccountAndJwt.Ui.Models
         public AuthorizeResponseAm ServerTokens { get; set; }
         public AppToken ParsedToken { get; set; }
 
-        public DateTime TokenExpirationTimeUtc { get; set; }
+        public DateTime AccessTokenExpirationTimeUtc { get; set; }
     }
 }

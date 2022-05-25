@@ -2,8 +2,8 @@
 using AccountAndJwt.AuthorizationService.Middleware.Config;
 using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
-using AccountAndJwt.Common.Const;
 using AccountAndJwt.Common.Helpers;
+using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Contracts.Models.Api.Errors;
 using AccountAndJwt.Contracts.Models.Api.Request;
@@ -177,6 +177,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
         [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
         public async Task<IActionResult> ChangeEmail([FromBody] String newEmail)
@@ -281,7 +282,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
         [ProducesResponseType(401)]
-        [ProducesResponseType(typeof(ModelStateAm), 415)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestAm request)

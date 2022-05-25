@@ -1,4 +1,6 @@
-﻿using AccountAndJwt.Ui.Models.ViewModels;
+﻿using AccountAndJwt.Contracts.Models.Api.Request;
+using AccountAndJwt.Contracts.Models.Exceptions;
+using AccountAndJwt.Ui.Clients.Interfaces;
 using AccountAndJwt.Ui.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -8,7 +10,7 @@ namespace AccountAndJwt.Ui.Pages
     [Route("register")]
     public partial class Register
     {
-        private readonly RegisterUserVm _registerUserRequest = new();
+        private readonly RegisterUserRequestAm _registerUserRequest = new();
         private Boolean _loading;
         private Boolean _stayLoggedIn;
         private String _errorMessage;
@@ -19,7 +21,10 @@ namespace AccountAndJwt.Ui.Pages
         public NavigationManager Navigation { get; set; }
 
         [Inject]
-        public IAuthorizationService AuthenticationService { get; set; }
+        public IAuthorizationService AuthorizationService { get; set; }
+
+        [Inject]
+        public IAuthorizationHttpClient AuthorizationHttpClient { get; set; }
 
         [CascadingParameter]
         public Task<AuthenticationState> AuthState { get; set; }
@@ -39,8 +44,17 @@ namespace AccountAndJwt.Ui.Pages
             try
             {
                 _loading = true;
-                await AuthenticationService.Login(_registerUserRequest.Login, _registerUserRequest.Password, _stayLoggedIn);
 
+                using (var response = await AuthorizationHttpClient.RegisterAsync(_registerUserRequest))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        // TODO: Add error popup window
+                        throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                    }
+                }
+
+                await AuthorizationService.Login(_registerUserRequest.Login, _registerUserRequest.Password, _stayLoggedIn);
                 Navigation.NavigateTo("/");
             }
             catch (Exception ex)

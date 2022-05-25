@@ -11,6 +11,10 @@ namespace AccountAndJwt.Contracts.Models.Api.Request
         public String Password { get; set; }
 
         [Required]
+        [Compare(nameof(Password), ErrorMessage = "Password and Confirm password must match")]
+        public String ConfirmPassword { get; set; }
+
+        [Required]
         public String FirstName { get; set; }
 
         [Required]

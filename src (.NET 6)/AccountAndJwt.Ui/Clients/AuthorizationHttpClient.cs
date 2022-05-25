@@ -1,78 +1,59 @@
 ﻿using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Contracts.Models.Api.Response;
+using AccountAndJwt.Contracts.Models.Exceptions;
 using AccountAndJwt.Ui.Clients.Interfaces;
-using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 
 namespace AccountAndJwt.Ui.Clients
 {
-    internal class AuthorizationHttpClient : HttpClient, IAuthorizationHttpClient
+    internal class AuthorizationHttpClient : TypedHttpClient, IAuthorizationHttpClient
     {
-        public AuthorizationHttpClient()
-        {
-
-        }
-
-
-        // IHttpService ///////////////////////////////////////////////////////////////////////////
+        // IAuthorizationHttpClient ///////////////////////////////////////////////////////////////
 
         // Token //
-        public async Task<HttpResponseMessage> AuthorizeByCredentialsAsync(AuthorizeRequestAm credentials)
+        public async Task<AuthorizeResponseAm> AuthorizeByCredentialsAsync(String login, String password)
         {
-            return await this.PostAsJsonAsync("api/Token/AuthorizeByCredentials", credentials);
+            using (var response = await this.PostAsJsonAsync("api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
+            {
+                Login = login,
+                Password = password
+            }))
+            {
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+
+                return await response.Content.ReadFromJsonAsync<AuthorizeResponseAm>();
+            }
         }
-        public async Task<HttpResponseMessage> RefreshTokenAsync(String refreshToken)
+        public async Task<String> RefreshTokenAsync(String refreshToken)
         {
-            return await this.PostAsJsonAsync("api/Token/RefreshToken", refreshToken);
+            using (var response = await this.PostAsJsonAsync("api/Token/RefreshToken", refreshToken))
+            {
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+
+                return await response.Content.ReadAsStringAsync();
+            }
         }
-        public async Task<HttpResponseMessage> RevokeTokenAsync(String refreshToken)
+        public async void RevokeTokenAsync(String refreshToken)
         {
-            return await this.PostAsJsonAsync("api/Token/RevokeToken", refreshToken);
+            using (var response = await this.PostAsJsonAsync("api/Token/RevokeToken", refreshToken))
+            {
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        // Account //
+        public async Task<HttpResponseMessage> RegisterAsync(RegisterUserRequestAm request)
+        {
+            return await this.PostAsJsonAsync("api/Token/AuthorizeByCredentials", request);
         }
 
         // Debug //
         public async Task<WeatherForecastResponseAm[]> GetWeatherForecastAsync()
         {
             return await this.GetFromJsonAsync<WeatherForecastResponseAm[]>("api/WeatherForecast/GetWeatherForecast");
-        }
-
-        // Other //
-        public async Task<T> Get<T>(String uri, String accessToken)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            return await Send<T>(request, accessToken);
-        }
-        public async Task<T> Post<T>(String uri, Object value, String accessToken)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, uri);
-            request.Content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
-
-            return await Send<T>(request, accessToken);
-        }
-
-
-        // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-        private async Task<T> Send<T>(HttpRequestMessage request, String accessToken)
-        {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            using (var response = await SendAsync(request))
-            {
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    //_navigationManager.NavigateTo("logout");
-                    return default;
-                }
-
-                if (response.IsSuccessStatusCode)
-                    return await response.Content.ReadFromJsonAsync<T>();
-
-                var error = await response.Content.ReadFromJsonAsync<Dictionary<String, String>>();
-                throw new Exception(error["message"]);
-            }
         }
     }
 }

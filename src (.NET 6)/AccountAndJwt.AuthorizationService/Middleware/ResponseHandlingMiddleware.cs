@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Common.Const;
+﻿using AccountAndJwt.Contracts.Const;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace AccountAndJwt.AuthorizationService.Middleware

@@ -1,5 +1,4 @@
-﻿using AccountAndJwt.Contracts.Models.Api.Request;
-using AccountAndJwt.Contracts.Models.Api.Response;
+﻿using AccountAndJwt.Contracts.Models.Api.Response;
 using AccountAndJwt.Ui.Clients.Interfaces;
 using AccountAndJwt.Ui.Models;
 using AccountAndJwt.Ui.Services.Interfaces;
@@ -7,15 +6,14 @@ using AccountAndJwt.Ui.Utilities.TokenParser;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Json;
 using System.Security.Claims;
 
-namespace AccountAndJwt.Ui.Utilities
+namespace AccountAndJwt.Ui.Services
 {
     /// <summary>
     /// This might be useful in future: https://medium.com/nuances-of-programming/4-%D1%81%D0%BF%D0%BE%D1%81%D0%BE%D0%B1%D0%B0-%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD%D0%B0-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%BC%D0%B5%D0%B6%D0%B4%D1%83-%D0%B2%D0%BA%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0%D0%BC%D0%B8-%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D0%B5%D1%80%D0%B0-%D0%B2-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D0%B5-%D1%80%D0%B5%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-4d6e81b0f934
     /// </summary>
-    internal class CustomAuthenticationStateProvider : AuthenticationStateProvider, IAuthorizationService
+    internal class AuthorizationService : AuthenticationStateProvider, IAuthorizationService
     {
         private const String _userKey = "user";
         private const String _authType = "apiauth_type";
@@ -28,7 +26,7 @@ namespace AccountAndJwt.Ui.Utilities
         private User _user;
 
 
-        public CustomAuthenticationStateProvider(
+        public AuthorizationService(
             ISessionStorageService sessionStorageService,
             ILocalStorageService localStorageService,
             IAuthorizationHttpClient authorizationHttpClient,
@@ -49,46 +47,43 @@ namespace AccountAndJwt.Ui.Utilities
         // OVERRIDE ///////////////////////////////////////////////////////////////////////////////
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
+            var stayLoggedIn = true;
             var userFromStorage = await _localStorageService.GetItemAsync<User>(_userKey);
             if (userFromStorage == null)
             {
+                stayLoggedIn = false;
                 userFromStorage = await _sessionStorageService.GetItemAsync<User>(_userKey);
                 if (userFromStorage == null)
                     return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
             }
 
             var now = DateTime.UtcNow;
-            if (now > userFromStorage.TokenExpirationTimeUtc)
-                return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
+            if (now > userFromStorage.AccessTokenExpirationTimeUtc)
+            {
+                userFromStorage.ServerTokens.AccessToken = await _authorizationHttpClient.RefreshTokenAsync(_user.ServerTokens.RefreshToken);
+                UpdateUserInStorageAsync(stayLoggedIn);
+            }
 
-            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(userFromStorage.ParsedToken.Payload.ClaimDictionary.ToClaims(), _authType))));
+            _user = userFromStorage;
+
+            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(_user.ParsedToken.Payload.ClaimDictionary.ToClaims(), _authType))));
         }
 
 
         // IAuthorizationService //////////////////////////////////////////////////////////////////
         public async Task Login(String login, String password, Boolean stayLoggedIn)
         {
-            var response = await _authorizationHttpClient.AuthorizeByCredentialsAsync(new AuthorizeRequestAm()
-            {
-                Login = login,
-                Password = password
-            });
-            if (!response.IsSuccessStatusCode)
-                throw new ApplicationException(await response.Content.ReadAsStringAsync());
+            var authorizeResponse = await _authorizationHttpClient.AuthorizeByCredentialsAsync(login, password);
 
-            var authorizeResponse = await response.Content.ReadFromJsonAsync<AuthorizeResponseAm>();
             _user = CreateAuthorizedUser(authorizeResponse);
-
-            if (stayLoggedIn)
-                await _localStorageService.SetItemAsync(_userKey, _user);
-            else
-                await _sessionStorageService.SetItemAsync(_userKey, _user);
+            UpdateUserInStorageAsync(stayLoggedIn);
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(_user.ParsedToken.Payload.ClaimDictionary.ToClaims(), _authType)))));
             _navigationManager.NavigateTo("/");
         }
         public async Task Logout()
         {
+            _authorizationHttpClient.RevokeTokenAsync(_user.ServerTokens.RefreshToken);
             await _localStorageService.RemoveItemAsync(_userKey);
             await _sessionStorageService.RemoveItemAsync(_userKey);
 
@@ -110,7 +105,7 @@ namespace AccountAndJwt.Ui.Utilities
                 FirstName = token.Payload.FirstName,
                 LastName = token.Payload.LastName,
                 Email = token.Payload.Email,
-                TokenExpirationTimeUtc = token.Payload.TokenExpirationTime,
+                AccessTokenExpirationTimeUtc = token.Payload.TokenExpirationTime,
                 IsAuthorized = true,
                 ServerTokens = authorizeResponse,
                 ParsedToken = token
@@ -122,6 +117,13 @@ namespace AccountAndJwt.Ui.Utilities
             {
                 IsAuthorized = true,
             };
+        }
+        private async void UpdateUserInStorageAsync(Boolean stayLoggedIn)
+        {
+            if (stayLoggedIn)
+                await _localStorageService.SetItemAsync(_userKey, _user);
+            else
+                await _sessionStorageService.SetItemAsync(_userKey, _user);
         }
     }
 }

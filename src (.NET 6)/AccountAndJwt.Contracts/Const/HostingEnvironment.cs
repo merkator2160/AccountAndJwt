@@ -1,4 +1,4 @@
-﻿namespace AccountAndJwt.Common.Const
+﻿namespace AccountAndJwt.Contracts.Const
 {
     public static class HostingEnvironment
     {

@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Common.Const;
+﻿using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Contracts.Models.Api.Response;
 using AspNetCore.Http.Extensions;

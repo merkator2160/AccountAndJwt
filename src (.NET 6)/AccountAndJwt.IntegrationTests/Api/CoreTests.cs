@@ -1,4 +1,4 @@
-using AccountAndJwt.Common.Const;
+using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Contracts.Models.Api.Response;
 using System;
 using System.Net;

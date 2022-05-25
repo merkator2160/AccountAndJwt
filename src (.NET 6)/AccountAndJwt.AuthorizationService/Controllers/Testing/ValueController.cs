@@ -92,7 +92,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         [ProducesResponseType(typeof(String), 201)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
         [ProducesResponseType(401)]
-        [ProducesResponseType(typeof(ModelStateAm), 415)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
         public async Task<IActionResult> Post([FromBody] AddValueRequestAm value)
@@ -125,7 +124,6 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
         [ProducesResponseType(401)]
-        [ProducesResponseType(typeof(ModelStateAm), 415)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
         public async Task<IActionResult> Put([FromBody] UpdateValueRequestAm value)

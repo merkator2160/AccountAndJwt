@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Common.Config;
-using AccountAndJwt.Common.Const;
+using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Database;
 using AccountAndJwt.Database.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Design;

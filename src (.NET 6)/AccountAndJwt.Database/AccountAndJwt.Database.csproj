@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccountAndJwt.Common\AccountAndJwt.Common.csproj" />
+    <ProjectReference Include="..\AccountAndJwt.Contracts\AccountAndJwt.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

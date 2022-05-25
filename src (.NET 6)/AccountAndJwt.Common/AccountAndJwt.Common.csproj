@@ -12,6 +12,7 @@
 		<PackageReference Include="AutoMapper" Version="11.0.1" />
 		<PackageReference Include="Hangfire" Version="1.7.28" />
 		<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
@@ -22,6 +23,10 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\AccountAndJwt.Contracts\AccountAndJwt.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

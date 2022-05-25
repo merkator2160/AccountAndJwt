@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Common.Const;
-using AccountAndJwt.Common.Helpers;
+﻿using AccountAndJwt.Common.Helpers;
+using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Database.Models.Storage;
 
 namespace AccountAndJwt.Database
