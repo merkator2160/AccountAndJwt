@@ -4,6 +4,9 @@ using AccountAndJwt.Ui.Services.Interfaces;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blazored.SessionStorage;
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -20,6 +23,7 @@ namespace AccountAndJwt.Ui
             builder.ConfigureContainer(ConfigureContainer(builder.Configuration));
             RegisterServices(builder.Services);
             RegisterRadzenServices(builder.Services);
+            RegisterBlazoriseServices(builder.Services);
             RegisterComponents(builder.RootComponents);
 
             var host = builder.Build();
@@ -55,6 +59,15 @@ namespace AccountAndJwt.Ui
             services.AddScoped<NotificationService>();
             services.AddScoped<TooltipService>();
             services.AddScoped<ContextMenuService>();
+        }
+        private static void RegisterBlazoriseServices(IServiceCollection services)
+        {
+            services.AddBlazorise(options =>
+            {
+                options.Immediate = true;
+            });
+            services.AddBootstrap5Providers();
+            services.AddFontAwesomeIcons();
         }
         private static void RegisterComponents(RootComponentMappingCollection rootComponents)
         {
