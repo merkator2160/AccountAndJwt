@@ -1,5 +1,4 @@
-﻿using AccountAndJwt.AuthorizationService.Database;
-using AccountAndJwt.Contracts.Const;
+﻿using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Contracts.Models.Api.Response;
 using AspNetCore.Http.Extensions;
@@ -7,7 +6,6 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
@@ -60,34 +58,6 @@ namespace AccountAndJwt.IntegrationTests
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpMimeType.Application.Json));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authorizationTokens.AccessToken);
-        }
-
-        public void PopulateDatabase()
-        {
-            var configuration = Services.GetRequiredService<IConfiguration>();
-            var passwordSalt = configuration["AudienceConfig:PasswordSalt"];
-            var context = Services.GetRequiredService<DataContext>();
-
-            context.Database.EnsureCreated();
-            context.AddRoles();
-            context.AddUsers(passwordSalt);
-        }
-        public void RecreateDatabase()
-        {
-            var configuration = Services.GetRequiredService<IConfiguration>();
-            var passwordSalt = configuration["AudienceConfig:PasswordSalt"];
-            var context = Services.GetRequiredService<DataContext>();
-
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-            context.AddRoles();
-            context.AddUsers(passwordSalt);
-        }
-        public void TruncateDatabase()
-        {
-            var context = Services.GetRequiredService<DataContext>();
-
-            context.Database.EnsureDeleted();
         }
     }
 }

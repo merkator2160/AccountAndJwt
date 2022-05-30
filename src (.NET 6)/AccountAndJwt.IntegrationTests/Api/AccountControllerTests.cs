@@ -11,14 +11,18 @@ using Xunit;
 
 namespace AccountAndJwt.IntegrationTests.Api
 {
-    public class AccountControllerTests : IClassFixture<CustomWebApplicationFactory>
+    public class AccountControllerTests : IDisposable
     {
         private readonly CustomWebApplicationFactory _factory;
 
 
-        public AccountControllerTests(CustomWebApplicationFactory factory)
+        public AccountControllerTests()
         {
-            _factory = factory;
+            _factory = new CustomWebApplicationFactory();
+        }
+        public void Dispose()
+        {
+            _factory?.Dispose();
         }
 
 
@@ -56,8 +60,8 @@ namespace AccountAndJwt.IntegrationTests.Api
             Assert.All(pagedUsers.Users, Assert.NotNull);
 
             var userForDeletion = pagedUsers.Users.First(p => p.Login.Equals(login));
-            var response = await client.PostAsJsonAsync("/api/Account/DeleteAccount", userForDeletion.Id);
-            response.EnsureSuccessStatusCode();
+            var response = await client.DeleteAsync($"/api/Account/DeleteAccount?userId={userForDeletion.Id}");
+            response.CheckError();
 
             pagedUsers = await GetUsersPaged(client);
 
@@ -131,8 +135,8 @@ namespace AccountAndJwt.IntegrationTests.Api
             var pagedUsers = await GetUsersPaged(client);
             var admin = pagedUsers.Users.First(p => p.Login.Equals(login));
 
-            var response = await client.PostAsJsonAsync("/api/Account/ChangeEmail", newEmail);
-            response.EnsureSuccessStatusCode();
+            var response = await client.PutAsJsonAsync("/api/Account/ChangeEmail", newEmail);
+            response.CheckError();
             admin = await GetUser(client, admin.Id);
 
             Assert.True(admin.Login.Equals(login));
@@ -152,7 +156,7 @@ namespace AccountAndJwt.IntegrationTests.Api
             var pagedUsers = await GetUsersPaged(client);
             var admin = pagedUsers.Users.First(p => p.Login.Equals(login));
 
-            var response = await client.PostAsJsonAsync("/api/Account/ChangeName", new ChangeNameRequestAm()
+            var response = await client.PutAsJsonAsync("/api/Account/ChangeName", new ChangeNameRequestAm()
             {
                 FirstName = newFirstName,
                 LastName = newLastName
@@ -229,11 +233,12 @@ namespace AccountAndJwt.IntegrationTests.Api
             {
                 Login = login,
                 Password = "testPassword",
+                ConfirmPassword = "testPassword",
                 FirstName = "Test first name",
                 LastName = "Test last name",
                 Email = "qwerty@mail.ru"
             });
-            response.EnsureSuccessStatusCode();
+            response.CheckError();
             return await response.DeserializeAsync<RegisterUserResponseAm>();
         }
         private async Task<PagedUserResponseAm> GetUsersPaged(HttpClient client)

@@ -36,11 +36,12 @@ namespace AccountAndJwt.IntegrationTests
         }
         public void RegisterContext(ContainerBuilder builder)
         {
-            builder.RegisterInstance(new DbContextOptionsBuilder().UseInMemoryDatabase(_databaseName).Options);
+            var dbSuffix = Guid.NewGuid().ToString().Replace("-", "");
+
+            builder.Register(sp => new DbContextOptionsBuilder().UseInMemoryDatabase($"{_databaseName}-{dbSuffix}").Options).AsSelf().SingleInstance();
             builder
                 .RegisterType<DataContext>()
                 .AsSelf()
-                .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }
         public void RegisterRepositories(ContainerBuilder builder)
