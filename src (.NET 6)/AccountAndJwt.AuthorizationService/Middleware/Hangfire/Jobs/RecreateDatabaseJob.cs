@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Common.Hangfire.Interfaces;
-using AccountAndJwt.Database.DependencyInjection;
+﻿using AccountAndJwt.AuthorizationService.Database.DependencyInjection;
 using Hangfire;
+using Hangfire.Interfaces;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {

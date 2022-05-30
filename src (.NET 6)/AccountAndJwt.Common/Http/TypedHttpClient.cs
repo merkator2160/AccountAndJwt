@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Common.Http.Interfaces;
+﻿using AccountAndJwt.Common.Exceptions;
+using AccountAndJwt.Common.Http.Interfaces;
 using AccountAndJwt.Contracts.Const;
-using AccountAndJwt.Contracts.Models.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;

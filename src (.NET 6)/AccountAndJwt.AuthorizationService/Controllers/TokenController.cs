@@ -1,11 +1,11 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware;
+﻿using AccountAndJwt.AuthorizationService.Database.Interfaces;
+using AccountAndJwt.AuthorizationService.Database.Models.Storage;
+using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Middleware.Config;
 using AccountAndJwt.Common.Helpers;
 using AccountAndJwt.Contracts.Models.Api.Errors;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Contracts.Models.Api.Response;
-using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Database.Models.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

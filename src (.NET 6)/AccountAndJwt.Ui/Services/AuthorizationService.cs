@@ -1,8 +1,8 @@
-﻿using AccountAndJwt.Contracts.Models.Api.Response;
-using AccountAndJwt.Ui.Clients.Interfaces;
+﻿using AccountAndJwt.ApiClients.Http.Authorization.Interfaces;
+using AccountAndJwt.Contracts.Models.Api.Response;
 using AccountAndJwt.Ui.Models;
 using AccountAndJwt.Ui.Services.Interfaces;
-using AccountAndJwt.Ui.Utilities.TokenParser;
+using AccountAndJwt.Ui.Services.TokenParser;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -83,7 +83,7 @@ namespace AccountAndJwt.Ui.Services
         }
         public async Task Logout()
         {
-            _authorizationHttpClient.RevokeTokenAsync(_user.ServerTokens.RefreshToken);
+            await _authorizationHttpClient.RevokeTokenAsync(_user.ServerTokens.RefreshToken);
             await _localStorageService.RemoveItemAsync(_userKey);
             await _sessionStorageService.RemoveItemAsync(_userKey);
 

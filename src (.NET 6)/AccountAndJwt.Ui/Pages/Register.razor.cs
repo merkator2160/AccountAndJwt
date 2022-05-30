@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Contracts.Models.Api.Request;
-using AccountAndJwt.Contracts.Models.Exceptions;
-using AccountAndJwt.Ui.Clients.Interfaces;
+﻿using AccountAndJwt.ApiClients.Http.Authorization.Interfaces;
+using AccountAndJwt.Common.Exceptions;
+using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Ui.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -29,9 +29,16 @@ namespace AccountAndJwt.Ui.Pages
         [CascadingParameter]
         public Task<AuthenticationState> AuthState { get; set; }
 
+        [Inject]
+        public IBrowserPopupService BrowserPopupService { get; set; }
+
 
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         protected override void OnInitialized()
+        {
+            CheckUserAuthentication();
+        }
+        private void CheckUserAuthentication()
         {
             var authState = AuthState.Result;
             var user = authState.User;
@@ -45,25 +52,39 @@ namespace AccountAndJwt.Ui.Pages
             {
                 _loading = true;
 
-                using (var response = await AuthorizationHttpClient.RegisterAsync(_registerUserRequest))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        // TODO: Add error popup window
-                        throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
-                    }
-                }
+                await AuthorizationHttpClient.RegisterAsync(_registerUserRequest);
+                await AuthorizationService.Login(_registerUserRequest.Login, _registerUserRequest.Password,
+                    _stayLoggedIn);
 
-                await AuthorizationService.Login(_registerUserRequest.Login, _registerUserRequest.Password, _stayLoggedIn);
                 Navigation.NavigateTo("/");
             }
             catch (Exception ex)
             {
-                _errorMessage = ex.Message;
-                _loading = false;
-
-                StateHasChanged();
+                HandleException(ex);
             }
+            finally
+            {
+                _loading = false;
+            }
+        }
+        private void HandleException(Exception ex)
+        {
+            if (ex is HttpServerException httpServerException)
+            {
+                if ((Int32)httpServerException.StatusCode == 460)
+                {
+                    _errorMessage = ex.Message;
+                    StateHasChanged();
+                }
+                else
+                {
+                    BrowserPopupService.Alert(httpServerException.ToString());
+                }
+
+                return;
+            }
+
+            BrowserPopupService.Alert($"{ex.Message}\r\n{ex.StackTrace}");
         }
     }
 }

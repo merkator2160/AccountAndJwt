@@ -1,6 +1,6 @@
-﻿using AccountAndJwt.Common.DependencyInjection;
-using AccountAndJwt.Database;
+﻿using AccountAndJwt.AuthorizationService.Database;
 using Autofac;
+using CustomConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,17 +14,15 @@ namespace AccountAndJwt.IntegrationTests
         private readonly String _databaseName;
         private readonly IConfiguration _configuration;
         private readonly Assembly _assembly;
-        private readonly Boolean _uniqueDbEachTime;
 
 
         /// <summary>
         /// Different DB names means different instances in memory, it's an equivalent of connection string. With the same name all tests will share the same DB, which may lead to test errors.
         /// </summary>
-		public InMemoryDatabaseModule(IConfiguration configuration, Assembly assembly, Boolean uniqueDbEachTime = true, String databaseName = "InMemoryDbForTesting")
+		public InMemoryDatabaseModule(IConfiguration configuration, Assembly assembly, String databaseName = "InMemoryDbForTesting")
         {
             _databaseName = databaseName;
             _assembly = assembly;
-            _uniqueDbEachTime = uniqueDbEachTime;
             _configuration = configuration;
         }
 
@@ -38,11 +36,7 @@ namespace AccountAndJwt.IntegrationTests
         }
         public void RegisterContext(ContainerBuilder builder)
         {
-            if (_uniqueDbEachTime)
-                builder.Register(sp => new DbContextOptionsBuilder().UseInMemoryDatabase($"{_databaseName}-{Guid.NewGuid()}").Options).AsSelf();
-            else
-                builder.RegisterInstance(new DbContextOptionsBuilder().UseInMemoryDatabase(_databaseName).Options);
-
+            builder.RegisterInstance(new DbContextOptionsBuilder().UseInMemoryDatabase(_databaseName).Options);
             builder
                 .RegisterType<DataContext>()
                 .AsSelf()

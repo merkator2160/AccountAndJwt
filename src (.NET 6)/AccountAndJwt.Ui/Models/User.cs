@@ -1,5 +1,5 @@
 ﻿using AccountAndJwt.Contracts.Models.Api.Response;
-using AccountAndJwt.Ui.Utilities.TokenParser.Models;
+using AccountAndJwt.Ui.Services.TokenParser.Models;
 
 namespace AccountAndJwt.Ui.Models
 {

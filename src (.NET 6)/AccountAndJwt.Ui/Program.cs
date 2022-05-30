@@ -1,4 +1,5 @@
-using AccountAndJwt.Ui.Clients;
+using AccountAndJwt.ApiClients.Http.Authorization;
+using AccountAndJwt.Common.Http;
 using AccountAndJwt.Ui.Services;
 using AccountAndJwt.Ui.Services.Interfaces;
 using Autofac;
@@ -50,7 +51,6 @@ namespace AccountAndJwt.Ui
             services.AddOptions();
             services.AddAuthorizationCore();
             services.AddBlazoredSessionStorage();
-            //services.Replace(ServiceDescriptor.Scoped<IJsonSerializer, NewtonSoftJsonSerializer>());
         }
         private static void RegisterRadzenServices(IServiceCollection services)
         {

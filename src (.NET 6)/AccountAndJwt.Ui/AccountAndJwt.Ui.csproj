@@ -21,11 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AccountAndJwt.ApiClients.Http\AccountAndJwt.ApiClients.Http.csproj" />
+    <ProjectReference Include="..\AccountAndJwt.Common\AccountAndJwt.Common.csproj" />
     <ProjectReference Include="..\AccountAndJwt.Contracts\AccountAndJwt.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Models\ViewModels\" />
   </ItemGroup>
 

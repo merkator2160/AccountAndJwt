@@ -1,9 +1,9 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.AuthorizationService.Database.Interfaces;
+using AccountAndJwt.AuthorizationService.Database.Models.Storage;
+using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Contracts.Models.Api.Errors;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Contracts.Models.Api.Response;
-using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

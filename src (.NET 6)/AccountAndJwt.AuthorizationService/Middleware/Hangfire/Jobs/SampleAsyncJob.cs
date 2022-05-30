@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Common.Hangfire.Interfaces;
-using Hangfire;
+﻿using Hangfire;
+using Hangfire.Interfaces;
 
 namespace AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs
 {

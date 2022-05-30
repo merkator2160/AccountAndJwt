@@ -1,5 +1,5 @@
-﻿using AccountAndJwt.Contracts.Models.Api.Response;
-using AccountAndJwt.Ui.Clients.Interfaces;
+﻿using AccountAndJwt.ApiClients.Http.Authorization.Interfaces;
+using AccountAndJwt.Contracts.Models.Api.Response;
 using Microsoft.AspNetCore.Components;
 
 namespace AccountAndJwt.Ui.Pages

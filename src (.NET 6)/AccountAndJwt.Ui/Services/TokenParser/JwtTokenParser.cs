@@ -1,10 +1,10 @@
-﻿using AccountAndJwt.Ui.Utilities.TokenParser.Models;
+﻿using AccountAndJwt.Ui.Services.TokenParser.Models;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
-namespace AccountAndJwt.Ui.Utilities.TokenParser
+namespace AccountAndJwt.Ui.Services.TokenParser
 {
     public static class JwtTokenParser
     {

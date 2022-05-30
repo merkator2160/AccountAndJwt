@@ -1,5 +1,6 @@
-﻿using AccountAndJwt.Contracts.Const;
-using AccountAndJwt.Ui.Clients.Interfaces;
+﻿using AccountAndJwt.ApiClients.Http.Authorization.Interfaces;
+using AccountAndJwt.Contracts.Const;
+using Blazorise;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
@@ -9,6 +10,8 @@ namespace AccountAndJwt.Ui.Pages
     [Authorize(Roles = Role.Admin)]
     public partial class UserEditor
     {
+        private Modal _modalRef;
+
 
         // PROPERTIES /////////////////////////////////////////////////////////////////////////////
         [Inject]
@@ -19,6 +22,18 @@ namespace AccountAndJwt.Ui.Pages
         protected override async Task OnInitializedAsync()
         {
 
+        }
+        private Task ShowModal()
+        {
+            return _modalRef.Show();
+        }
+        private Task OnCloseClicked()
+        {
+            return _modalRef.Hide();
+        }
+        private Task OnSaveChangesClicked()
+        {
+            return _modalRef.Hide();
         }
     }
 }

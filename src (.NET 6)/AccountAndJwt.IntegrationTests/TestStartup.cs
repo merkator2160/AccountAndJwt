@@ -1,12 +1,11 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware;
+﻿using AccountAndJwt.AuthorizationService.Database;
+using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Middleware.Cors;
-using AccountAndJwt.Common.Config;
-using AccountAndJwt.Common.DependencyInjection;
-using AccountAndJwt.Database;
+using AccountAndJwt.AuthorizationService.Middleware.Modules;
 using Autofac;
+using CustomConfiguration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
@@ -20,13 +19,11 @@ namespace AccountAndJwt.IntegrationTests
     public class TestStartup
     {
         private readonly IConfiguration _configuration;
-        private readonly IWebHostEnvironment _env;
 
 
-        public TestStartup(IWebHostEnvironment env)
+        public TestStartup(IConfiguration configuration)
         {
-            _env = env;
-            _configuration = CustomConfigurationProvider.CreateConfiguration(env.EnvironmentName, env.WebRootPath);
+            _configuration = configuration;
         }
 
 
@@ -58,19 +55,12 @@ namespace AccountAndJwt.IntegrationTests
             var authorizationServiceAssembly = Collector.GetAssembly("AccountAndJwt.AuthorizationService");
             builder.RegisterServiceConfiguration(_configuration, authorizationServiceAssembly);
             builder.RegisterServices(authorizationServiceAssembly);
-            builder.RegisterModule(new InMemoryDatabaseModule(_configuration, Collector.GetAssembly("AccountAndJwt.Database"), false));
+            builder.RegisterModule(new InMemoryDatabaseModule(_configuration, Collector.GetAssembly("AccountAndJwt.AuthorizationService.Database")));
             builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
         }
-        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IServiceProvider services)
         {
-            // TODO: Each test, each new DB initial seeding
-            using (var context = serviceProvider.GetRequiredService<DataContext>())
-            {
-                context.Database.EnsureCreated();
-                var salt = _configuration["AudienceConfig:PasswordSalt"];
-                context.AddRoles();
-                context.AddUsers(salt);
-            }
+            PopulateDatabase(services);
 
             app.UseRouting();
             app.UseAuthentication();
@@ -82,6 +72,16 @@ namespace AccountAndJwt.IntegrationTests
                 endpoints.MapHealthChecks("/healthz", new HealthCheckOptions());
                 endpoints.MapControllers();
             });
+        }
+        public void PopulateDatabase(IServiceProvider services)
+        {
+            var configuration = services.GetRequiredService<IConfiguration>();
+            var passwordSalt = configuration["AudienceConfig:PasswordSalt"];
+            var context = services.GetRequiredService<DataContext>();
+
+            context.Database.EnsureCreated();
+            context.AddRoles();
+            context.AddUsers(passwordSalt);
         }
     }
 }

@@ -1,11 +1,12 @@
+using AccountAndJwt.AuthorizationService.Database.DependencyInjection;
 using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Middleware.Cors;
 using AccountAndJwt.AuthorizationService.Middleware.Hangfire;
-using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.AuthorizationService.Middleware.Modules;
 using AccountAndJwt.Common.Exceptions;
-using AccountAndJwt.Database.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using CustomConfiguration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;

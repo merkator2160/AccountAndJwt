@@ -1,4 +1,4 @@
-﻿using AccountAndJwt.Contracts.Models.Exceptions;
+﻿using AccountAndJwt.Common.Exceptions;
 using AccountAndJwt.Ui.Services.Interfaces;
 using Blazorise;
 using Blazorise.Markdown;
@@ -12,7 +12,6 @@ namespace AccountAndJwt.Ui.Pages
     {
         private String _text = "Hi";
         private String _markdownValue = "## Custom Toolbar\nCustom functions, icons and buttons can be defined for the toolbar.";
-        private Modal _modalRef;
 
 
         // PROPERTIES /////////////////////////////////////////////////////////////////////////////
@@ -22,12 +21,15 @@ namespace AccountAndJwt.Ui.Pages
         [Inject]
         private INotificationService NotificationService { get; set; }
 
+        [Inject]
+        private NavigationManager Navigation { get; set; }
+
 
 
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         protected override void OnInitialized()
         {
-
+            Navigation.NavigateTo("userEditor");
         }
         private async void ButtonClicked()
         {
@@ -42,22 +44,13 @@ namespace AccountAndJwt.Ui.Pages
             //BrowserPopupService.Alert(result.ToString());
 
             //BrowserPopupService.Alert(new Exception("Test"));
-            BrowserPopupService.Alert(new HttpServerException(HttpMethod.Post, HttpStatusCode.MovedPermanently, "https://qna.habr.com/q/381656", "Message!"));
+            BrowserPopupService.Alert(new HttpServerException(HttpMethod.Post, HttpStatusCode.MovedPermanently, "https://qna.habr.com/q/381656", "Message!").ToString());
             //BrowserPopupService.Alert(new ApplicationException("Message!", new Exception("Inner exception message!")));
         }
-        private Task OnCustomButtonClicked(MarkdownButtonEventArgs eventArgs)
+        private void OnCustomButtonClicked(MarkdownButtonEventArgs eventArgs)
         {
-            NotificationService.Info($"Name: {eventArgs.Name} Value: {eventArgs.Value}");
-
-            return Task.CompletedTask;
-        }
-        private Task ShowModal()
-        {
-            return _modalRef.Show();
-        }
-        private Task HideModal()
-        {
-            return _modalRef.Hide();
+            // TODO: Permission issue, investigate
+            //NotificationService.Info($"Name: {eventArgs.Name} Value: {eventArgs.Value}");
         }
     }
 }

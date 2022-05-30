@@ -1,10 +1,10 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs;
+﻿using AccountAndJwt.AuthorizationService.Database.DependencyInjection;
+using AccountAndJwt.AuthorizationService.Database.Models.Config;
+using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Jobs;
 using AccountAndJwt.AuthorizationService.Middleware.Hangfire.Models;
-using AccountAndJwt.Common.Hangfire.Auth;
-using AccountAndJwt.Database.DependencyInjection;
-using AccountAndJwt.Database.Models.Config;
 using Autofac;
 using Hangfire;
+using Hangfire.Auth;
 using Hangfire.SqlServer;
 using System.Globalization;
 

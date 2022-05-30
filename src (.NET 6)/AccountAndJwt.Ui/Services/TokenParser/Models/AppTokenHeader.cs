@@ -1,4 +1,4 @@
-﻿namespace AccountAndJwt.Ui.Utilities.TokenParser.Models
+﻿namespace AccountAndJwt.Ui.Services.TokenParser.Models
 {
     public class AppTokenHeader
     {

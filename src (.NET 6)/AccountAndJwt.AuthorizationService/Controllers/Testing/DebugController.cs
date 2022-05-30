@@ -1,7 +1,7 @@
-﻿using AccountAndJwt.Common.Config;
-using AccountAndJwt.Database;
-using AccountAndJwt.Database.Interfaces;
+﻿using AccountAndJwt.AuthorizationService.Database;
+using AccountAndJwt.AuthorizationService.Database.Interfaces;
 using AutoMapper;
+using CustomConfiguration;
 using Microsoft.AspNetCore.Mvc;
 
 #if DEBUG

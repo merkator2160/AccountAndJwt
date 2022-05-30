@@ -1,4 +1,6 @@
-﻿using AccountAndJwt.AuthorizationService.Middleware;
+﻿using AccountAndJwt.AuthorizationService.Database.Interfaces;
+using AccountAndJwt.AuthorizationService.Database.Models.Storage;
+using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Middleware.Config;
 using AccountAndJwt.AuthorizationService.Services.Interfaces;
 using AccountAndJwt.AuthorizationService.Services.Models;
@@ -8,8 +10,6 @@ using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Contracts.Models.Api.Errors;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Contracts.Models.Api.Response;
-using AccountAndJwt.Database.Interfaces;
-using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +77,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// [Auth=(admin)] Delete existed account by it id
         /// </summary>
         /// <response code="460">Business logic validation exception</response>
-        [HttpPost]
+        [HttpDelete]
         [Authorize(Roles = Role.Admin)]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
@@ -85,11 +85,8 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 460)]
         [ProducesResponseType(typeof(String), 500)]
-        public async Task<IActionResult> DeleteAccount([FromBody] Int32 userId)
+        public async Task<IActionResult> DeleteAccount([FromQuery] Int32 userId)
         {
-            if (userId == 0)
-                return StatusCode(460, $"Please provide \"{nameof(userId)}\"");
-
             var requestedUser = await _unitOfWork.Users.GetEagerAsync(userId);
             if (requestedUser == null)
                 StatusCode(460, $"User with provided id: \"{userId}\" was not found!");
@@ -104,9 +101,9 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// [Auth=(admin)] Returns all available roles
         /// </summary>
         /// <response code="460">Business logic validation exception</response>
-        [Authorize(Roles = Role.Admin)]
         [HttpGet]
-        [ProducesResponseType(typeof(RoleAm), 200)]
+        [Authorize(Roles = Role.Admin)]
+        [ProducesResponseType(typeof(RoleAm[]), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(typeof(String), 460)]
@@ -172,8 +169,8 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// [Auth] Change E-Mail of current user
         /// </summary>
         /// <response code="460">Business logic validation exception</response>
-        [HttpPost]
-        [Authorize(Roles = Role.Admin)]
+        [HttpPut]
+        [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ModelStateAm), 400)]
         [ProducesResponseType(401)]
@@ -209,7 +206,7 @@ namespace AccountAndJwt.AuthorizationService.Controllers
         /// [Auth] Change current user First and Last name by provided id
         /// </summary>
         /// <response code="460">Business logic validation exception</response>
-        [HttpPost]
+        [HttpPut]
         [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]

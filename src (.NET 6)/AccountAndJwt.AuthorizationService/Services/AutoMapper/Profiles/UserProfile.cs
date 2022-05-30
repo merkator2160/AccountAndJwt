@@ -1,8 +1,8 @@
-﻿using AccountAndJwt.Contracts.Models.Api;
+﻿using AccountAndJwt.AuthorizationService.Database.Models;
+using AccountAndJwt.AuthorizationService.Database.Models.Storage;
+using AccountAndJwt.Contracts.Models.Api;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Contracts.Models.Api.Response;
-using AccountAndJwt.Database.Models;
-using AccountAndJwt.Database.Models.Storage;
 using AutoMapper;
 
 namespace AccountAndJwt.AuthorizationService.Services.AutoMapper.Profiles

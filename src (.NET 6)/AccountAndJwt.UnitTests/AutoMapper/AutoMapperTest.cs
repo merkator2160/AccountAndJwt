@@ -1,10 +1,10 @@
-﻿using AccountAndJwt.Common.DependencyInjection;
-using AutoMapper;
+﻿using AutoMapper;
+using CustomConfiguration;
 using Xunit;
 
 namespace AccountAndJwt.UnitTests.AutoMapper
 {
-	public class AutoMapperTest
+    public class AutoMapperTest
 	{
 		[Fact]
 		public void AutoMapperConfigurationTest()

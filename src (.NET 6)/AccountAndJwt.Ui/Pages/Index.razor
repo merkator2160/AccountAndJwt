@@ -8,6 +8,31 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col">
+        <p>
+            <a href="https://bootstrap5demo.blazorise.com/">Blazorize Boootstrap 5 blazor app demo</a>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <p>
+            <a href="https://blazorise.com/docs">Blazorize controls documentation</a>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <p>
+            <a href="https://blazor.radzen.com/dashboard">Radzen controls documentation and sample app</a>
+        </p>
+    </div>
+</div>
+
+
 <AuthorizeView>
     <Authorized>
         <div class="row">
@@ -45,38 +70,9 @@
         <Markdown @bind-Value="@_markdownValue" CustomButtonClicked="@OnCustomButtonClicked">
             <Toolbar>
                 <MarkdownToolbarButton Action="MarkdownAction.Bold" Icon="fa fa-bolt" Title="Bold" />
-                <MarkdownToolbarButton Separator Name="Custom button" Value="@("hello")" Icon="fa fa-star" Title="A Custom Button" />
+                <MarkdownToolbarButton Separator Name="Custom button" Value="@("Hello world!")" Icon="fa fa-star" Title="A Custom Button" />
                 <MarkdownToolbarButton Separator Name="https://github.com/Ionaru/easy-markdown-editor" Icon="fa fab fa-github" Title="A Custom Link" />
             </Toolbar>
         </Markdown>
     </div>
 </div>
-
-<div class="row">
-    <div class="col">
-        <Button Color="Color.Primary" Clicked="@ShowModal">Show Modal</Button>
-    </div>
-</div>
-
-<Modal @ref="_modalRef">
-    <ModalContent Centered>
-        <ModalHeader>
-            <ModalTitle>Employee edit</ModalTitle>
-            <CloseButton />
-        </ModalHeader>
-        <ModalBody>
-            <Field>
-                <FieldLabel>Name</FieldLabel>
-                <TextEdit Placeholder="Enter name..." />
-            </Field>
-            <Field>
-                <FieldLabel>Surname</FieldLabel>
-                <TextEdit Placeholder="Enter surname..." />
-            </Field>
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
-            <Button Color="Color.Primary" Clicked="@HideModal">Save Changes</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>

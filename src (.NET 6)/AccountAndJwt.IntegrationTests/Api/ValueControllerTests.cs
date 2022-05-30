@@ -9,14 +9,18 @@ using Xunit;
 
 namespace AccountAndJwt.IntegrationTests.Api
 {
-    public class ValueControllerTests : IClassFixture<CustomWebApplicationFactory>
+    public class ValueControllerTests : IDisposable
     {
         private readonly CustomWebApplicationFactory _factory;
 
 
-        public ValueControllerTests(CustomWebApplicationFactory factory)
+        public ValueControllerTests()
         {
-            _factory = factory;
+            _factory = new CustomWebApplicationFactory();
+        }
+        public void Dispose()
+        {
+            _factory?.Dispose();
         }
 
 
@@ -35,7 +39,7 @@ namespace AccountAndJwt.IntegrationTests.Api
             await AddValue(client, 3, "qwerty 3");
 
             var response = await client.GetAsync($"api/Value/{pageSize}/{pageNumber}");
-            response.EnsureSuccessStatusCode();
+            response.CheckError();
 
             var allValues = await response.DeserializeAsync<PagedValueResponseAm>();
 
@@ -53,7 +57,7 @@ namespace AccountAndJwt.IntegrationTests.Api
             var valueLocation3 = await AddValue(client, 3, "qwerty 3");
 
             var getValue2Response = await client.GetAsync(valueLocation2);
-            getValue2Response.EnsureSuccessStatusCode();
+            getValue2Response.CheckError();
 
             var value2 = await getValue2Response.DeserializeAsync<ValueAm>();
 
@@ -72,7 +76,7 @@ namespace AccountAndJwt.IntegrationTests.Api
             var valueLocation2 = await AddValue(client, 2, "qwerty 2");
             var valueLocation3 = await AddValue(client, 3, "qwerty 3");
 
-            var allValues = await GetAllValues(client);
+            var allValues = await GetFirstPage(client);
 
             var putValue2Response = await client.PutAsJsonAsync("/api/Value", new ValueAm()
             {
@@ -102,13 +106,13 @@ namespace AccountAndJwt.IntegrationTests.Api
             var valueLocation2 = await AddValue(client, 2, "qwerty 2");
             var valueLocation3 = await AddValue(client, 3, "qwerty 3");
 
-            var allValues = await GetAllValues(client);
+            var allValues = await GetFirstPage(client);
             Assert.Equal(3, allValues.Length);
 
             var deleteValue2Response = await client.DeleteAsync(valueLocation2);
-            deleteValue2Response.EnsureSuccessStatusCode();
+            deleteValue2Response.CheckError();
 
-            allValues = await GetAllValues(client);
+            allValues = await GetFirstPage(client);
 
             Assert.Equal(2, allValues.Length);
         }
@@ -117,21 +121,21 @@ namespace AccountAndJwt.IntegrationTests.Api
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         private async Task<Uri> AddValue(HttpClient client, Int32 value, String commentary)
         {
-            var postResponse1 = await client.PostAsJsonAsync("api/Value", new AddValueRequestAm()
+            var response = await client.PostAsJsonAsync("api/Value", new AddValueRequestAm()
             {
                 Value = value,
                 Commentary = commentary
             });
-            postResponse1.EnsureSuccessStatusCode();
+            response.CheckError();
 
-            return postResponse1.Headers.Location;
+            return response.Headers.Location;
         }
-        private async Task<ValueAm[]> GetAllValues(HttpClient client)
+        private async Task<ValueAm[]> GetFirstPage(HttpClient client)
         {
-            var getAllResponse = await client.GetAsync("/api/Value");
-            getAllResponse.EnsureSuccessStatusCode();
+            var response = await client.GetAsync($"/api/Value/{1000}/{1}");
+            response.CheckError();
 
-            return await getAllResponse.DeserializeAsync<ValueAm[]>();
+            return (await response.DeserializeAsync<PagedValueResponseAm>()).Values;
         }
     }
 }
