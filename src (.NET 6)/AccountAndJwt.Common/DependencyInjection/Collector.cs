@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyModel;
 using System.Reflection;
 
-namespace CustomConfiguration
+namespace AccountAndJwt.Common.DependencyInjection
 {
     public static class Collector
     {
@@ -64,11 +64,23 @@ namespace CustomConfiguration
         }
         public static Assembly[] LoadAssemblies(String partOfName)
         {
-            // Not all assemblies can be loaded by AppDomain.CurrentDomain.GetAssemblies()
-            var assemblies = DependencyContext.Default.RuntimeLibraries
-                .Where(d => d.Name.Contains(partOfName))
-                .Select(p => Assembly.Load(new AssemblyName(p.Name)))
-                .ToArray();
+            Assembly[] assemblies;
+
+            // DependencyContext.Default in Blazor is null
+            if (DependencyContext.Default != null)
+            {
+                // Not all assemblies can be loaded by AppDomain.CurrentDomain.GetAssemblies()
+                assemblies = DependencyContext.Default.RuntimeLibraries
+                    .Where(d => d.Name.Contains(partOfName))
+                    .Select(p => Assembly.Load(new AssemblyName(p.Name)))
+                    .ToArray();
+            }
+            else
+            {
+                assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(d => d.GetName().Name.Contains(partOfName))
+                    .ToArray();
+            }
 
             if (assemblies.Length == 0)
                 throw new AssemblyNotFoundException($"No assemblies were found with part of name: \"{partOfName}\" ");

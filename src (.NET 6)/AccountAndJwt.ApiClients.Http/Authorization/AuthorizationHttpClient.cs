@@ -1,4 +1,5 @@
 ﻿using AccountAndJwt.ApiClients.Http.Authorization.Interfaces;
+using AccountAndJwt.ApiClients.Http.Authorization.Models.Config;
 using AccountAndJwt.Common.Exceptions;
 using AccountAndJwt.Common.Http;
 using AccountAndJwt.Contracts.Const;
@@ -17,6 +18,10 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
         public AuthorizationHttpClient()
         {
             DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpMimeType.Application.Json));
+        }
+        public AuthorizationHttpClient(AuthorizationHttpClientConfig config) : this()
+        {
+            BaseAddress = new Uri(config.BaseAddress);
         }
 
 

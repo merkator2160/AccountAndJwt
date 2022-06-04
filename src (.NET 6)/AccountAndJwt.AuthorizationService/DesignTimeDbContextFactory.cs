@@ -1,7 +1,7 @@
 ﻿using AccountAndJwt.AuthorizationService.Database;
 using AccountAndJwt.AuthorizationService.Database.DependencyInjection;
+using AccountAndJwt.Common.DependencyInjection;
 using AccountAndJwt.Contracts.Const;
-using CustomConfiguration;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace AccountAndJwt.AuthorizationService

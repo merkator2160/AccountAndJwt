@@ -1,10 +1,11 @@
 ﻿using AccountAndJwt.ApiClients.Redis;
+using AccountAndJwt.Common.DependencyInjection;
 using Autofac;
-using CustomConfiguration;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using Module = Autofac.Module;
 
-namespace AccountAndJwt.AuthorizationService.Middleware.Modules
+namespace AccountAndJwt.ApiClients.DependencyInjection
 {
     public class ApiClientModule : Module
     {

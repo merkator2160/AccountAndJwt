@@ -3,7 +3,7 @@ using AutoMapper;
 using System.Reflection;
 using Module = Autofac.Module;
 
-namespace AccountAndJwt.Common.Modules
+namespace AccountAndJwt.Common.DependencyInjection.Modules
 {
     public class AutoMapperModule : Module
     {

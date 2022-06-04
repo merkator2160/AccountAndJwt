@@ -1,6 +1,7 @@
 using AccountAndJwt.ApiClients.Http.Authorization;
+using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Common.DependencyInjection.Modules;
 using AccountAndJwt.Common.Http;
-using AccountAndJwt.Common.Modules;
 using AccountAndJwt.Ui.Services;
 using AccountAndJwt.Ui.Services.Interfaces;
 using Autofac;
@@ -13,7 +14,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
-using System.Reflection;
 
 namespace AccountAndJwt.Ui
 {
@@ -36,20 +36,25 @@ namespace AccountAndJwt.Ui
         }
         private static AutofacServiceProviderFactory ConfigureContainer(IConfiguration configuration)
         {
-            var assembly = Assembly.GetAssembly(typeof(Program));
+            var assemblies = Collector.LoadAssemblies("AccountAndJwt");
 
             return new AutofacServiceProviderFactory(builder =>
             {
-                builder.RegisterType<TypedHttpClient>().AsSelf().AsImplementedInterfaces();
+                // Collecting dependencies by collector is impossible, because of WASM minification process. All directly unused classes will be excluded from resulted dll libraries.
+                // Reflection works but useless in this case. Maybe there is some work around, like compiler directive.
+
+                //builder.RegisterServiceConfiguration(configuration, assemblies);
+                //builder.RegisterServices(assemblies);
+
                 builder.RegisterType<LocalStorageService>().AsImplementedInterfaces();
                 builder.RegisterType<BrowserPopupService>().AsImplementedInterfaces();
+                builder.RegisterModule(new AutoMapperModule(assemblies));
+
                 builder.RegisterType<AuthorizationService>().As<AuthenticationStateProvider>().AsSelf().AsImplementedInterfaces().SingleInstance();
                 builder.Register(sp => new AuthorizationHttpClient()
                 {
-                    BaseAddress = new Uri(configuration["ServerConfig:AuthorizationService:BaseAddress"])
-                }).AsImplementedInterfaces();
-                //builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
-                builder.RegisterModule(new AutoMapperModule(new[] { assembly }));
+                    BaseAddress = new Uri(configuration["AuthorizationHttpClientConfig:BaseAddress"])
+                }).As<TypedHttpClient>().As<HttpClient>().AsSelf().AsImplementedInterfaces();
             });
         }
         private static void RegisterServices(IServiceCollection services)

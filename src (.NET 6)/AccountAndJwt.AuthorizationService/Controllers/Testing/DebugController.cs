@@ -1,7 +1,7 @@
 ﻿using AccountAndJwt.AuthorizationService.Database;
 using AccountAndJwt.AuthorizationService.Database.Interfaces;
+using AccountAndJwt.Common.DependencyInjection;
 using AutoMapper;
-using CustomConfiguration;
 using Microsoft.AspNetCore.Mvc;
 
 #if DEBUG

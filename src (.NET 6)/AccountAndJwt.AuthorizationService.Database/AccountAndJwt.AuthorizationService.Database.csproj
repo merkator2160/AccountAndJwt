@@ -22,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AccountAndJwt.Common\AccountAndJwt.Common.csproj" />
     <ProjectReference Include="..\AccountAndJwt.Contracts\AccountAndJwt.Contracts.csproj" />
-    <ProjectReference Include="..\CustomConfiguration\CustomConfiguration.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace CustomConfiguration
+namespace AccountAndJwt.Common.DependencyInjection
 {
     public static class CustomConfigurationProvider
     {
