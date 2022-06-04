@@ -1,5 +1,6 @@
 using AccountAndJwt.ApiClients.Http.Authorization;
 using AccountAndJwt.Common.Http;
+using AccountAndJwt.Common.Modules;
 using AccountAndJwt.Ui.Services;
 using AccountAndJwt.Ui.Services.Interfaces;
 using Autofac;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
+using System.Reflection;
 
 namespace AccountAndJwt.Ui
 {
@@ -34,6 +36,8 @@ namespace AccountAndJwt.Ui
         }
         private static AutofacServiceProviderFactory ConfigureContainer(IConfiguration configuration)
         {
+            var assembly = Assembly.GetAssembly(typeof(Program));
+
             return new AutofacServiceProviderFactory(builder =>
             {
                 builder.RegisterType<TypedHttpClient>().AsSelf().AsImplementedInterfaces();
@@ -44,6 +48,8 @@ namespace AccountAndJwt.Ui
                 {
                     BaseAddress = new Uri(configuration["ServerConfig:AuthorizationService:BaseAddress"])
                 }).AsImplementedInterfaces();
+                //builder.RegisterModule(new AutoMapperModule(Collector.LoadAssemblies("AccountAndJwt")));
+                builder.RegisterModule(new AutoMapperModule(new[] { assembly }));
             });
         }
         private static void RegisterServices(IServiceCollection services)

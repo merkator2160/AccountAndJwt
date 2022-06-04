@@ -25,46 +25,70 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
         // Token //
         public async Task<AuthorizeResponseAm> AuthorizeByCredentialsAsync(String login, String password)
         {
-            using (var response = await this.PostAsJsonAsync("api/Token/AuthorizeByCredentials", new AuthorizeRequestAm()
+            var verb = HttpMethod.Post;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Token/AuthorizeByCredentials"))
             {
-                Login = login,
-                Password = password
-            }))
-            {
-                if (!response.IsSuccessStatusCode)
-                    throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(new AuthorizeRequestAm()
+                {
+                    Login = login,
+                    Password = password
+                }), Encoding.UTF8, HttpMimeType.Application.Json);
 
-                return await response.Content.ReadFromJsonAsync<AuthorizeResponseAm>();
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+
+                    return await response.Content.ReadFromJsonAsync<AuthorizeResponseAm>();
+                }
             }
         }
         public async Task<String> RefreshTokenAsync(String refreshToken)
         {
-            using (var response = await this.PostAsJsonAsync("api/Token/RefreshToken", refreshToken))
+            var verb = HttpMethod.Post;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Token/RefreshToken"))
             {
-                if (!response.IsSuccessStatusCode)
-                    throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                requestMessage.Content = new StringContent(refreshToken, Encoding.UTF8, HttpMimeType.Application.Json);
 
-                return await response.Content.ReadAsStringAsync();
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+
+                    return await response.Content.ReadAsStringAsync();
+                }
             }
         }
         public async Task RevokeTokenAsync(String refreshToken)
         {
-            using (var response = await this.PostAsJsonAsync("api/Token/RevokeToken", refreshToken))
+            var verb = HttpMethod.Post;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Token/RevokeToken"))
             {
-                if (!response.IsSuccessStatusCode)
-                    throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                requestMessage.Content = new StringContent(refreshToken, Encoding.UTF8, HttpMimeType.Application.Json);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+                }
             }
         }
 
         // Account //
         public async Task<RegisterUserResponseAm> RegisterAsync(RegisterUserRequestAm request)
         {
-            using (var response = await this.PostAsJsonAsync("api/Account/Register", request))
+            var verb = HttpMethod.Post;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/Register"))
             {
-                if (!response.IsSuccessStatusCode)
-                    throw new HttpServerException(HttpMethod.Post, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
 
-                return await response.Content.ReadFromJsonAsync<RegisterUserResponseAm>();
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+
+                    return await response.Content.ReadFromJsonAsync<RegisterUserResponseAm>();
+                }
             }
         }
         public async Task DeleteAccountAsync(Int32 userId, String accessToken)
@@ -77,7 +101,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
                 }
             }
         }
@@ -91,7 +115,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
 
                     return await response.Content.ReadFromJsonAsync<RoleAm[]>();
                 }
@@ -108,7 +132,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
                 }
             }
         }
@@ -123,7 +147,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
                 }
             }
         }
@@ -138,7 +162,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
                 }
             }
         }
@@ -153,7 +177,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
                 }
             }
         }
@@ -167,7 +191,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
 
                     return await response.Content.ReadFromJsonAsync<UserAm>();
                 }
@@ -184,7 +208,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
 
                     return await response.Content.ReadFromJsonAsync<PagedUserResponseAm>();
                 }
@@ -201,7 +225,87 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 using (var response = await SendAsync(requestMessage))
                 {
                     if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, response.Headers.Location!.AbsolutePath, await response.Content.ReadAsStringAsync());
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+
+        // Value //
+        public async Task<PagedValueResponseAm> GetValuesPagedAsync(Int32 pageSize, Int32 pageNumber, String accessToken)
+        {
+            var verb = HttpMethod.Get;
+            using (var requestMessage = new HttpRequestMessage(verb, $"api/Value/{pageSize}/{pageNumber}"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+
+                    return await response.Content.ReadFromJsonAsync<PagedValueResponseAm>();
+                }
+            }
+        }
+        public async Task<ValueAm> GetValueAsync(Int32 valueId, String accessToken)
+        {
+            var verb = HttpMethod.Get;
+            using (var requestMessage = new HttpRequestMessage(verb, $"api/Value/{valueId}"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+
+                    return await response.Content.ReadFromJsonAsync<ValueAm>();
+                }
+            }
+        }
+        public async Task<String> AddValueAsync(AddValueRequestAm request, String accessToken)
+        {
+            var verb = HttpMethod.Post;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Value"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+
+                    return await response.Content.ReadAsStringAsync();
+                }
+            }
+        }
+        public async Task UpdateValueAsync(UpdateValueRequestAm request, String accessToken)
+        {
+            var verb = HttpMethod.Put;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Value"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+        public async Task DeleteValueAsync(Int32 valueId, String accessToken)
+        {
+            var verb = HttpMethod.Delete;
+            using (var requestMessage = new HttpRequestMessage(verb, $"api/Value/{valueId}"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
                 }
             }
         }

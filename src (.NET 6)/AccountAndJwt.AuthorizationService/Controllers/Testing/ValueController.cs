@@ -99,11 +99,8 @@ namespace AccountAndJwt.AuthorizationService.Controllers.Testing
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var storedValue = await _unitOfWork.Values.GetByValueAsync(value.Value);
-            if (storedValue != null)
-                return StatusCode(460, $"Value with the same value \"{nameof(value.Value)}\" is already exists!");
-
             var valueDb = _mapper.Map<ValueDb>(value);
+
             await _unitOfWork.Values.AddAsync(valueDb);
             await _unitOfWork.CommitAsync();
 

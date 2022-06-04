@@ -1,11 +1,59 @@
-﻿<PageTitle>User editor</PageTitle>
-<h3>UserEditor</h3>
+﻿@using ButtonType = Blazorise.ButtonType
+@using DataGridEditMode = Blazorise.DataGrid.DataGridEditMode
 
-<div class="row">
-    <div class="col">
+<PageTitle>User editor</PageTitle>
+<PageProgress @ref="@_pageProgress" Visible="@_inProgress" Color="Color.Primary"/>
+
+<h3>User editor</h3>
+
+@*<Row>
+    <Column ColumnSize="ColumnSize.IsFull">
+        <DataGrid TItem="ValueAm"
+                  Data="@_valueList"
+                  TotalItems="@_totalValues"
+                  @bind-SelectedRow="@_selectedValue"
+                  PageSize="@_pageSize"
+                  ReadData="@OnReadDataAsync"
+                  NewItemDefaultSetter="@OnValueNewItemDefaultSetter"
+                  RowUpdated="@OnRowUpdatedAsync"
+                  RowRemoved="@OnRowRemovedAsync"
+                  RowInserted="@OnRowInsertedAsync"
+                  ShowPager
+                  CommandMode="@DataGridCommandMode.ButtonRow"
+                  Editable
+                  EditMode="@DataGridEditMode.Popup"
+                  Responsive>
+            <DataGridColumns>
+                <DataGridCommandColumn/>
+                <DataGridColumn Field="@nameof(ValueAm.Id)" Caption="#" />
+                <DataGridColumn Field="@nameof(ValueAm.Value)" DisplayFormat="{0:D0}" Caption="Value" Editable />
+                <DataGridColumn Field="@nameof(ValueAm.Commentary)" Caption="Commentary" Editable />
+            </DataGridColumns>
+            <ButtonRowTemplate>
+                <Button Color="Color.Success" Disabled="@_inProgress" Clicked="context.NewCommand.Clicked">New</Button>
+                <Button Color="Color.Primary" Disabled="@(_selectedValue is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
+                <Button Color="Color.Danger" Disabled="@(_selectedValue is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
+                <Button Color="Color.Primary" Loading="@_addValuesInProgress" Disabled="@_inProgress" Clicked="@OnCreateSomeRandomValuesButtonClickedAsync">Add @_numberValuesToAdd</Button>
+                <Button Color="Color.Danger" Clicked="@ErrorTest">Error test</Button>
+            </ButtonRowTemplate>
+        </DataGrid>
+    </Column>
+</Row>*@
+
+<Row>
+    <Column ColumnSize="ColumnSize.IsFull">
         <Button Color="Color.Primary" Clicked="@ShowModal">Show Modal</Button>
-    </div>
-</div>
+    </Column>
+</Row>
+
+<Row>
+    <Column ColumnSize="ColumnSize.IsFull">
+        <Alert Color="Color.Danger" Visible="@(!String.IsNullOrEmpty(_errorMessage))">
+            <AlertMessage>Server validation error!</AlertMessage>
+            <AlertDescription>@_errorMessage</AlertDescription>
+        </Alert>
+    </Column>
+</Row>
 
 <Modal @ref="_modalRef">
     <ModalContent Centered>

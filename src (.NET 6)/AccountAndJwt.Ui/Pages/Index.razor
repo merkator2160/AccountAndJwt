@@ -61,18 +61,6 @@
     
 <div class="row">
     <div class="col">
-        <RadzenButton class="btn btn-primary" Click="@ButtonClicked" Text="@_text"></RadzenButton>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col">
-        <Markdown @bind-Value="@_markdownValue" CustomButtonClicked="@OnCustomButtonClicked">
-            <Toolbar>
-                <MarkdownToolbarButton Action="MarkdownAction.Bold" Icon="fa fa-bolt" Title="Bold" />
-                <MarkdownToolbarButton Separator Name="Custom button" Value="@("Hello world!")" Icon="fa fa-star" Title="A Custom Button" />
-                <MarkdownToolbarButton Separator Name="https://github.com/Ionaru/easy-markdown-editor" Icon="fa fab fa-github" Title="A Custom Link" />
-            </Toolbar>
-        </Markdown>
+        <Button Color="Color.Primary" Clicked="@OnButtonClicked">@_text</Button>
     </div>
 </div>

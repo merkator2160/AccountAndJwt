@@ -75,7 +75,7 @@ namespace AccountAndJwt.AuthorizationService.Database
             if (context.Values.Any())
                 return;
 
-            for (var i = 100; i < 200; i++)
+            for (var i = 1; i < 200; i++)
             {
                 context.Values.Add(new ValueDb()
                 {

@@ -45,9 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomConfiguration", "Cust
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{8369A1C7-D7BC-4321-942B-64F1E5CD1C7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire", "Hangfire\Hangfire.csproj", "{969C8100-D3C9-4438-B31E-A9B98832E059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire", "Hangfire\Hangfire.csproj", "{969C8100-D3C9-4438-B31E-A9B98832E059}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountAndJwt.ApiClients.Http", "AccountAndJwt.ApiClients.Http\AccountAndJwt.ApiClients.Http.csproj", "{04B0FC44-56A1-4BE9-93D5-D1DFC1C68162}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountAndJwt.ApiClients.Http", "AccountAndJwt.ApiClients.Http\AccountAndJwt.ApiClients.Http.csproj", "{04B0FC44-56A1-4BE9-93D5-D1DFC1C68162}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,6 @@
 ﻿using AccountAndJwt.AuthorizationService.Database.Interfaces;
 using AccountAndJwt.AuthorizationService.Database.Models.Storage;
+using AccountAndJwt.Contracts.Const;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,8 +15,12 @@ namespace AccountAndJwt.AuthorizationService.Database.Mappings
                 .HasKey(p => p.Id);
 
             entityBuilder
+                .Property(p => p.Value)
+                .IsRequired();
+
+            entityBuilder
                 .Property(p => p.Commentary)
-                .HasMaxLength(50);
+                .HasMaxLength(Limits.Value.CommentaryMaxLength);
         }
     }
 }
