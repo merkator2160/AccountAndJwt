@@ -18,7 +18,7 @@ namespace AccountAndJwt.Ui.Pages
     public partial class ValuesModeration
     {
         private const Int32 _numberValuesToAdd = 10;
-        private const Int32 _pageSize = 15;
+        private const Int32 _pageSize = 10;
 
         private PageProgress _pageProgress;
         private Boolean _inProgress = true;
@@ -45,10 +45,6 @@ namespace AccountAndJwt.Ui.Pages
 
 
         // HANDLERS ///////////////////////////////////////////////////////////////////////////////
-        protected override async Task OnInitializedAsync()
-        {
-
-        }
         private async Task OnCreateSomeRandomValuesButtonClickedAsync()
         {
             _inProgress = true;
@@ -179,7 +175,7 @@ namespace AccountAndJwt.Ui.Pages
 
             BrowserPopupService.Alert($"{ex.Message}\r\n{ex.StackTrace}");
         }
-        private void OnErrorTest()
+        private void ShowError()
         {
             _errorMessage = String.IsNullOrEmpty(_errorMessage) ? "Error message." : String.Empty;
         }

@@ -6,12 +6,12 @@
 
 <h3>User editor</h3>
 
-@*<Row>
+<Row>
     <Column ColumnSize="ColumnSize.IsFull">
-        <DataGrid TItem="ValueAm"
-                  Data="@_valueList"
-                  TotalItems="@_totalValues"
-                  @bind-SelectedRow="@_selectedValue"
+        <DataGrid TItem="GridUserVm"
+                  Data="@_userList"
+                  TotalItems="@_totalUsers"
+                  @bind-SelectedRow="@_selectedUser"
                   PageSize="@_pageSize"
                   ReadData="@OnReadDataAsync"
                   NewItemDefaultSetter="@OnValueNewItemDefaultSetter"
@@ -25,24 +25,19 @@
                   Responsive>
             <DataGridColumns>
                 <DataGridCommandColumn/>
-                <DataGridColumn Field="@nameof(ValueAm.Id)" Caption="#" />
-                <DataGridColumn Field="@nameof(ValueAm.Value)" DisplayFormat="{0:D0}" Caption="Value" Editable />
-                <DataGridColumn Field="@nameof(ValueAm.Commentary)" Caption="Commentary" Editable />
+                <DataGridColumn Field="@nameof(GridUserVm.Id)" Caption="#" />
+                <DataGridColumn Field="@nameof(GridUserVm.Login)" DisplayFormat="{0:D0}" Caption="Value" Editable />
+                <DataGridColumn Field="@nameof(GridUserVm.FirstName)" Caption="Commentary" Editable />
+                <DataGridColumn Field="@nameof(GridUserVm.LastName)" Caption="Commentary" Editable />
+                <DataGridColumn Field="@nameof(GridUserVm.Email)" Caption="Commentary" Editable />
             </DataGridColumns>
             <ButtonRowTemplate>
                 <Button Color="Color.Success" Disabled="@_inProgress" Clicked="context.NewCommand.Clicked">New</Button>
-                <Button Color="Color.Primary" Disabled="@(_selectedValue is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
-                <Button Color="Color.Danger" Disabled="@(_selectedValue is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
-                <Button Color="Color.Primary" Loading="@_addValuesInProgress" Disabled="@_inProgress" Clicked="@OnCreateSomeRandomValuesButtonClickedAsync">Add @_numberValuesToAdd</Button>
-                <Button Color="Color.Danger" Clicked="@ErrorTest">Error test</Button>
+                <Button Color="Color.Primary" Disabled="@(_selectedUser is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
+                <Button Color="Color.Danger" Disabled="@(_selectedUser is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
+                <Button Color="Color.Primary" Clicked="@ShowModal">Show modal</Button>
             </ButtonRowTemplate>
         </DataGrid>
-    </Column>
-</Row>*@
-
-<Row>
-    <Column ColumnSize="ColumnSize.IsFull">
-        <Button Color="Color.Primary" Clicked="@ShowModal">Show Modal</Button>
     </Column>
 </Row>
 

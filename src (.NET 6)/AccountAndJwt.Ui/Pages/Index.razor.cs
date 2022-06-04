@@ -28,7 +28,7 @@ namespace AccountAndJwt.Ui.Pages
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         protected override void OnInitialized()
         {
-            Navigation.NavigateTo("valuesModeration");
+            Navigation.NavigateTo("userEditor");
         }
         private async void OnButtonClicked()
         {

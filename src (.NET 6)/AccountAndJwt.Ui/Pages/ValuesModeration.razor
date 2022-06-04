@@ -35,7 +35,7 @@
                 <Button Color="Color.Primary" Disabled="@(_selectedValue is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
                 <Button Color="Color.Danger" Disabled="@(_selectedValue is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
                 <Button Color="Color.Primary" Loading="@_addValuesInProgress" Disabled="@_inProgress" Clicked="@OnCreateSomeRandomValuesButtonClickedAsync">Add @_numberValuesToAdd</Button>
-                <Button Color="Color.Danger" Clicked="@OnErrorTest">Error test</Button>
+                <Button Color="Color.Danger" Clicked="@ShowError">Error test</Button>
             </ButtonRowTemplate>
         </DataGrid>
     </Column>
