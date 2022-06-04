@@ -1,9 +1,9 @@
 ﻿using AccountAndJwt.AuthorizationService.Database;
 using AccountAndJwt.AuthorizationService.Middleware;
 using AccountAndJwt.AuthorizationService.Middleware.Cors;
-using AccountAndJwt.AuthorizationService.Middleware.Modules;
+using AccountAndJwt.Common.DependencyInjection;
+using AccountAndJwt.Common.DependencyInjection.Modules;
 using Autofac;
-using CustomConfiguration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Infrastructure;

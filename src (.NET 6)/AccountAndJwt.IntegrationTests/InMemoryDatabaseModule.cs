@@ -1,6 +1,6 @@
 ﻿using AccountAndJwt.AuthorizationService.Database;
+using AccountAndJwt.Common.DependencyInjection;
 using Autofac;
-using CustomConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
