@@ -8,7 +8,8 @@
 
 <Row>
     <Column ColumnSize="ColumnSize.IsFull">
-        <DataGrid TItem="GridValueVm"
+        <DataGrid @ref="_dataGrid"
+                  TItem="GridValueVm"
                   Data="@_valueList"
                   TotalItems="@_totalValues"
                   @bind-SelectedRow="@_selectedValue"
@@ -44,7 +45,7 @@
 <Row>
     <Column ColumnSize="ColumnSize.IsFull">
         <Alert Color="Color.Danger" Visible="@(!String.IsNullOrEmpty(_errorMessage))">
-            <AlertMessage>Server validation error!</AlertMessage>
+            <AlertMessage>Server validation error: </AlertMessage>
             <AlertDescription>@_errorMessage</AlertDescription>
         </Alert>
     </Column>

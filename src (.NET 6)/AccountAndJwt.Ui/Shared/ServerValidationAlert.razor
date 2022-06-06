@@ -1,0 +1,16 @@
+﻿<Alert Color="Color.Danger" Visible="@(ModelState != null)">
+    @if (ModelState?.Errors != null)
+    {
+        @foreach (var x in ModelState.Errors)
+        {
+            <p>
+                <AlertMessage>@x.Key: </AlertMessage>
+                @foreach (var message in x.Value)
+                {
+                    <br/>
+                    <AlertDescription>@message</AlertDescription>
+                }
+            </p>
+        }
+    }
+</Alert>

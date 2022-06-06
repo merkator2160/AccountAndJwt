@@ -19,6 +19,7 @@ namespace AccountAndJwt.Ui.Pages
     {
         private const Int32 _numberValuesToAdd = 10;
 
+        private DataGrid<GridValueVm> _dataGrid;
         private PageProgress _pageProgress;
         private Boolean _inProgress = true;
         private Boolean _addValuesInProgress;
@@ -69,6 +70,7 @@ namespace AccountAndJwt.Ui.Pages
             {
                 _inProgress = false;
                 _addValuesInProgress = false;
+                await _dataGrid.Reload();
             }
         }
 

@@ -1,18 +1,15 @@
 ﻿using AccountAndJwt.ApiClients.Http.Authorization.Interfaces;
-using AccountAndJwt.Common.Exceptions;
 using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Contracts.Models.Api;
-using AccountAndJwt.Contracts.Models.Api.Errors;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Ui.Models.ViewModels;
 using AccountAndJwt.Ui.Services.Interfaces;
+using AccountAndJwt.Ui.Shared;
 using AutoMapper;
 using Blazorise;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
-using System.Text;
 using IAuthorizationService = AccountAndJwt.Ui.Services.Interfaces.IAuthorizationService;
 
 namespace AccountAndJwt.Ui.Pages
@@ -21,10 +18,9 @@ namespace AccountAndJwt.Ui.Pages
     [Authorize(Roles = Role.Admin)]
     public partial class UserEditor
     {
-        private DataGrid<GridUserVm> _dataGrid;
+        private ServerValidationAlert _validationAlert;
         private PageProgress _pageProgress;
         private Boolean _inProgress = true;
-        private String _errorMessage;
 
         private List<GridUserVm> _userList;
         private GridUserVm _selectedUser;
@@ -80,7 +76,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _validationAlert.HandleException(ex);
             }
             finally
             {
@@ -97,7 +93,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _validationAlert.HandleException(ex);
             }
             finally
             {
@@ -106,6 +102,7 @@ namespace AccountAndJwt.Ui.Pages
         }
         private async Task OnRowInsertedAsync(SavedRowItem<GridUserVm, Dictionary<String, Object>> newRow)
         {
+            _validationAlert.Hide();
             _inProgress = true;
 
             try
@@ -114,7 +111,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _validationAlert.HandleException(ex);
             }
             finally
             {
@@ -133,6 +130,7 @@ namespace AccountAndJwt.Ui.Pages
         // Change Email modal //
         private Task ShowEditPermissionsModal()
         {
+            _validationAlert.Hide();
             return _editPermissionsModal.Show();
         }
         private Task HideEditPermissionsModal()
@@ -154,7 +152,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _validationAlert.HandleException(ex);
             }
             finally
             {
@@ -176,54 +174,12 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _validationAlert.HandleException(ex);
             }
             finally
             {
                 _inProgress = false;
             }
-        }
-
-
-        // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-        private void HandleException(Exception ex)
-        {
-            if (ex is HttpServerException httpServerException)
-            {
-                switch ((Int32)httpServerException.StatusCode)
-                {
-                    case 460:
-                        _errorMessage = ex.Message;
-                        StateHasChanged();
-                        return;
-                    case 400:
-                        _errorMessage = HandleInvalidModelState(ex.Message);
-                        StateHasChanged();
-                        return;
-                    default:
-                        BrowserPopupService.Alert(httpServerException.ToString());
-                        return;
-                }
-            }
-
-            BrowserPopupService.Alert($"{ex.Message}\r\n{ex.StackTrace}");
-        }
-        private String HandleInvalidModelState(String message)
-        {
-            // TODO: Error formatting improvements required
-
-            var response = JsonConvert.DeserializeObject<ModelStateAm>(message);
-            var sb = new StringBuilder();
-
-            foreach (var x in response.Errors)
-            {
-                foreach (String str in x.Value)
-                {
-                    sb.Append($"{x.Key}: {str}\r\n");
-                }
-            }
-
-            return sb.ToString();
         }
     }
 }

@@ -8,8 +8,7 @@
 
 <Row>
     <Column ColumnSize="ColumnSize.IsFull">
-        <DataGrid @ref="_dataGrid"
-                  TItem="GridUserVm"
+        <DataGrid TItem="GridUserVm"
                   Data="@_userList"
                   TotalItems="@_totalUsers"
                   @bind-SelectedRow="@_selectedUser"
@@ -44,10 +43,7 @@
 
 <Row>
     <Column ColumnSize="ColumnSize.IsFull">
-        <Alert Color="Color.Danger" Visible="@(!String.IsNullOrEmpty(_errorMessage))">
-            <AlertMessage>Server validation error:</AlertMessage>
-            <AlertDescription>@_errorMessage</AlertDescription>
-        </Alert>
+        <ServerValidationAlert @ref="_validationAlert"/>
     </Column>
 </Row>
 
