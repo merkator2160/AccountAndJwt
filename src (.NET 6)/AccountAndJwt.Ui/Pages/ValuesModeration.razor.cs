@@ -18,7 +18,6 @@ namespace AccountAndJwt.Ui.Pages
     public partial class ValuesModeration
     {
         private const Int32 _numberValuesToAdd = 10;
-        private const Int32 _pageSize = 10;
 
         private PageProgress _pageProgress;
         private Boolean _inProgress = true;
@@ -72,6 +71,8 @@ namespace AccountAndJwt.Ui.Pages
                 _addValuesInProgress = false;
             }
         }
+
+        // Grid //
         private async Task OnReadDataAsync(DataGridReadDataEventArgs<GridValueVm> e)
         {
             _inProgress = true;

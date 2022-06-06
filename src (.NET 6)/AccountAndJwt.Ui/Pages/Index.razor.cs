@@ -28,7 +28,9 @@ namespace AccountAndJwt.Ui.Pages
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         protected override void OnInitialized()
         {
+#if DEBUG
             Navigation.NavigateTo("userEditor");
+#endif
         }
         private async void OnButtonClicked()
         {

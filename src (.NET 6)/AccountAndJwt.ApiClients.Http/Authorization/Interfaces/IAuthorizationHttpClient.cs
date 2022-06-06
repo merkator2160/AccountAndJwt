@@ -13,15 +13,17 @@ namespace AccountAndJwt.ApiClients.Http.Authorization.Interfaces
 
         // Account //
         Task<RegisterUserResponseAm> RegisterAsync(RegisterUserRequestAm request);
+        Task ChangeEmailAsync(ChangeEmailRequestAm request, String accessToken);
+        Task ChangeNameAsync(ChangeNameRequestAm request, String accessToken);
+        Task ResetPasswordAsync(ResetPasswordRequestAm request, String accessToken);
+
+        // Administration //
+        Task<UserAm> GetUserAsync(String accessToken);
+        Task<PagedUserResponseAm> GetUsersPagedAsync(GetUsersPagedRequestAm request, String accessToken);
         Task DeleteAccountAsync(Int32 userId, String accessToken);
         Task<RoleAm[]> GetAvailableRolesAsync(String accessToken);
         Task AddUserRoleAsync(AddRemoveUserRoleRequestAm request, String accessToken);
         Task RemoveUserRoleAsync(AddRemoveUserRoleRequestAm request, String accessToken);
-        Task ChangeEmailAsync(String newEmail, String accessToken);
-        Task ChangeNameAsync(ChangeNameRequestAm request, String accessToken);
-        Task<UserAm> GetUserAsync(String accessToken);
-        Task<PagedUserResponseAm> GetUsersPagedAsync(GetUsersPagedRequestAm request, String accessToken);
-        Task ResetPasswordAsync(ResetPasswordRequestAm request, String accessToken);
 
         // Value //
         Task<PagedValueResponseAm> GetValuesPagedAsync(Int32 pageSize, Int32 pageNumber, String accessToken);

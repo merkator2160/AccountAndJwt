@@ -96,73 +96,13 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 }
             }
         }
-        public async Task DeleteAccountAsync(Int32 userId, String accessToken)
-        {
-            var verb = HttpMethod.Delete;
-            using (var requestMessage = new HttpRequestMessage(verb, $"api/Account/DeleteAccount?userId={userId}"))
-            {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-                using (var response = await SendAsync(requestMessage))
-                {
-                    if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
-                }
-            }
-        }
-        public async Task<RoleAm[]> GetAvailableRolesAsync(String accessToken)
-        {
-            var verb = HttpMethod.Get;
-            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/GetAvailableRoles"))
-            {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-                using (var response = await SendAsync(requestMessage))
-                {
-                    if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
-
-                    return await response.Content.ReadFromJsonAsync<RoleAm[]>();
-                }
-            }
-        }
-        public async Task AddUserRoleAsync(AddRemoveUserRoleRequestAm request, String accessToken)
-        {
-            var verb = HttpMethod.Post;
-            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/AddUserRole"))
-            {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
-
-                using (var response = await SendAsync(requestMessage))
-                {
-                    if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
-                }
-            }
-        }
-        public async Task RemoveUserRoleAsync(AddRemoveUserRoleRequestAm request, String accessToken)
-        {
-            var verb = HttpMethod.Post;
-            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/RemoveUserRole"))
-            {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
-
-                using (var response = await SendAsync(requestMessage))
-                {
-                    if (!response.IsSuccessStatusCode)
-                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
-                }
-            }
-        }
-        public async Task ChangeEmailAsync(String newEmail, String accessToken)
+        public async Task ChangeEmailAsync(ChangeEmailRequestAm request, String accessToken)
         {
             var verb = HttpMethod.Put;
             using (var requestMessage = new HttpRequestMessage(verb, "api/Account/ChangeEmail"))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                requestMessage.Content = new StringContent(newEmail, Encoding.UTF8, HttpMimeType.Application.Json);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
 
                 using (var response = await SendAsync(requestMessage))
                 {
@@ -186,10 +126,27 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 }
             }
         }
+        public async Task ResetPasswordAsync(ResetPasswordRequestAm request, String accessToken)
+        {
+            var verb = HttpMethod.Post;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/ResetPassword"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+
+        // Administration //
         public async Task<UserAm> GetUserAsync(String accessToken)
         {
             var verb = HttpMethod.Get;
-            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/GetUser"))
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Administration/GetUser"))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
@@ -205,7 +162,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
         public async Task<PagedUserResponseAm> GetUsersPagedAsync(GetUsersPagedRequestAm request, String accessToken)
         {
             var verb = HttpMethod.Post;
-            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/GetUsersPaged"))
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Administration/GetUsersPaged"))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
@@ -219,10 +176,55 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
                 }
             }
         }
-        public async Task ResetPasswordAsync(ResetPasswordRequestAm request, String accessToken)
+        public async Task DeleteAccountAsync(Int32 userId, String accessToken)
+        {
+            var verb = HttpMethod.Delete;
+            using (var requestMessage = new HttpRequestMessage(verb, $"api/Administration/DeleteAccount?userId={userId}"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+        public async Task<RoleAm[]> GetAvailableRolesAsync(String accessToken)
+        {
+            var verb = HttpMethod.Get;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Administration/GetAvailableRoles"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+
+                    return await response.Content.ReadFromJsonAsync<RoleAm[]>();
+                }
+            }
+        }
+        public async Task AddUserRoleAsync(AddRemoveUserRoleRequestAm request, String accessToken)
         {
             var verb = HttpMethod.Post;
-            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/ResetPassword"))
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Administration/AddUserRole"))
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);
+
+                using (var response = await SendAsync(requestMessage))
+                {
+                    if (!response.IsSuccessStatusCode)
+                        throw new HttpServerException(verb, response.StatusCode, requestMessage.RequestUri!.AbsoluteUri, await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+        public async Task RemoveUserRoleAsync(AddRemoveUserRoleRequestAm request, String accessToken)
+        {
+            var verb = HttpMethod.Post;
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Administration/RemoveUserRole"))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);

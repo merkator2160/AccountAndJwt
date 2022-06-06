@@ -2,6 +2,7 @@
 using AccountAndJwt.Common.Exceptions;
 using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Contracts.Models.Api;
+using AccountAndJwt.Contracts.Models.Api.Errors;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Ui.Models.ViewModels;
 using AccountAndJwt.Ui.Services.Interfaces;
@@ -10,6 +11,8 @@ using Blazorise;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
+using System.Text;
 using IAuthorizationService = AccountAndJwt.Ui.Services.Interfaces.IAuthorizationService;
 
 namespace AccountAndJwt.Ui.Pages
@@ -18,8 +21,7 @@ namespace AccountAndJwt.Ui.Pages
     [Authorize(Roles = Role.Admin)]
     public partial class UserEditor
     {
-        private const Int32 _pageSize = 15;
-
+        private DataGrid<GridUserVm> _dataGrid;
         private PageProgress _pageProgress;
         private Boolean _inProgress = true;
         private String _errorMessage;
@@ -28,8 +30,10 @@ namespace AccountAndJwt.Ui.Pages
         private GridUserVm _selectedUser;
         private Int32 _totalUsers;
 
-        private Modal _modalRef;
+        private Modal _editPermissionsModal;
         private RoleAm[] _availableRoles;
+        private RoleAm _selectedRole;
+        private RoleAm _selectedUserRole;
 
 
         // PROPERTIES /////////////////////////////////////////////////////////////////////////////
@@ -46,7 +50,7 @@ namespace AccountAndJwt.Ui.Pages
         public IMapper Mapper { get; set; }
 
 
-        // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
+        // HANDLERS ///////////////////////////////////////////////////////////////////////////////
         protected override async Task OnInitializedAsync()
         {
             var accessToken = Authorization.User.ServerTokens.AccessToken;
@@ -83,30 +87,13 @@ namespace AccountAndJwt.Ui.Pages
                 _inProgress = false;
             }
         }
-        private async Task OnRowUpdatedAsync(SavedRowItem<GridUserVm, Dictionary<String, Object>> updatedRow)
+        private async Task OnRowRemovedAsync(GridUserVm user)
         {
             _inProgress = true;
 
             try
             {
-                //await AuthorizationHttpClient.UpdateValueAsync(Mapper.Map<UpdateValueRequestAm>(updatedRow.Item), Authorization.User.ServerTokens.AccessToken);
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-            finally
-            {
-                _inProgress = false;
-            }
-        }
-        private async Task OnRowRemovedAsync(GridUserVm value)
-        {
-            _inProgress = true;
-
-            try
-            {
-                //await AuthorizationHttpClient.DeleteValueAsync(value.Id, Authorization.User.ServerTokens.AccessToken);
+                await AuthorizationHttpClient.DeleteAccountAsync(user.Id, Authorization.User.ServerTokens.AccessToken);
             }
             catch (Exception ex)
             {
@@ -123,7 +110,7 @@ namespace AccountAndJwt.Ui.Pages
 
             try
             {
-                //await AuthorizationHttpClient.AddValueAsync(Mapper.Map<AddValueRequestAm>(newRow.Item), Authorization.User.ServerTokens.AccessToken);
+                await AuthorizationHttpClient.RegisterAsync(Mapper.Map<RegisterUserRequestAm>(newRow.Item));
             }
             catch (Exception ex)
             {
@@ -137,24 +124,65 @@ namespace AccountAndJwt.Ui.Pages
         private void OnValueNewItemDefaultSetter(GridUserVm user)
         {
             user.Login = String.Empty;
+            user.Password = String.Empty;
             user.FirstName = String.Empty;
             user.LastName = String.Empty;
             user.Email = String.Empty;
         }
 
-        private Task ShowModal()
+        // Change Email modal //
+        private Task ShowEditPermissionsModal()
         {
-            return _modalRef.Show();
+            return _editPermissionsModal.Show();
         }
-        private Task OnCloseClicked()
+        private Task HideEditPermissionsModal()
         {
-            return _modalRef.Hide();
+            return _editPermissionsModal.Hide();
         }
-        private Task OnSaveChangesClicked()
+        private async Task AddRole()
         {
-            return _modalRef.Hide();
-        }
+            _inProgress = true;
 
+            try
+            {
+                await AuthorizationHttpClient.AddUserRoleAsync(new AddRemoveUserRoleRequestAm()
+                {
+                    RoleId = _selectedRole.Id,
+                    UserId = _selectedUser.Id
+                }, Authorization.User.ServerTokens.AccessToken);
+                _selectedUser.RoleList.Add(_selectedRole);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+            finally
+            {
+                _inProgress = false;
+            }
+        }
+        private async Task RemoveRole()
+        {
+            _inProgress = true;
+
+            try
+            {
+                await AuthorizationHttpClient.RemoveUserRoleAsync(new AddRemoveUserRoleRequestAm()
+                {
+                    RoleId = _selectedUserRole.Id,
+                    UserId = _selectedUser.Id
+                }, Authorization.User.ServerTokens.AccessToken);
+                _selectedUser.RoleList.Remove(_selectedUserRole);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+            finally
+            {
+                _inProgress = false;
+            }
+        }
 
 
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
@@ -162,24 +190,40 @@ namespace AccountAndJwt.Ui.Pages
         {
             if (ex is HttpServerException httpServerException)
             {
-                if ((Int32)httpServerException.StatusCode == 460)
+                switch ((Int32)httpServerException.StatusCode)
                 {
-                    _errorMessage = ex.Message;
-                    StateHasChanged();
+                    case 460:
+                        _errorMessage = ex.Message;
+                        StateHasChanged();
+                        return;
+                    case 400:
+                        _errorMessage = HandleInvalidModelState(ex.Message);
+                        StateHasChanged();
+                        return;
+                    default:
+                        BrowserPopupService.Alert(httpServerException.ToString());
+                        return;
                 }
-                else
-                {
-                    BrowserPopupService.Alert(httpServerException.ToString());
-                }
-
-                return;
             }
 
             BrowserPopupService.Alert($"{ex.Message}\r\n{ex.StackTrace}");
         }
-        private void OnShowErrorClicked()
+        private String HandleInvalidModelState(String message)
         {
-            _errorMessage = String.IsNullOrEmpty(_errorMessage) ? "Error message." : String.Empty;
+            // TODO: Error formatting improvements required
+
+            var response = JsonConvert.DeserializeObject<ModelStateAm>(message);
+            var sb = new StringBuilder();
+
+            foreach (var x in response.Errors)
+            {
+                foreach (String str in x.Value)
+                {
+                    sb.Append($"{x.Key}: {str}\r\n");
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }

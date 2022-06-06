@@ -60,7 +60,7 @@ namespace AccountAndJwt.IntegrationTests.Api
             Assert.All(pagedUsers.Users, Assert.NotNull);
 
             var userForDeletion = pagedUsers.Users.First(p => p.Login.Equals(login));
-            var response = await client.DeleteAsync($"/api/Account/DeleteAccount?userId={userForDeletion.Id}");
+            var response = await client.DeleteAsync($"/api/Administration/DeleteAccount?userId={userForDeletion.Id}");
             response.CheckError();
 
             pagedUsers = await GetUsersPaged(client);
@@ -135,7 +135,10 @@ namespace AccountAndJwt.IntegrationTests.Api
             var pagedUsers = await GetUsersPaged(client);
             var admin = pagedUsers.Users.First(p => p.Login.Equals(login));
 
-            var response = await client.PutAsJsonAsync("/api/Account/ChangeEmail", newEmail);
+            var response = await client.PutAsJsonAsync("/api/Account/ChangeEmail", new ChangeEmailRequestAm()
+            {
+                NewEmail = newEmail
+            });
             response.CheckError();
             admin = await GetUser(client, admin.Id);
 
@@ -239,48 +242,49 @@ namespace AccountAndJwt.IntegrationTests.Api
                 Email = "qwerty@mail.ru"
             });
             response.CheckError();
+
             return await response.DeserializeAsync<RegisterUserResponseAm>();
         }
         private async Task<PagedUserResponseAm> GetUsersPaged(HttpClient client)
         {
-            var response = await client.PostAsJsonAsync("/api/Account/GetUsersPaged", new GetUsersPagedRequestAm());
-            response.EnsureSuccessStatusCode();
+            var response = await client.PostAsJsonAsync("/api/Administration/GetUsersPaged", new GetUsersPagedRequestAm());
+            response.CheckError();
 
             return await response.DeserializeAsync<PagedUserResponseAm>();
         }
         private async Task<RoleAm[]> GetAvailableRoles(HttpClient client)
         {
-            var response = await client.GetAsync("/api/Account/GetAvailableRoles");
+            var response = await client.GetAsync("/api/Administration/GetAvailableRoles");
+            response.CheckError();
 
-            response.EnsureSuccessStatusCode();
             return await response.DeserializeAsync<RoleAm[]>();
         }
         private async Task<UserAm> GetUser(HttpClient client, Int32 userId)
         {
-            var response = await client.GetAsync($"/api/Account/GetUser?userId={userId}");
+            var response = await client.GetAsync($"/api/Administration/GetUser?userId={userId}");
+            response.CheckError();
 
-            response.EnsureSuccessStatusCode();
             return await response.DeserializeAsync<UserAm>();
         }
         private async Task AddUserRole(HttpClient client, Int32 userId, Int32 roleId)
         {
-            var response = await client.PostAsJsonAsync("/api/Account/AddUserRole", new AddRemoveUserRoleRequestAm()
+            var response = await client.PostAsJsonAsync("/api/Administration/AddUserRole", new AddRemoveUserRoleRequestAm()
             {
                 UserId = userId,
                 RoleId = roleId
             });
 
-            response.EnsureSuccessStatusCode();
+            response.CheckError();
         }
         private async Task RemoveUserRole(HttpClient client, Int32 userId, Int32 roleId)
         {
-            var response = await client.PostAsJsonAsync("/api/Account/RemoveUserRole", new AddRemoveUserRoleRequestAm()
+            var response = await client.PostAsJsonAsync("/api/Administration/RemoveUserRole", new AddRemoveUserRoleRequestAm()
             {
                 UserId = userId,
                 RoleId = roleId
             });
 
-            response.EnsureSuccessStatusCode();
+            response.CheckError();
         }
     }
 }
