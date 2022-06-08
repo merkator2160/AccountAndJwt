@@ -53,7 +53,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
             var verb = HttpMethod.Post;
             using (var requestMessage = new HttpRequestMessage(verb, "api/Token/RefreshToken"))
             {
-                requestMessage.Content = new StringContent(refreshToken, Encoding.UTF8, HttpMimeType.Application.Json);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(refreshToken), Encoding.UTF8, HttpMimeType.Application.Json);
 
                 using (var response = await SendAsync(requestMessage))
                 {
@@ -69,7 +69,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
             var verb = HttpMethod.Post;
             using (var requestMessage = new HttpRequestMessage(verb, "api/Token/RevokeToken"))
             {
-                requestMessage.Content = new StringContent(refreshToken, Encoding.UTF8, HttpMimeType.Application.Json);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(refreshToken), Encoding.UTF8, HttpMimeType.Application.Json);
 
                 using (var response = await SendAsync(requestMessage))
                 {
@@ -114,7 +114,7 @@ namespace AccountAndJwt.ApiClients.Http.Authorization
         public async Task ChangeNameAsync(ChangeNameRequestAm request, String accessToken)
         {
             var verb = HttpMethod.Put;
-            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/ChangeEmail"))
+            using (var requestMessage = new HttpRequestMessage(verb, "api/Account/ChangeName"))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 requestMessage.Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, HttpMimeType.Application.Json);

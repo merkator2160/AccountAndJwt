@@ -32,35 +32,26 @@
     </div>
 </div>
 
-
 <AuthorizeView>
-    <Authorized>
-        <div class="row">
-            <div class="col-auto">
-                <h3>@context.User.Identity!.IsAuthenticated</h3>
-            </div>
-        </div>
-    </Authorized>
     <NotAuthorized>
-        <div class="row">
-            <div class="col-auto">
-                <h3>@context.User.Identity!.IsAuthenticated</h3>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col">
-                <p>
-                    <a href="register">Register</a>
-                    <a href="login">Log in</a>
-                </p>
-            </div>
-        </div>
+        <Row Margin="Margin.Is4.FromBottom">
+            <Column ColumnSize="ColumnSize.IsFull">
+                <Link To="register">Register</Link>
+                <Link To="login">Log in</Link>
+            </Column>
+        </Row>
     </NotAuthorized>
 </AuthorizeView>
     
-<div class="row">
-    <div class="col">
+<Row Margin="Margin.Is4.FromBottom">
+    <Column ColumnSize="ColumnSize.IsFull">
         <Button Color="Color.Primary" Clicked="@OnButtonClicked">@_text</Button>
-    </div>
-</div>
+        <Button Color="Color.Danger" Clicked="@ShowError">Error test</Button>
+    </Column>
+</Row>
+
+<Row Margin="Margin.Is4.FromBottom">
+    <Column ColumnSize="ColumnSize.IsFull">
+        <ServerValidationAlert @ref="_serverValidationAlert"/>
+    </Column>
+</Row>

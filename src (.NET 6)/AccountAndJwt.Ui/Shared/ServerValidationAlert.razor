@@ -1,16 +1,15 @@
-﻿<Alert Color="Color.Danger" Visible="@(ModelState != null)">
-    @if (ModelState?.Errors != null)
+﻿<Alert Color="Color.Danger" Visible="@(_modelState != null)" Dismisable>
+    @if (_modelState?.Errors != null)
     {
-        @foreach (var x in ModelState.Errors)
+        @foreach (var x in _modelState.Errors)
         {
-            <p>
-                <AlertMessage>@x.Key: </AlertMessage>
-                @foreach (var message in x.Value)
-                {
-                    <br/>
-                    <AlertDescription>@message</AlertDescription>
-                }
-            </p>
+            <AlertMessage Margin="Margin.Is4.FromBottom">@x.Key </AlertMessage>
+            @foreach (var message in x.Value)
+            {
+                <br/>
+                <AlertDescription>@message</AlertDescription>
+            }
         }
     }
+    <CloseButton Clicked="@OnCloseButtonClicked"/>
 </Alert>

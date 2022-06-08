@@ -1,9 +1,9 @@
 ﻿using AccountAndJwt.ApiClients.Http.Authorization.Interfaces;
-using AccountAndJwt.Common.Exceptions;
 using AccountAndJwt.Contracts.Const;
 using AccountAndJwt.Contracts.Models.Api.Request;
 using AccountAndJwt.Ui.Models.ViewModels;
 using AccountAndJwt.Ui.Services.Interfaces;
+using AccountAndJwt.Ui.Shared;
 using AutoMapper;
 using Blazorise;
 using Blazorise.DataGrid;
@@ -19,11 +19,11 @@ namespace AccountAndJwt.Ui.Pages
     {
         private const Int32 _numberValuesToAdd = 10;
 
+        private ServerValidationAlert _serverValidationAlert;
         private DataGrid<GridValueVm> _dataGrid;
         private PageProgress _pageProgress;
         private Boolean _inProgress = true;
         private Boolean _addValuesInProgress;
-        private String _errorMessage;
 
         private List<GridValueVm> _valueList;
         private GridValueVm _selectedValue;
@@ -64,7 +64,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -93,7 +93,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -110,7 +110,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -127,7 +127,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -144,7 +144,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -155,32 +155,6 @@ namespace AccountAndJwt.Ui.Pages
         {
             value.Value = Random.Shared.Next();
             value.Commentary = "New value";
-        }
-
-
-        // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-        private void HandleException(Exception ex)
-        {
-            if (ex is HttpServerException httpServerException)
-            {
-                if ((Int32)httpServerException.StatusCode == 460)
-                {
-                    _errorMessage = ex.Message;
-                    StateHasChanged();
-                }
-                else
-                {
-                    BrowserPopupService.Alert(httpServerException.ToString());
-                }
-
-                return;
-            }
-
-            BrowserPopupService.Alert($"{ex.Message}\r\n{ex.StackTrace}");
-        }
-        private void ShowError()
-        {
-            _errorMessage = String.IsNullOrEmpty(_errorMessage) ? "Error message." : String.Empty;
         }
     }
 }

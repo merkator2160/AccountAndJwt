@@ -18,8 +18,7 @@ namespace AccountAndJwt.Ui.Pages
     [Authorize(Roles = Role.Admin)]
     public partial class UserEditor
     {
-        private ServerValidationAlert _validationAlert;
-        private PageProgress _pageProgress;
+        private ServerValidationAlert _serverValidationAlert;
         private Boolean _inProgress = true;
 
         private List<GridUserVm> _userList;
@@ -49,8 +48,7 @@ namespace AccountAndJwt.Ui.Pages
         // HANDLERS ///////////////////////////////////////////////////////////////////////////////
         protected override async Task OnInitializedAsync()
         {
-            var accessToken = Authorization.User.ServerTokens.AccessToken;
-            _availableRoles = await AuthorizationHttpClient.GetAvailableRolesAsync(accessToken);
+            _availableRoles = await AuthorizationHttpClient.GetAvailableRolesAsync(Authorization.User.ServerTokens.AccessToken);
         }
 
         // Grid //
@@ -76,7 +74,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                _validationAlert.HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -93,7 +91,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                _validationAlert.HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -102,7 +100,7 @@ namespace AccountAndJwt.Ui.Pages
         }
         private async Task OnRowInsertedAsync(SavedRowItem<GridUserVm, Dictionary<String, Object>> newRow)
         {
-            _validationAlert.Hide();
+            _serverValidationAlert.Hide();
             _inProgress = true;
 
             try
@@ -111,7 +109,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                _validationAlert.HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -130,7 +128,7 @@ namespace AccountAndJwt.Ui.Pages
         // Change Email modal //
         private Task ShowEditPermissionsModal()
         {
-            _validationAlert.Hide();
+            _serverValidationAlert.Hide();
             return _editPermissionsModal.Show();
         }
         private Task HideEditPermissionsModal()
@@ -152,7 +150,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                _validationAlert.HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {
@@ -174,7 +172,7 @@ namespace AccountAndJwt.Ui.Pages
             }
             catch (Exception ex)
             {
-                _validationAlert.HandleException(ex);
+                _serverValidationAlert.HandleException(ex);
             }
             finally
             {

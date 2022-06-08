@@ -12,5 +12,10 @@
             public const Int32 FirstNameMaxLength = 50;
             public const Int32 LastNameMaxLength = 50;
         }
+        public class Password
+        {
+            public const Int32 MinLength = 5;
+            public const Int32 MaxLength = 30;
+        }
     }
 }

@@ -36,7 +36,6 @@
                 <Button Color="Color.Primary" Disabled="@(_selectedValue is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
                 <Button Color="Color.Danger" Disabled="@(_selectedValue is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
                 <Button Color="Color.Primary" Loading="@_addValuesInProgress" Disabled="@_inProgress" Clicked="@OnCreateSomeRandomValuesButtonClickedAsync">Add @_numberValuesToAdd</Button>
-                <Button Color="Color.Danger" Clicked="@ShowError">Error test</Button>
             </ButtonRowTemplate>
         </DataGrid>
     </Column>
@@ -44,9 +43,6 @@
 
 <Row>
     <Column ColumnSize="ColumnSize.IsFull">
-        <Alert Color="Color.Danger" Visible="@(!String.IsNullOrEmpty(_errorMessage))">
-            <AlertMessage>Server validation error: </AlertMessage>
-            <AlertDescription>@_errorMessage</AlertDescription>
-        </Alert>
+        <ServerValidationAlert @ref="_serverValidationAlert"/>
     </Column>
 </Row>

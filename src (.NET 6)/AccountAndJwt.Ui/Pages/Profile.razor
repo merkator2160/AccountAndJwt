@@ -1,3 +1,123 @@
-﻿<PageTitle>User profile</PageTitle>
-<h1>User profile</h1>
-Here will be information about current user.
+﻿@using ButtonType = Blazorise.ButtonType
+<PageTitle>User profile</PageTitle>
+<PageProgress Visible="@_inProgress" Color="Color.Primary"/>
+
+<Row>
+    <Column ColumnSize="ColumnSize.Is6">
+        <Card Margin="Margin.Is4.FromBottom">            
+            <CardHeader>
+                <CardTitle>User name</CardTitle>
+            </CardHeader>
+
+            <Validations @ref="_nameValidations" Mode="ValidationMode.Manual" Model="@_nameModel">
+                <CardBody>
+                    <Validation>
+                        <Field Horizontal>
+                            <FieldLabel>First name</FieldLabel>
+                            <FieldBody>
+                                <TextEdit Placeholder="First name" @bind-Text="@_nameModel.FirstName">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                    
+                    <Validation>
+                        <Field Horizontal>
+                            <FieldLabel>Last name</FieldLabel>
+                            <FieldBody>
+                                <TextEdit Placeholder="Last name" @bind-Text="@_nameModel.LastName">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                    <Button Color="Color.Primary" Clicked="@ChangeNameAsync">Save</Button>
+                </CardBody>
+            </Validations>
+            
+            <Validations @ref="_emailValidations" Mode="ValidationMode.Manual" Model="@_emailModel">
+                <CardBody>
+                    <Validation>
+                        <Field Horizontal>
+                            <FieldLabel>Email</FieldLabel>
+                            <FieldBody>
+                                <TextEdit Role="TextRole.Email" Placeholder="Enter email" @bind-Text="@_emailModel.NewEmail">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                    <Button Color="Color.Primary" Type="ButtonType.Submit" Clicked="@ChangeEmailAsync">Save</Button>
+                </CardBody>
+            </Validations>
+
+        </Card>
+    </Column>
+
+    <Column ColumnSize="ColumnSize.Is6">
+        <Card Margin="Margin.Is4.FromBottom">
+            <CardHeader>
+                <CardTitle>Password</CardTitle>
+            </CardHeader>
+            
+            <Validations @ref="_passwordValidations" Mode="ValidationMode.Manual" Model="@_passwordModel">
+                <CardBody>
+                    <Validation>
+                        <Field Horizontal>
+                            <FieldLabel>Old password</FieldLabel>
+                            <FieldBody>
+                                <TextEdit Role="TextRole.Password" Placeholder="Old password" @bind-Text="@_passwordModel.OldPassword">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                
+                    <Validation>
+                        <Field Horizontal>
+                            <FieldLabel>New password</FieldLabel>
+                            <FieldBody>
+                                <TextEdit Role="TextRole.Password" Placeholder="Retype password" @bind-Text="@_passwordModel.NewPassword">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+
+                    <Validation>
+                        <Field Horizontal>
+                            <FieldLabel>Confirm password</FieldLabel>
+                            <FieldBody>
+                                <TextEdit Role="TextRole.Password" Placeholder="Retype password" @bind-Text="@_passwordModel.ConfirmPassword">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+
+                    <Button Color="Color.Primary" Clicked="@ResetPasswordAsync">Save</Button>
+                </CardBody>
+            </Validations>
+
+        </Card>
+    </Column>
+</Row>
+
+<Row>
+    <Column ColumnSize="ColumnSize.IsFull">
+        <ServerValidationAlert @ref="_serverValidationAlert"/>
+    </Column>
+</Row>

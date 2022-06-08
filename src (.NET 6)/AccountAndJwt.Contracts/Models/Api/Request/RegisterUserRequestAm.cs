@@ -9,12 +9,17 @@ namespace AccountAndJwt.Contracts.Models.Api.Request
         [MaxLength(Limits.User.LoginMaxLength)]
         public String Login { get; set; }
 
-        // TODO: Password validation policy attribute required.
+        // TODO: Better password validation policy attribute required.
         [Required]
+        [DataType(DataType.Password)]
+        [StringLength(Limits.Password.MaxLength, MinimumLength = Limits.Password.MinLength)]
         public String Password { get; set; }
 
+        // TODO: Better password validation policy attribute required.
         [Required]
-        [Compare(nameof(Password), ErrorMessage = "Password and Confirm password must match")]
+        [DataType(DataType.Password)]
+        [StringLength(Limits.Password.MaxLength, MinimumLength = Limits.Password.MinLength)]
+        [Compare(nameof(Password), ErrorMessage = "Fields \"Password\" and \"ConfirmPassword\" must match!")]
         public String ConfirmPassword { get; set; }
 
         [Required]

@@ -8,20 +8,30 @@ namespace AccountAndJwt.Ui.Shared
 {
     public partial class ServerValidationAlert
     {
+        private ModelStateAm _modelState;
+
+
         // PROPERTIES /////////////////////////////////////////////////////////////////////////////
         [Inject]
         public IBrowserPopupService BrowserPopupService { get; set; }
 
-        public ModelStateAm ModelState { get; set; }
+        public Boolean IsActive => _modelState != null;
+
+
+        // HANDLERS ///////////////////////////////////////////////////////////////////////////////
+        private void OnCloseButtonClicked()
+        {
+            _modelState = null;
+        }
 
 
         // FUNCTIONS //////////////////////////////////////////////////////////////////////////////
         public void Hide()
         {
-            if (ModelState == null)
+            if (_modelState == null)
                 return;
 
-            ModelState = null;
+            _modelState = null;
             StateHasChanged();
         }
         public void HandleException(Exception ex)
@@ -48,11 +58,11 @@ namespace AccountAndJwt.Ui.Shared
         }
         private void HandleInvalidModelState(String message)
         {
-            ModelState = JsonConvert.DeserializeObject<ModelStateAm>(message);
+            _modelState = JsonConvert.DeserializeObject<ModelStateAm>(message);
         }
         private void HandleServerValidationError(String message)
         {
-            ModelState = new ModelStateAm()
+            _modelState = new ModelStateAm()
             {
                 Errors = new Dictionary<String, String[]>()
                 {

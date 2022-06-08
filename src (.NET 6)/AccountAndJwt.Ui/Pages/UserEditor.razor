@@ -2,7 +2,7 @@
 @using DataGridEditMode = Blazorise.DataGrid.DataGridEditMode
 
 <PageTitle>User editor</PageTitle>
-<PageProgress @ref="@_pageProgress" Visible="@_inProgress" Color="Color.Primary"/>
+<PageProgress Visible="@_inProgress" Color="Color.Primary"/>
 
 <h3>User editor</h3>
 
@@ -43,7 +43,7 @@
 
 <Row>
     <Column ColumnSize="ColumnSize.IsFull">
-        <ServerValidationAlert @ref="_validationAlert"/>
+        <ServerValidationAlert @ref="_serverValidationAlert"/>
     </Column>
 </Row>
 

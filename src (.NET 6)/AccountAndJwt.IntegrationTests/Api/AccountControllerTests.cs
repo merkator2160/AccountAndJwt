@@ -210,7 +210,8 @@ namespace AccountAndJwt.IntegrationTests.Api
             var response = await client.PostAsJsonAsync("/api/Account/ResetPassword", new ResetPasswordRequestAm()
             {
                 OldPassword = oldPassword,
-                NewPassword = newPassword
+                NewPassword = newPassword,
+                ConfirmPassword = newPassword
             });
             response.EnsureSuccessStatusCode();
 
