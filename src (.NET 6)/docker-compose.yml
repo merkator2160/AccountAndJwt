@@ -8,6 +8,9 @@ services:
       dockerfile: AccountAndJwt.AuthorizationService/Dockerfile
     environment:
     - DefaultConnection=Data Source=host.docker.internal\SQLEXPRESS;Initial Catalog=AccountAndJwtDbDev;Integrated Security=False;User Id=docker;Password=JBZAN9CdjR5S3SKlr15b
+    ports:
+      - 5001:80
+      - 5002:443
 
   accountandjwt.ui:
     image: ${DOCKER_REGISTRY-}accountandjwtui
@@ -15,5 +18,4 @@ services:
       context: .
       dockerfile: AccountAndJwt.Ui/Dockerfile
     ports:
-      - 5230:80
-      - 7230:443
+      - 5011:80

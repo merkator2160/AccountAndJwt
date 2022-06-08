@@ -10,6 +10,8 @@ WORKDIR /src
 COPY ["AccountAndJwt.AuthorizationService/AccountAndJwt.AuthorizationService.csproj", "AccountAndJwt.AuthorizationService/"]
 COPY ["AccountAndJwt.Contracts/AccountAndJwt.Contracts.csproj", "AccountAndJwt.Contracts/"]
 COPY ["AccountAndJwt.Common/AccountAndJwt.Common.csproj", "AccountAndJwt.Common/"]
+COPY ["AccountAndJwt.ApiClients/AccountAndJwt.ApiClients.csproj", "AccountAndJwt.ApiClients/"]
+COPY ["AccountAndJwt.ApiClients.Http/AccountAndJwt.ApiClients.Http.csproj", "AccountAndJwt.ApiClients.Http/"]
 COPY ["AccountAndJwt.Database/AccountAndJwt.AuthorizationService.Database.csproj", "AccountAndJwt.AuthorizationService.Database/"]
 RUN dotnet restore "AccountAndJwt.AuthorizationService/AccountAndJwt.AuthorizationService.csproj"
 COPY . .
