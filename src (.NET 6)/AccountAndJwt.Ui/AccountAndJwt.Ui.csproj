@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <None Update="nginx.conf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
